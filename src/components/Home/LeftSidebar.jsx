@@ -1,4 +1,5 @@
 import React from "react";
+import { baseURL } from "../../api";
 
 const LeftSidebar = ({userData}) => {
   return (
@@ -9,7 +10,7 @@ const LeftSidebar = ({userData}) => {
           <div className="user-profile">
             <div className="username-dt">
               <div className="usr-pic">
-                <img src={userData.image?userData.image:"images/user.png"} alt="" />
+                <img src={userData.image?baseURL+"/file/"+ userData.image:"images/user.png"} alt="" />
                 {/* <img src="images/resources/user-pic.png" alt="" /> */}
               </div>
             </div>

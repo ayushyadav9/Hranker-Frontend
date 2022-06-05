@@ -1,11 +1,12 @@
 import React from "react";
+import { baseURL } from "../../api";
 
-const LeftSide = () => {
+const LeftSide = ({userData}) => {
   return (
     <div className="main-left-sidebar">
       <div className="user_profile">
         <div className="user-pro-img">
-          <img src="images/resources/user-pro-img.png" alt="" />
+          <img src={userData.image?baseURL+"/file/"+ userData.image:"images/resources/user-pro-img.png"} alt="" />
           <div className="add-dp" id="OpenImgUpload">
             <input type="file" id="file" />
             <label for="file">

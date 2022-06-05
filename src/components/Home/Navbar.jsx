@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { baseURL } from "../../api";
 import Notifications from "./Popups/Notifications";
 
 const Navbar = ({ userData, setresetPost }) => {
@@ -221,7 +222,7 @@ const Navbar = ({ userData, setresetPost }) => {
                   className="user-info"
                 >
                   {userData.image ? (
-                    <img src={userData.image} alt="" />
+                    <img src={baseURL+"/file/"+ userData.image} alt="" />
                   ) : (
                     <div className="dummy-img">{userData.name.charAt(0)}</div>
                   )}

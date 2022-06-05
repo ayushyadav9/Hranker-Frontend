@@ -37,7 +37,7 @@ const MainNewsFeed = ({ userData, setisActive, resetPost, setresetPost }) => {
           <div className="user-picy">
             {userData.image ? (
               <img
-                src={userData.image}
+                src={baseURL+"/file/"+ userData.image}
                 alt=""
               />
             ) : (

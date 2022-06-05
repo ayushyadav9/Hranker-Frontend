@@ -54,7 +54,7 @@ function App() {
           <Route path="/sign-up" element={<SignUp setdataReset={setdataReset}/>} />
 
           <Route element={<ProtectedRoute />}>
-            <Route path="/profile" element={<Profile userData={userData}/>} />
+            <Route path="/profile" element={<Profile userData={userData} setdataReset={setdataReset}/>} />
           </Route>
 
           <Route element={<ProtectedRoute />}>

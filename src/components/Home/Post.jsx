@@ -65,6 +65,7 @@ const Post = ({ post, userData, resetPost, setresetPost }) => {
         }
       );
   }
+
   return (
     <div className="posty">
       <div className="post-bar no-margin">
@@ -205,8 +206,6 @@ const Post = ({ post, userData, resetPost, setresetPost }) => {
               <div className={post.likers.filter(i=>i._id===userData._id).length>0&&"isLiked"} onClick={handelToggleLike}>
                 <i className="fas fa-heart"></i> Like {post.likers?post.likers.length:0}
               </div>
-              {/* <img src="images/liked-img.png" alt="" />
-              <span>25</span> */}
             </li>
             <li>
               <div
@@ -224,13 +223,10 @@ const Post = ({ post, userData, resetPost, setresetPost }) => {
         </div>
       </div>
       <div className="comment-section">
-        {/* <a href="/" className="plus-ic">
-          <i className="la la-plus"></i>
-        </a> */}
         <div className="post-comment">
           <div className="cm_img">
             {userData.image ? (
-              <img src={userData.image} alt="" />
+              <img src={baseURL+"/file/"+ userData.image} alt="" />
             ) : (
               <div className="cm_dummy">{userData.name.charAt(0)}</div>
             )}

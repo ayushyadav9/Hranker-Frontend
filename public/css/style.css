@@ -688,6 +688,7 @@ nav > ul > li > a:hover {
 }
 .user-info img {
 	width: 32px;
+	height: 32px;
     margin-right: 7px;
 	-webkit-border-radius: 100px;
 	-moz-border-radius: 100px;
@@ -753,6 +754,7 @@ main {
 	margin-top: -20px;
 }
 .full-width {
+	border-radius: 7px;
 	float: left;
 	width: 100%;
 	background-color: #fff;
@@ -762,17 +764,20 @@ main {
 	border-bottom: 1px solid #e5e5e5;
 }
 .username-dt {
+	border-top-right-radius: 7px;
+    border-top-left-radius: 7px;
 	float: left;
 	width: 100%;
 	background-color: #019FE2;
 	padding-top: 40px;
 }
 .user-data {
+	border-radius: 7px;
 	text-align: center;
 }
 .usr-pic {
-	width: 110px;
-	height: 110px;
+	width: 113px;
+	height: 113px;
 	margin: 0 auto;
 	margin-bottom: -48px;
 }
@@ -938,6 +943,7 @@ main {
 /* ============== tags-sec ============= */
 
 .tags-sec {
+	border-radius: 7px;
 	background-color: #fff;
 	padding: 25px 5px;
 }
@@ -1002,6 +1008,7 @@ main {
 /* ============ post-topbar =========== */
 
 .post-topbar {
+	border-radius: 7px;
 	float: left;
 	width: 100%;
 	padding: 23px 20px;
@@ -1072,6 +1079,9 @@ main {
 	float: left;
 	width: 100%;
 }
+.posts-section .noPost {
+	text-align: center;
+}
 .reviewtext{
 	margin: 0 -20px;
 }
@@ -1087,7 +1097,7 @@ main {
 	border-bottom: 1px solid #e4e4e4;
 	margin-bottom: 20px;
 	padding: 20px;
-	padding-bottom: 0px;
+	/* padding-bottom: 0px; */
 	box-shadow: 0px 2px #e4e4e4;
 }
 .post_topbar {
@@ -1591,6 +1601,8 @@ main {
 	border-radius: inherit;
 }
 .posty {
+	border-top-left-radius: 7px;
+	border-top-right-radius: 7px;
 	float: left;
 	width: 100%;
 	border-left: 1px solid #e4e4e4;
@@ -1651,6 +1663,9 @@ main {
 	width: 100%;
 	background-color: #fff;
 	padding: 20px;
+	padding-top: 0px;
+	border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
 	box-shadow: 0px 3px #e4e4e4;
 }
 .plus-ic {
@@ -1732,6 +1747,7 @@ main {
 	height: 35px;
 }
 .comment .userProf {
+	border-radius: 50%;
 	width: 35px;
 	height: 35px;
 }
@@ -1775,6 +1791,9 @@ main {
 	float: left;
 	width: 40px;
 	margin-right: 10px;
+}
+.cm_img img {
+	border-radius: 50%;
 }
 .cm_dummy{
 	text-align: center;
@@ -1837,6 +1856,7 @@ main {
 	width: 100%;
 }
 .widget {
+	border-radius: 7px;
 	float: left;
 	width: 100%;
 	background-color: #fff;
@@ -1851,6 +1871,7 @@ main {
 	box-shadow: 0px 2px #e4e4e4;
 }
 .widget-about {
+	border-radius: 7px;
 	text-align: center;
 }
 .widget-about img {
@@ -2746,16 +2767,17 @@ footer {
     width: 40px;
     height: 40px;
     text-align: center;
-    background: #e44d3a;
+    background: cornflowerblue;
     padding: 12px;
     color: #ffff;
     left: 0;
     top: -5px;
 }
 .add-dp i:hover {
+	cursor: pointer;
 	font-size: 14px;
 	border: 2px solid #fff;
-    background: #e44d3a;
+    background: black;
 	padding: 11px;
 }
 .add-dp {
@@ -2769,6 +2791,8 @@ footer {
 }
 
 .user-pro-img img {
+	width: 181px;
+    height: 181px;
 	-webkit-border-radius: 100px;
 	-moz-border-radius: 100px;
 	-ms-border-radius: 100px;
@@ -5882,25 +5906,25 @@ a:hover {
 }
 
 .add-pic-box [type="file"] + label {
-	background: #fff;
-	border: 2px solid #e44d3a;
-	border-radius: 3px;
-	color: #e44d3a;
-	cursor: pointer;
-	display: inline-block;
-	font-size:15px;
-	font-weight: 600;
-	outline: none;
-	padding: 12px 20px;
-	position: relative;
-	transition: all 0.3s;
-	vertical-align: middle;
-	margin: 0;
-	float: right;
-	text-transform: uppercase;
+	background: #d8d8d8;
+    border: 2px solid #000000;
+    border-radius: 3px;
+    color: #000000;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 600;
+    outline: none;
+    padding: 12px 20px;
+    position: relative;
+    transition: all 0.3s;
+    vertical-align: middle;
+    margin: 0;
+    float: right;
+    text-transform: uppercase;
 }
 .add-pic-box [type="file"] + label:hover {
-	background: #e44d3a;
+	background: black;
 	color: #fff;
 }
 .noreview li i{
