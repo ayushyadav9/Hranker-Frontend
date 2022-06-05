@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import { baseURL } from "../../api";
 import LeftSide from "../../components/Profile/LeftSide";
 import RightSide from "../../components/Profile/RightSide";
@@ -30,15 +31,18 @@ const Profile = ({ userData,setdataReset }) => {
       .then((result) => {
           setdataReset(pre=>!pre)
           setisLoader(false)
+          toast.success("Profile photo updated successfuly")
         console.log("Success:", result);
       })
       .catch((error) => {
+        toast.error("Some error occured, please try again")
         console.error("Error:", error);
       });
   };
   return (
     <>
-      {userData || isLoader ? (
+    {isLoader && <Loader />}
+      {userData && (
         <div className="wrapper">
           <section className="cover-sec">
             <img src="images/resources/cover-img.jpg" alt="" />
@@ -470,8 +474,6 @@ const Profile = ({ userData,setdataReset }) => {
             </div>
           </div>
         </div>
-      ) : (
-        <Loader />
       )}
     </>
   );
