@@ -282,7 +282,7 @@ const Post = ({ post, userData, resetPost, setresetPost }) => {
                                 className="userProf"
                                 src={
                                   com.user.image
-                                    ? com.user.image
+                                    ? baseURL+"/file/"+ com.user.image
                                     : "images/user40.png"
                                 }
                                 alt=""

@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { baseURL } from "../../api";
+import Loader from "../../utils/Loader";
 import Post from "./Post";
 // import TopProfiles from "./TopProfiles";
 
 const MainNewsFeed = ({ userData, setisActive, resetPost, setresetPost }) => {
   const [postsData, setpostsData] = useState(null);
+  const [isLoader, setisLoader] = useState(false);
   useEffect(() => {
     let token = localStorage.getItem("userJWT");
     if (token) {
+      setisLoader(true)
       fetch(`${baseURL}/post/getNewsFeed`, {
         method: "GET",
         headers: {
@@ -18,6 +21,7 @@ const MainNewsFeed = ({ userData, setisActive, resetPost, setresetPost }) => {
         .then((res) => res.json())
         .then(
           (result) => {
+            setisLoader(false)
             if (result.success) {
               setpostsData(result.data);
             }
@@ -36,10 +40,7 @@ const MainNewsFeed = ({ userData, setisActive, resetPost, setresetPost }) => {
         <div className="post-topbar">
           <div className="user-picy">
             {userData.image ? (
-              <img
-                src={baseURL+"/file/"+ userData.image}
-                alt=""
-              />
+              <img src={baseURL + "/file/" + userData.image} alt="" />
             ) : (
               <div className="user-dummy">{userData.name.charAt(0)}</div>
             )}
@@ -68,10 +69,22 @@ const MainNewsFeed = ({ userData, setisActive, resetPost, setresetPost }) => {
           </div>
         </div>
         <div className="posts-section">
-          {postsData &&
+          {isLoader ? (
+            <Loader isSmall={true} />
+          ) : (
+            postsData &&
             postsData.map((post, i) => {
-              return <Post key={i} post={post} userData={userData} setresetPost={setresetPost} resetPost={resetPost}/>;
-            })}
+              return (
+                <Post
+                  key={i}
+                  post={post}
+                  userData={userData}
+                  setresetPost={setresetPost}
+                  resetPost={resetPost}
+                />
+              );
+            })
+          )}
           {/* <TopProfiles/> */}
 
           {/* <div className="process-comm">
