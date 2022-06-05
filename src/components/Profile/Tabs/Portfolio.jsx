@@ -1,8 +1,8 @@
 import React from "react";
 
-const Portfolio = () => {
+const Portfolio = ({activeTab}) => {
   return (
-    <div className="product-feed-tab" id="portfolio-dd">
+    <div className={`product-feed-tab ${activeTab===4&&"current"}`} id="portfolio-dd">
       <div className="portfolio-gallery-sec">
         <h3>Portfolio</h3>
         <div className="portfolio-btn">

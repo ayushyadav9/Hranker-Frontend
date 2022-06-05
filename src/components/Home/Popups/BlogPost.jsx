@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { baseURL } from "../../../api";
 import { toast } from "react-toastify";
+import Loader from "../../../utils/Loader";
 let defaultTags = [
   {
     id: 0,
@@ -52,8 +53,9 @@ let defaultTags = [
     name: "IB",
     isActive: 0,
   },
-]
+];
 const BlogPost = ({ isActive, setisActive, userData, setresetPost }) => {
+  const [isLoader, setisLoader] = useState(false);
   const [tags, setTags] = useState(defaultTags);
   const [formData, setformdata] = useState({
     title: "",
@@ -62,15 +64,15 @@ const BlogPost = ({ isActive, setisActive, userData, setresetPost }) => {
     examTags: [],
   });
 
-  const resetData = ()=>{
+  const resetData = () => {
     setformdata({
       title: "",
       description: "",
       image: null,
       examTags: [],
-    })
-    setTags([...defaultTags])
-  }
+    });
+    setTags([...defaultTags]);
+  };
 
   const handelTagging = (id) => {
     let t = [...tags];
@@ -84,9 +86,9 @@ const BlogPost = ({ isActive, setisActive, userData, setresetPost }) => {
 
   const handelPost = (e) => {
     e.preventDefault();
-    let selectedtags = tags.filter((i)=>i.isActive).map((key)=> key.name);
-    formData.examTags = selectedtags
-
+    let selectedtags = tags.filter((i) => i.isActive).map((key) => key.name);
+    formData.examTags = selectedtags;
+    setisLoader(true);
     fetch(`${baseURL}/post/addBlog`, {
       method: "POST",
       headers: {
@@ -98,11 +100,12 @@ const BlogPost = ({ isActive, setisActive, userData, setresetPost }) => {
       .then((res) => res.json())
       .then(
         (result) => {
+          setisLoader(false);
           if (result.success) {
             setisActive(0);
-            setresetPost(pre=>!pre)
-            toast.success("Post added successfuly")
-            resetData()
+            setresetPost((pre) => !pre);
+            toast.success("Post added successfuly");
+            resetData();
           } else {
           }
           console.log(result);
@@ -175,7 +178,7 @@ const BlogPost = ({ isActive, setisActive, userData, setresetPost }) => {
                       type="submit"
                       value="post"
                     >
-                      Post
+                      {isLoader ? <Loader isSmall={true} /> : "Post"}
                     </button>
                   </li>
                   <li>

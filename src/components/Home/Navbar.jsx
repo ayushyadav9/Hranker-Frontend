@@ -1,17 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Notifications from "./Popups/Notifications";
 
 const Navbar = ({ userData, setresetPost }) => {
+  const navigate = useNavigate();
   const [isNotiOpen, setisNotiOpen] = useState(false);
   const [isUserOpen, setisUserOpen] = useState(false);
   const [notis, setnotis] = useState(null);
   useEffect(() => {
-    if(userData){
-      setnotis(userData.notifications)
+    if (userData) {
+      setnotis(userData.notifications);
     }
-  }, [userData])
-  
+  }, [userData]);
+
+  const handelLogout = () => {
+    setisNotiOpen(false);
+    setisUserOpen(false);
+    localStorage.removeItem("userJWT");
+    navigate("/sign-in");
+  };
+  const handelRedirect = (url)=>{
+    setisUserOpen(false)
+    navigate(url)
+  }
+
   return (
     <>
       {userData !== null ? (
@@ -35,12 +47,12 @@ const Navbar = ({ userData, setresetPost }) => {
                 <ul>
                   <li>
                     <Link to="/">
-                    <div title="">
-                      <span>
-                        <img src="images/icon1.png" alt="" />
-                      </span>
-                      Home
-                    </div>
+                      <div title="">
+                        <span>
+                          <img src="images/icon1.png" alt="" />
+                        </span>
+                        Home
+                      </div>
                     </Link>
                   </li>
                   <li>
@@ -217,14 +229,17 @@ const Navbar = ({ userData, setresetPost }) => {
                   <div className="username" href="/" title="">
                     {userData.name.split(" ")[0]}
                   </div>
-                  <i className="la la-sort-down" style={{ marginTop: "-2px" }}></i>
+                  <i
+                    className="la la-sort-down"
+                    style={{ marginTop: "-2px" }}
+                  ></i>
                 </div>
                 <div
                   className={`user-account-settingss ${isUserOpen && "active"}`}
                   id="users"
                 >
-                  <h3>Online Status</h3>
-                  <ul className="on-off-status">
+                  {/*<h3>Online Status</h3>
+                   <ul className="on-off-status">
                     <li>
                       <div className="fgt-sec">
                         <input type="radio" name="cc" id="c5" />
@@ -243,7 +258,7 @@ const Navbar = ({ userData, setresetPost }) => {
                         <small>Offline</small>
                       </div>
                     </li>
-                  </ul>
+                  </ul> */}
                   <h3>Custom Status</h3>
                   <div className="search_form">
                     <form>
@@ -254,30 +269,30 @@ const Navbar = ({ userData, setresetPost }) => {
                   <h3>Setting</h3>
                   <ul className="us-links">
                     <li>
-                      <a href="profile-account-setting.html" title="">
-                        Profile Setting
-                      </a>
+                      <div onClick={()=>handelRedirect("/profile")} title="">
+                        Show Profile
+                      </div>
                     </li>
                     <li>
-                      <a href="/" title="">
+                      <div onClick={()=>handelRedirect("/")} title="">
                         Privacy
-                      </a>
+                      </div>
                     </li>
                     <li>
-                      <a href="/" title="">
+                      <div onClick={()=>handelRedirect("/")} title="">
                         Faqs
-                      </a>
+                      </div>
                     </li>
                     <li>
-                      <a href="/" title="">
+                      <div onClick={()=>handelRedirect("/")} title="">
                         Terms & Conditions
-                      </a>
+                      </div>
                     </li>
                   </ul>
                   <h3 className="tc">
-                    <a href="sign-in.html" title="">
+                    <div onClick={handelLogout} title="">
                       Logout
-                    </a>
+                    </div>
                   </h3>
                 </div>
               </div>

@@ -5,8 +5,10 @@ import { GoogleLogin } from "react-google-login";
 import { baseURL } from "../../../api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../../utils/Loader";
 
-const SignUp = () => {
+const SignUp = ({setdataReset}) => {
+  const [isLoader, setisLoader] = useState(false)
   let navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
@@ -25,6 +27,7 @@ const SignUp = () => {
       formData.phone &&
       formData.rePassword === formData.password
     ) {
+      setisLoader(true)
       fetch(`${baseURL}/auth/register/local`, {
         method: "POST",
         headers: {
@@ -35,9 +38,11 @@ const SignUp = () => {
         .then((res) => res.json())
         .then(
           (result) => {
+            setisLoader(false)
             if (result.success) {
               localStorage.setItem("userJWT", result.data.token);
               toast.success(`Account created for ${result.data.user.name}`);
+              setdataReset(pre=>!pre)
               navigate("/");
             } else {
               toast.info(result.message);
@@ -58,6 +63,7 @@ const SignUp = () => {
 
   const successResponseGoogle = (res) => {
     console.log(res)
+    setisLoader(true)
     fetch(`${baseURL}/auth/googleSignup`, {
       method: "POST",
       headers: {
@@ -69,9 +75,11 @@ const SignUp = () => {
       .then((res) => res.json())
       .then(
         (result) => {
+          setisLoader(false)
           if (result.success) {
             localStorage.setItem("userJWT", result.data.token);
             toast.success(result.message);
+            setdataReset(pre=>!pre)
             navigate("/");
           } else {
             toast.info(result.message);
@@ -91,6 +99,7 @@ const SignUp = () => {
 
   return (
     <>
+    {isLoader && <Loader/>}
       <div className="sign-in">
         <div className="wrapper">
           <div className="sign-in-page">

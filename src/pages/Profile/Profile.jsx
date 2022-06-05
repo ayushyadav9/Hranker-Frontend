@@ -1,6 +1,4 @@
-import React, { useEffect,useState } from "react";
-import { baseURL } from "../../api";
-import Navbar from '../../components/Home/Navbar'
+import React, { useState } from "react";
 import LeftSide from "../../components/Profile/LeftSide";
 import RightSide from "../../components/Profile/RightSide";
 import Bids from "../../components/Profile/Tabs/Bids";
@@ -10,37 +8,13 @@ import Jobs from "../../components/Profile/Tabs/Jobs";
 import Payments from "../../components/Profile/Tabs/Payments";
 import Portfolio from "../../components/Profile/Tabs/Portfolio";
 import Review from "../../components/Profile/Tabs/Review";
+import Loader from "../../utils/Loader";
 
-const Profile = () => {
-    const [userData, setUserData] = useState(null)
-    useEffect(() => {
-        let token = localStorage.getItem("userJWT")
-        if(token){
-           fetch(`${baseURL}/auth/getUser`, {
-               method: "GET",
-               headers: {
-                 "Content-Type": "application/json",
-                 Authorization: `Bearer ${token}`,
-               },
-             })
-               .then((res) => res.json())
-               .then(
-                 (result) => {
-                   if (result.success) {
-                       setUserData(result.user)
-                   }
-                   console.log(result);
-                 },
-                 (error) => {
-                   console.log(error);
-                 }
-               );
-        }
-       }, [])
+const Profile = ({userData}) => {
+    const [activeTab, setactiveTab] = useState(0)
   return (
       <>
-    {userData && <div className="wrapper">
-        <Navbar userData={userData}/>
+    {userData ? <div className="wrapper">
         <section className="cover-sec">
             <img src="images/resources/cover-img.jpg" alt=""/>
             <div className="add-pic-box">
@@ -65,9 +39,9 @@ const Profile = () => {
                             <div className="col-lg-6">
                                 <div className="main-ws-sec">
                                     <div className="user-tab-sec rewivew">
-                                        <h3>John Doe</h3>
+                                        <h3>{userData.name}</h3>
                                         <div className="star-descp">
-                                            <span>Graphic Designer at Self Employed</span>
+                                            <span>{userData.about?userData.about:"No bio yet"}</span>
                                             <ul>
                                                 <li><i className="fa fa-star"></i></li>
                                                 <li><i className="fa fa-star"></i></li>
@@ -79,325 +53,58 @@ const Profile = () => {
                                         </div>
                                         <div className="tab-feed st2 settingjb">
                                             <ul>
-                                                <li data-tab="feed-dd" className="active">
-                                                    <a href="/" title="">
+                                                <li data-tab="feed-dd" className={activeTab===0 && "active"}>
+                                                    <div title="" onClick={()=>setactiveTab(0)}>
                                                         <img src="images/ic1.png" alt=""/>
                                                         <span>Feed</span>
-                                                    </a>
+                                                    </div>
                                                 </li>
-                                                <li data-tab="info-dd">
-                                                    <a href="/" title="">
+                                                <li data-tab="info-dd" className={activeTab===1 && "active"}>
+                                                    <div href="/" title="" onClick={()=>setactiveTab(1)}>
                                                         <img src="images/ic2.png" alt=""/>
                                                         <span>Info</span>
-                                                    </a>
+                                                    </div>
                                                 </li>
-                                                <li data-tab="saved-jobs">
-                                                    <a href="/" title="">
+                                                <li data-tab="saved-jobs"  className={activeTab===2 && "active"}>
+                                                    <div href="/" title="" onClick={()=>setactiveTab(2)}>
                                                         <img src="images/ic4.png" alt=""/>
                                                         <span>Jobs</span>
-                                                    </a>
+                                                    </div>
                                                 </li>
-                                                <li data-tab="my-bids">
-                                                    <a href="/" title="">
+                                                <li data-tab="my-bids" className={activeTab===3 && "active"}>
+                                                    <div href="/" title="" onClick={()=>setactiveTab(3)}>
                                                         <img src="images/ic5.png" alt=""/>
                                                         <span>Bids</span>
-                                                    </a>
+                                                    </div>
                                                 </li>
-                                                <li data-tab="portfolio-dd">
-                                                    <a href="/" title="">
+                                                <li data-tab="portfolio-dd" className={activeTab===4 && "active"}>
+                                                    <div href="/" title="" onClick={()=>setactiveTab(4)}>
                                                         <img src="images/ic3.png" alt=""/>
                                                         <span>Portfolio</span>
-                                                    </a>
+                                                    </div>
                                                 </li>
-                                                <li data-tab="rewivewdata">
-                                                    <a href="/" title="">
+                                                <li data-tab="rewivewdata" className={activeTab===5 && "active"}>
+                                                    <div href="/" title="" onClick={()=>setactiveTab(5)}>
                                                         <img src="images/review.png" alt=""/>
                                                         <span>Reviews</span>
-                                                    </a>
+                                                    </div>
                                                 </li>
-                                                <li data-tab="payment-dd">
-                                                    <a href="/" title="">
+                                                <li data-tab="payment-dd" className={activeTab===6 && "active"}>
+                                                    <div href="/" title="" onClick={()=>setactiveTab(6)}>
                                                         <img src="images/ic6.png" alt=""/>
                                                         <span>Payment</span>
-                                                    </a>
+                                                    </div>
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
-                                    <Jobs/>
-                                    <Feed/>
-                                    <Bids/>
-                                    <Info/>
-                                    <Review/>
-                                    <div className="product-feed-tab" id="my-bids">
-                                        <div className="posts-section">
-                                            <div className="post-bar">
-                                                <div className="post_topbar">
-                                                    <div className="usy-dt">
-                                                        <img src="images/resources/us-pic.png" alt=""/>
-                                                        <div className="usy-name">
-                                                            <h3>John Doe</h3>
-                                                            <span><img src="images/clock.png" alt=""/>3 min ago</span>
-                                                        </div>
-                                                    </div>
-                                                    <div className="ed-opts">
-                                                        <a href="/" title="" className="ed-opts-open"><i
-                                                                className="la la-ellipsis-v"></i></a>
-                                                        <ul className="ed-options">
-                                                            <li><a href="/" title="">Edit Post</a></li>
-                                                            <li><a href="/" title="">Unsaved</a></li>
-                                                            <li><a href="/" title="">Unbid</a></li>
-                                                            <li><a href="/" title="">Close</a></li>
-                                                            <li><a href="/" title="">Hide</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div className="epi-sec">
-                                                    <ul className="descp">
-                                                        <li><img src="images/icon8.png" alt=""/><span>Frontend
-                                                                Developer</span></li>
-                                                        <li><img src="images/icon9.png" alt=""/><span>India</span></li>
-                                                    </ul>
-                                                    <ul className="bk-links">
-                                                        <li><a href="/" title=""><i className="la la-bookmark"></i></a></li>
-                                                        <li><a href="/" title=""><i className="la la-envelope"></i></a></li>
-                                                        <li><a href="/" title="" className="bid_now">Bid Now</a></li>
-                                                    </ul>
-                                                </div>
-                                                <div className="job_descp">
-                                                    <h3>Simple Classified Site</h3>
-                                                    <ul className="job-dt">
-                                                        <li><span>$300 - $350</span></li>
-                                                    </ul>
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam
-                                                        luctus hendrerit metus, ut ullamcorper quam finibus at. Etiam id
-                                                        magna sit amet... <a href="/" title="">view more</a></p>
-                                                    <ul className="skill-tags">
-                                                        <li><a href="/" title="">HTML</a></li>
-                                                        <li><a href="/" title="">PHP</a></li>
-                                                        <li><a href="/" title="">CSS</a></li>
-                                                        <li><a href="/" title="">Javascript</a></li>
-                                                        <li><a href="/" title="">Wordpress</a></li>
-                                                        <li><a href="/" title="">Photoshop</a></li>
-                                                        <li><a href="/" title="">Illustrator</a></li>
-                                                        <li><a href="/" title="">Corel Draw</a></li>
-                                                    </ul>
-                                                </div>
-                                                <div className="job-status-bar">
-                                                    <ul className="like-com">
-                                                        <li>
-                                                            <a href="/"><i className="la la-heart"></i> Like</a>
-                                                            <img src="images/liked-img.png" alt=""/>
-                                                            <span>25</span>
-                                                        </li>
-                                                        <li><a href="/" title="" className="com"><img src="images/com.png"
-                                                                    alt=""/> Comment 15</a></li>
-                                                    </ul>
-                                                    <a href="/"><i className="la la-eye"></i>Views 50</a>
-                                                </div>
-                                            </div>
-                                            <div className="post-bar">
-                                                <div className="post_topbar">
-                                                    <div className="usy-dt">
-                                                        <img src="images/resources/us-pic.png" alt=""/>
-                                                        <div className="usy-name">
-                                                            <h3>John Doe</h3>
-                                                            <span><img src="images/clock.png" alt=""/>3 min ago</span>
-                                                        </div>
-                                                    </div>
-                                                    <div className="ed-opts">
-                                                        <a href="/" title="" className="ed-opts-open"><i
-                                                                className="la la-ellipsis-v"></i></a>
-                                                        <ul className="ed-options">
-                                                            <li><a href="/" title="">Edit Post</a></li>
-                                                            <li><a href="/" title="">Unsaved</a></li>
-                                                            <li><a href="/" title="">Unbid</a></li>
-                                                            <li><a href="/" title="">Close</a></li>
-                                                            <li><a href="/" title="">Hide</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div className="epi-sec">
-                                                    <ul className="descp">
-                                                        <li><img src="images/icon8.png" alt=""/><span>Frontend
-                                                                Developer</span></li>
-                                                        <li><img src="images/icon9.png" alt=""/><span>India</span></li>
-                                                    </ul>
-                                                    <ul className="bk-links">
-                                                        <li><a href="/" title=""><i className="la la-bookmark"></i></a></li>
-                                                        <li><a href="/" title=""><i className="la la-envelope"></i></a></li>
-                                                        <li><a href="/" title="" className="bid_now">Bid Now</a></li>
-                                                    </ul>
-                                                </div>
-                                                <div className="job_descp">
-                                                    <h3>Ios Shopping mobile app</h3>
-                                                    <ul className="job-dt">
-                                                        <li><span>$300 - $350</span></li>
-                                                    </ul>
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam
-                                                        luctus hendrerit metus, ut ullamcorper quam finibus at. Etiam id
-                                                        magna sit amet... <a href="/" title="">view more</a></p>
-                                                    <ul className="skill-tags">
-                                                        <li><a href="/" title="">HTML</a></li>
-                                                        <li><a href="/" title="">PHP</a></li>
-                                                        <li><a href="/" title="">CSS</a></li>
-                                                        <li><a href="/" title="">Javascript</a></li>
-                                                        <li><a href="/" title="">Wordpress</a></li>
-                                                        <li><a href="/" title="">Photoshop</a></li>
-                                                        <li><a href="/" title="">Illustrator</a></li>
-                                                        <li><a href="/" title="">Corel Draw</a></li>
-                                                    </ul>
-                                                </div>
-                                                <div className="job-status-bar">
-                                                    <ul className="like-com">
-                                                        <li>
-                                                            <a href="/"><i className="la la-heart"></i> Like</a>
-                                                            <img src="images/liked-img.png" alt=""/>
-                                                            <span>25</span>
-                                                        </li>
-                                                        <li><a href="/" title="" className="com"><img src="images/com.png"
-                                                                    alt=""/> Comment 15</a></li>
-                                                    </ul>
-                                                    <a href="/"><i className="la la-eye"></i>Views 50</a>
-                                                </div>
-                                            </div>
-                                            <div className="post-bar">
-                                                <div className="post_topbar">
-                                                    <div className="usy-dt">
-                                                        <img src="images/resources/us-pic.png" alt=""/>
-                                                        <div className="usy-name">
-                                                            <h3>John Doe</h3>
-                                                            <span><img src="images/clock.png" alt=""/>3 min ago</span>
-                                                        </div>
-                                                    </div>
-                                                    <div className="ed-opts">
-                                                        <a href="/" title="" className="ed-opts-open"><i
-                                                                className="la la-ellipsis-v"></i></a>
-                                                        <ul className="ed-options">
-                                                            <li><a href="/" title="">Edit Post</a></li>
-                                                            <li><a href="/" title="">Unsaved</a></li>
-                                                            <li><a href="/" title="">Unbid</a></li>
-                                                            <li><a href="/" title="">Close</a></li>
-                                                            <li><a href="/" title="">Hide</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div className="epi-sec">
-                                                    <ul className="descp">
-                                                        <li><img src="images/icon8.png" alt=""/><span>Frontend
-                                                                Developer</span></li>
-                                                        <li><img src="images/icon9.png" alt=""/><span>India</span></li>
-                                                    </ul>
-                                                    <ul className="bk-links">
-                                                        <li><a href="/" title=""><i className="la la-bookmark"></i></a></li>
-                                                        <li><a href="/" title=""><i className="la la-envelope"></i></a></li>
-                                                        <li><a href="/" title="" className="bid_now">Bid Now</a></li>
-                                                    </ul>
-                                                </div>
-                                                <div className="job_descp">
-                                                    <h3>Simple Classified Site</h3>
-                                                    <ul className="job-dt">
-                                                        <li><span>$300 - $350</span></li>
-                                                    </ul>
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam
-                                                        luctus hendrerit metus, ut ullamcorper quam finibus at. Etiam id
-                                                        magna sit amet... <a href="/" title="">view more</a></p>
-                                                    <ul className="skill-tags">
-                                                        <li><a href="/" title="">HTML</a></li>
-                                                        <li><a href="/" title="">PHP</a></li>
-                                                        <li><a href="/" title="">CSS</a></li>
-                                                        <li><a href="/" title="">Javascript</a></li>
-                                                        <li><a href="/" title="">Wordpress</a></li>
-                                                        <li><a href="/" title="">Photoshop</a></li>
-                                                        <li><a href="/" title="">Illustrator</a></li>
-                                                        <li><a href="/" title="">Corel Draw</a></li>
-                                                    </ul>
-                                                </div>
-                                                <div className="job-status-bar">
-                                                    <ul className="like-com">
-                                                        <li>
-                                                            <a href="/"><i className="la la-heart"></i> Like</a>
-                                                            <img src="images/liked-img.png" alt=""/>
-                                                            <span>25</span>
-                                                        </li>
-                                                        <li><a href="/" title="" className="com"><img src="images/com.png"
-                                                                    alt=""/> Comment 15</a></li>
-                                                    </ul>
-                                                    <a href="/"><i className="la la-eye"></i>Views 50</a>
-                                                </div>
-                                            </div>
-                                            <div className="post-bar">
-                                                <div className="post_topbar">
-                                                    <div className="usy-dt">
-                                                        <img src="images/resources/us-pic.png" alt=""/>
-                                                        <div className="usy-name">
-                                                            <h3>John Doe</h3>
-                                                            <span><img src="images/clock.png" alt=""/>3 min ago</span>
-                                                        </div>
-                                                    </div>
-                                                    <div className="ed-opts">
-                                                        <a href="/" title="" className="ed-opts-open"><i
-                                                                className="la la-ellipsis-v"></i></a>
-                                                        <ul className="ed-options">
-                                                            <li><a href="/" title="">Edit Post</a></li>
-                                                            <li><a href="/" title="">Unsaved</a></li>
-                                                            <li><a href="/" title="">Unbid</a></li>
-                                                            <li><a href="/" title="">Close</a></li>
-                                                            <li><a href="/" title="">Hide</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div className="epi-sec">
-                                                    <ul className="descp">
-                                                        <li><img src="images/icon8.png" alt=""/><span>Frontend
-                                                                Developer</span></li>
-                                                        <li><img src="images/icon9.png" alt=""/><span>India</span></li>
-                                                    </ul>
-                                                    <ul className="bk-links">
-                                                        <li><a href="/" title=""><i className="la la-bookmark"></i></a></li>
-                                                        <li><a href="/" title=""><i className="la la-envelope"></i></a></li>
-                                                        <li><a href="/" title="" className="bid_now">Bid Now</a></li>
-                                                    </ul>
-                                                </div>
-                                                <div className="job_descp">
-                                                    <h3>Ios Shopping mobile app</h3>
-                                                    <ul className="job-dt">
-                                                        <li><span>$300 - $350</span></li>
-                                                    </ul>
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam
-                                                        luctus hendrerit metus, ut ullamcorper quam finibus at. Etiam id
-                                                        magna sit amet... <a href="/" title="">view more</a></p>
-                                                    <ul className="skill-tags">
-                                                        <li><a href="/" title="">HTML</a></li>
-                                                        <li><a href="/" title="">PHP</a></li>
-                                                        <li><a href="/" title="">CSS</a></li>
-                                                        <li><a href="/" title="">Javascript</a></li>
-                                                        <li><a href="/" title="">Wordpress</a></li>
-                                                        <li><a href="/" title="">Photoshop</a></li>
-                                                        <li><a href="/" title="">Illustrator</a></li>
-                                                        <li><a href="/" title="">Corel Draw</a></li>
-                                                    </ul>
-                                                </div>
-                                                <div className="job-status-bar">
-                                                    <ul className="like-com">
-                                                        <li>
-                                                            <a href="/"><i className="la la-heart"></i> Like</a>
-                                                            <img src="images/liked-img.png" alt=""/>
-                                                            <span>25</span>
-                                                        </li>
-                                                        <li><a href="/" title="" className="com"><img src="images/com.png"
-                                                                    alt=""/> Comment 15</a></li>
-                                                    </ul>
-                                                    <a href="/"><i className="la la-eye"></i>Views 50</a>
-                                                </div>
-                                            </div>
-                                            <div className="process-comm">
-                                                <a href="/" title=""><img src="images/process-icon.png" alt=""/></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <Portfolio/>
-                                    <Payments/>
+                                    <Jobs activeTab={activeTab}/>
+                                    <Feed activeTab={activeTab}/>
+                                    <Bids activeTab={activeTab}/>
+                                    <Info activeTab={activeTab}/>
+                                    <Review activeTab={activeTab}/>
+                                    <Portfolio activeTab={activeTab}/>
+                                    <Payments activeTab={activeTab}/>
                                 </div>
                             </div>
                             <div className="col-lg-3">
@@ -553,7 +260,7 @@ const Profile = () => {
                 <a href="/" title="" className="close-box"><i className="la la-close"></i></a>
             </div>
         </div>
-    </div>}
+    </div>:<Loader/>}
     </>
   )
 }

@@ -1,8 +1,8 @@
 import React from "react";
 
-const Payments = () => {
+const Payments = ({activeTab}) => {
   return (
-    <div className="product-feed-tab" id="payment-dd">
+    <div className={`product-feed-tab ${activeTab===6&&"current"}`} id="payment-dd">
       <div className="billing-method">
         <ul>
           <li>

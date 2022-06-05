@@ -1,8 +1,8 @@
 import React from "react";
 
-const Info = () => {
+const Info = ({activeTab}) => {
   return (
-    <div className="product-feed-tab" id="info-dd">
+    <div className={`product-feed-tab ${activeTab===1&&"current"}`} id="info-dd">
       <div className="user-profile-ov">
         <h3>
           <a href="/" title="" className="overview-open">

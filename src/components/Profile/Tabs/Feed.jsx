@@ -1,8 +1,8 @@
 import React from "react";
 
-const Feed = () => {
+const Feed = ({activeTab}) => {
   return (
-    <div className="product-feed-tab current" id="feed-dd">
+    <div className={`product-feed-tab ${activeTab===0&&"current"}`} id="feed-dd">
       <div className="posts-section">
         <div className="post-bar">
           <div className="post_topbar">

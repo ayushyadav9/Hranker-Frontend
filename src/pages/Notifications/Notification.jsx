@@ -1,38 +1,18 @@
 import React, { useEffect, useState } from "react";
-// import { useParams } from "react-router-dom";
 import { baseURL } from "../../api";
 import { func } from "../../utils/timeCalculator";
+import Loader from "../../utils/Loader"
 
-const Notification = (props) => {
-  // let { id } = useParams();
+const Notification = ({userData}) => {
   const [activeTab, setactiveTab] = useState(0);
   const [notiData, setnotiData] = useState(null);
-  const [userData, setUserData] = useState(null);
   useEffect(() => {
-    let token = localStorage.getItem("userJWT");
-    if (token) {
-      fetch(`${baseURL}/auth/getUser`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((res) => res.json())
-        .then(
-          (result) => {
-            if (result.success) {
-              setUserData(result.user);
-              setnotiData(result.user.notifications);
-            }
-            console.log(result);
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
+    if(userData){
+      setnotiData(userData.notifications)
     }
-  }, []);
+  }, [userData])
+  
+  const [isLoader, setisLoader] = useState(false)
 
   const changeTab = (id) => {
     let data;
@@ -49,6 +29,7 @@ const Notification = (props) => {
 
   const markAsRead = (id) => {
     if (id && id.length === 24) {
+      setisLoader(true)
       fetch(`${baseURL}/noti/markNotificationAsRead`, {
         method: "POST",
         headers: {
@@ -60,6 +41,7 @@ const Notification = (props) => {
         .then((res) => res.json())
         .then(
           (result) => {
+            setisLoader(false)
             if (result.success) {
               let d = notiData.map((n, i) => {
                 if (n._id === id) {
@@ -81,7 +63,8 @@ const Notification = (props) => {
 
   return (
     <>
-      {userData && (
+    {isLoader&&<Loader/>}
+      {userData ? (
         <>
           <section className="forum-sec">
             <div className="container">
@@ -363,7 +346,7 @@ const Notification = (props) => {
             </div>
           </div>
         </>
-      )}
+      ):<Loader/>}
     </>
   );
 };

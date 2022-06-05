@@ -1,8 +1,8 @@
 import React from "react";
 
-const Jobs = () => {
+const Jobs = ({activeTab}) => {
   return (
-    <div className="product-feed-tab" id="saved-jobs">
+    <div className={`product-feed-tab ${activeTab===2&&"current"}`} id="saved-jobs">
       <ul className="nav nav-tabs" id="myTab" role="tablist">
         <li className="nav-item">
           <a
