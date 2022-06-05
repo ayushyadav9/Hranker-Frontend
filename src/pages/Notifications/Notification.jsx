@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import { baseURL } from "../../api";
 import { func } from "../../utils/timeCalculator";
 
 const Notification = (props) => {
-  let { id } = useParams();
+  // let { id } = useParams();
   const [activeTab, setactiveTab] = useState(0);
   const [notiData, setnotiData] = useState(null);
   const [userData, setUserData] = useState(null);

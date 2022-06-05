@@ -31,7 +31,7 @@ const QuesPost = ({isActive,setisActive,userData}) => {
           <form>
             <div className="row">
               <div className="col-lg-12">
-                <input type="text" name="title" placeholder="Title" />
+                <input type="text" name="title" value={question.title} onChange={(e)=>setQuestion({...question, title:e.target.value})} placeholder="Title" />
               </div>
               <div className="col-lg-12">
                 <textarea
