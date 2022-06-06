@@ -142,7 +142,7 @@
 	.logo img {float: none;}
 	.search-bar { display: none;}
 	.user-account {float: left;}
-	.cm_img {width: 100%;text-align: center;margin-bottom: 10px; display: flex; justify-content: center;}
+	.cm_img {display: none;}
 	.cm_img img {float: none;width: 40px;}
 	.comment_box {width: 100%;}
 	.comment_box input {width: 100%;margin-bottom: 10px;}
@@ -169,6 +169,7 @@
 	.post-popup {width: 100%;overflow: scroll;}
 	.price-br {float: left;width: 100% !important;}
 	.price-sec span {padding: 0;margin-bottom: 20px;}
+	.post-st ul li div {font-size: 12px;padding: 0 9px;}
 	.post-project {width: 97%;float: unset;margin: auto;}
 	.post-project > a {top: 21px;right: 20px;width: 97%;}
 	.forum-bar h2 {float: left;width: 100%;text-align: center;}

@@ -1809,6 +1809,9 @@ main {
 .comment_box {
 	float: none;
 }
+.comment_box form{
+	display: flex;
+}
 .comment_box input {
 	width: 372px;
 	height: 40px;
@@ -1981,6 +1984,7 @@ main {
 }
 .post-popup.active {
 	opacity: 1;
+	overflow-x: hidden;
 	visibility: visible;
 	z-index: 999;
 	-webkit-transform: scale(1) translateX(-50%) translateY(-50%);
@@ -5572,6 +5576,7 @@ a:hover {
 	padding: 20px;
 	background-color: #fff;
 }
+
 .post-comment-box h3 {
 	float: left;
 	width: 100%;

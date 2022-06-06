@@ -81,7 +81,7 @@ const Post = ({ post, userData, resetPost, setresetPost }) => {
           <div className="post_topbar">
             <div className="usy-dt">
               {post.user.image ? (
-                <img className="postUserDP" src={post.user.image} alt="" />
+                <img className="postUserDP" src={baseURL + "/file/" + post.user.image} alt="" />
               ) : (
                 <div className="user-dummy">{post.user.name.charAt(0)}</div>
               )}
