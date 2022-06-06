@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../../utils/Loader";
 
-const SignUp = ({setdataReset}) => {
+const SignUp = ({setdataReset, seturl}) => {
   const [isLoader, setisLoader] = useState(false)
   let navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -43,6 +43,7 @@ const SignUp = ({setdataReset}) => {
               localStorage.setItem("userJWT", result.data.token);
               toast.success(`Account created for ${result.data.user.name}`);
               setdataReset(pre=>!pre)
+              seturl(true)
               navigate("/");
             } else {
               toast.info(result.message);
@@ -80,6 +81,7 @@ const SignUp = ({setdataReset}) => {
             localStorage.setItem("userJWT", result.data.token);
             toast.success(result.message);
             setdataReset(pre=>!pre)
+            seturl(true)
             navigate("/");
           } else {
             toast.info(result.message);

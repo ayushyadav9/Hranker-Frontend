@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../../utils/Loader";
 
-const SignIn = ({setdataReset}) => {
+const SignIn = ({setdataReset,seturl}) => {
   const [isLoader, setisLoader] = useState(false)
   let navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -34,6 +34,7 @@ const SignIn = ({setdataReset}) => {
               localStorage.setItem("userJWT", result.data.token);
               toast.success(`Logged in as ${result.data.user.name}`);
               setdataReset(pre=>!pre)
+              seturl(true)
               navigate("/");
             } else {
               toast.info(result.message);
@@ -66,6 +67,7 @@ const SignIn = ({setdataReset}) => {
             localStorage.setItem("userJWT", result.data.token);
             toast.success(result.message);
             setdataReset(pre=>!pre)
+            seturl(true)
             navigate("/");
           } else {
             toast.info(result.message);

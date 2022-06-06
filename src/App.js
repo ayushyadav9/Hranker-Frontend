@@ -19,6 +19,7 @@ function App() {
   const [url, seturl] = useState(true)
 
   useEffect(() => {
+    console.log("user")
     if(location.pathname==="/sign-in" || location.pathname==="/sign-up"){
       seturl(false)
     }
@@ -59,8 +60,8 @@ function App() {
             <Route path="/" element={<Homepage userData={userData} />} />
           </Route>
 
-          <Route path="/sign-in" element={<SignIn setdataReset={setdataReset} />} />
-          <Route path="/sign-up" element={<SignUp setdataReset={setdataReset}/>} />
+          <Route path="/sign-in" element={<SignIn setdataReset={setdataReset} seturl={seturl}/>} />
+          <Route path="/sign-up" element={<SignUp setdataReset={setdataReset} seturl={seturl}/>} />
 
           <Route element={<ProtectedRoute />}>
             <Route path="/profile" element={<Profile userData={userData} setdataReset={setdataReset}/>} />
