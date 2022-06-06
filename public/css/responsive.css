@@ -1,7 +1,7 @@
 
 
 @media (max-width: 1200px) {
-	header nav {position: fixed;top: 0;left: 0;width: 200px;height: 100%;background-color: #e44d3a;padding: 25px 20px;opacity: 0;visibility: hidden;z-index: 0}
+	header nav {position: fixed;top: 0;left: 0;width: 200px;height: 100%;background-color: #212121;padding: 25px 20px;opacity: 0;visibility: hidden;z-index: 0}
 	header nav.active {opacity: 1;visibility: visible;z-index: 9999;}
 	header nav ul li {float: left;width: 100%;text-align: left;padding: 0 0 0 0;margin-bottom: 20px;}
 	.menu-btn {display: block;}
@@ -141,12 +141,12 @@
 	.search-bar {width: 100%;}
 	.user-account {float: left;}
 	.cm_img {width: 100%;text-align: center;margin-bottom: 10px; display: flex; justify-content: center;}
-	.cm_img img {float: none;}
+	.cm_img img {float: none;width: 40px;}
 	.comment_box {width: 100%;}
 	.comment_box input {width: 100%;margin-bottom: 10px;}
 	.comment_box form button {float: none;}
 	.post-comment {text-align: center;}
-	.comment_box form button {padding: 0 15px;}
+	/* .comment_box form button {padding: 0 15px;} */
 	.job-details {width: 80%;}
 	.cover-sec {height: 200px;}
 	.cover-sec img {height: 100%;object-fit: cover;}
@@ -232,9 +232,9 @@
 	.innertitle {margin-top: 100px;}
 	.sec-search{display: none;}
 	.searchtitle h2 {padding-bottom: 30px;}
-	.ed-opts > div {
+	/* .ed-opts > div {
     position: absolute;
-}
+} */
     .cadidatesbtn {
     position: relative;
 }

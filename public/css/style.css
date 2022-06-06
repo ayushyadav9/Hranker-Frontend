@@ -2607,6 +2607,7 @@ select {
 	margin-top: 27px;
 }
 .login-resources h4 {
+	text-align: center;
 	color: #000000;
 	font-size: 14px;
 	font-weight: 600;
@@ -2615,6 +2616,7 @@ select {
 }
 .login-resources ul {
 	display: flex;
+	justify-content: center;
 	float: left;
 	width: 100%;
 }
@@ -2625,12 +2627,14 @@ select {
 	margin-bottom: 20px;
 }
 .login-resources ul li button {
+	border: none;
+	border-radius: 4px;
 	color: #ffffff;
     font-size: 15px;
     font-weight: 500;
     float: left;
     width: 100%;
-    padding: 10px 0;
+    padding: 10px 17px;
 }
 .login-resources ul li button i {
 	margin-right: 15px;
@@ -4502,7 +4506,7 @@ a:hover {
 	float: right;
 	display: none;
 }
-.menu-btn a {
+.menu-btn div {
 	font-size: 24px;
 	color: #fff;
 	display: inline-block;

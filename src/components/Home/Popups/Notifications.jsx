@@ -50,7 +50,7 @@ const Notifications = ({ notis, setnotis, isNotiOpen, setisNotiOpen }) => {
           .map((n, i) => {
             return (
               // <Link key={i} to={`notification`}>
-                <div onClick={handelRedirect} className={`notfication-details ${n.isRead && "isRead"}`}>
+                <div key={i} onClick={handelRedirect} className={`notfication-details ${n.isRead && "isRead"}`}>
                   <div className="noty-user-img">
                     <img
                       src={n.image ? n.image : "images/user40.png"}

@@ -4,12 +4,12 @@ const Loader = ({ isSmall }) => {
   return (
     <>
       {isSmall ? (
-        <div class="smallLoader-container">
-          <div class="smallLoader"></div>
+        <div className="smallLoader-container">
+          <div className="smallLoader"></div>
         </div>
       ) : (
-        <div class="loader-container">
-          <div class="loader"></div>
+        <div className="loader-container">
+          <div className="loader"></div>
         </div>
       )}
     </>

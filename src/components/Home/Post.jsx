@@ -219,7 +219,7 @@ const Post = ({ post, userData, resetPost, setresetPost }) => {
                 <div
                   className={
                     post.likers.filter((i) => i._id === userData._id).length >
-                      0 && "isLiked"
+                      0 ? "isLiked":""
                   }
                   onClick={handelToggleLike}
                 >

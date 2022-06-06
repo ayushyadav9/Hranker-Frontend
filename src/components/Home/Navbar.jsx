@@ -5,6 +5,8 @@ import Notifications from "./Popups/Notifications";
 
 const Navbar = ({ userData, setresetPost }) => {
   const navigate = useNavigate();
+  
+  const [SideNav, setSideNav] = useState(false)
   const [isNotiOpen, setisNotiOpen] = useState(false);
   const [isUserOpen, setisUserOpen] = useState(false);
   const [notis, setnotis] = useState(null);
@@ -44,7 +46,7 @@ const Navbar = ({ userData, setresetPost }) => {
                   </button>
                 </form>
               </div>
-              <nav>
+              <nav className={SideNav?"active":""}>
                 <ul>
                   <li>
                     <Link to="/">
@@ -209,9 +211,9 @@ const Navbar = ({ userData, setresetPost }) => {
                 </ul>
               </nav>
               <div className="menu-btn">
-                <a href="/" title="">
+                <div title="" onClick={()=>setSideNav(pre=>!pre)}>
                   <i className="fa fa-bars"></i>
-                </a>
+                </div>
               </div>
               <div className="user-account">
                 <div
