@@ -34,9 +34,9 @@ const Navbar = ({ userData, setresetPost }) => {
           <div className="container">
             <div className="header-data">
               <div className="logo">
-                <a href="index.html" title="">
+                <Link to="/" title="">
                   <img src="images/logonav.png" alt="" />
-                </a>
+                </Link>
               </div>
               <div className="search-bar">
                 <form>

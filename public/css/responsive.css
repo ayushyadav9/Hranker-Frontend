@@ -106,6 +106,7 @@
 	.comment_box input {width: 84%;}
 	.comment_box {width: 88%;}
 	.no-pd {padding: 0;}
+	.search-bar { display: none;}
 	.sign-in-page {padding: 60px 0;}
 	.overview-box {width: 100%;}
 	.close-box {top: -23px;right: 2px;}
@@ -136,9 +137,10 @@
 @media (max-width: 576px) {
 	.signin-pop {margin-bottom: 40px;}
 	.login-resources ul li {margin-bottom: 7px;}
-	.logo {width: 15%;text-align: center;}
+	.logo {text-align: center;width: 35px;display: flex;}
+	.header-data{padding: 12px;}
 	.logo img {float: none;}
-	.search-bar {width: 100%;}
+	.search-bar { display: none;}
 	.user-account {float: left;}
 	.cm_img {width: 100%;text-align: center;margin-bottom: 10px; display: flex; justify-content: center;}
 	.cm_img img {float: none;width: 40px;}
