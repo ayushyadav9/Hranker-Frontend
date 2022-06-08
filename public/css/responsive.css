@@ -199,6 +199,8 @@
 	.bennertext {left: 5%;right: 5%;}
 	.search-container input[type=text] {height: 45px;font-size: 16px;}
 	.search-container button {width: 12%; height: 45px;}
+	.user-pro-img{margin-top:-79px}
+	.user-pro-img img{width: 150px;height: 150px;}
 	.devepbtn a{
 		display: inline-block;
 		margin-bottom: 5px;

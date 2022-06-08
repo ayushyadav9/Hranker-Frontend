@@ -1,8 +1,5 @@
-// import "./App.css";
 import { useEffect, useState } from "react";
-import { baseURL } from "./api";
 import Navbar from "./components/Home/Navbar";
-// import Routers from "./routes/Routers";
 import { Route, Routes } from "react-router-dom";
 import Homepage from "./pages/Home/Homepage";
 import Notification from "./pages/Notifications/Notification";
@@ -11,15 +8,17 @@ import SignIn from "./pages/Registration/SignIn/SignIn";
 import SignUp from "./pages/Registration/SignUp/SignUp";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import {  useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { getUser } from "./redux/ApiCalls";
+import { setToken } from "./redux/reducers/userReducers";
 
 function App() {
   const location = useLocation();
-  const [userData, setUserData] = useState(null);
-  const [dataReset, setdataReset] = useState(0)
+  const dispatch = useDispatch()
+  const [isPopupOpen, setisPopupOpen] = useState(false)
   const [url, seturl] = useState(true)
 
   useEffect(() => {
-    console.log("user")
     if(location.pathname==="/sign-in" || location.pathname==="/sign-up"){
       seturl(false)
     }
@@ -28,47 +27,31 @@ function App() {
 
   useEffect(() => {
     let token = localStorage.getItem("userJWT");
-    if (token) {
-      fetch(`${baseURL}/auth/getUser`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((res) => res.json())
-        .then(
-          (result) => {
-            if (result.success) {
-              setUserData(result.user);
-            }
-            console.log(result);
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
+    if(token){
+      dispatch(setToken(token))
+      dispatch(getUser(token))
     }
-  }, [dataReset]);
+    // eslint-disable-next-line
+  }, [])
 
   return (
-    <div className="wrapper">
-        {url && <Navbar userData={userData}  />}
+    <div className={isPopupOpen?"wrapper overlay":"wrapper"}>
+        {url && <Navbar/>}
         <Routes>
 
           <Route element={<ProtectedRoute />}>
-            <Route path="/" element={<Homepage userData={userData} />} />
+            <Route path="/" element={<Homepage setisPopupOpen={setisPopupOpen}/>} />
           </Route>
 
-          <Route path="/sign-in" element={<SignIn setdataReset={setdataReset} seturl={seturl}/>} />
-          <Route path="/sign-up" element={<SignUp setdataReset={setdataReset} seturl={seturl}/>} />
+          <Route path="/sign-in" element={<SignIn seturl={seturl}/>} />
+          <Route path="/sign-up" element={<SignUp seturl={seturl}/>} />
 
           <Route element={<ProtectedRoute />}>
-            <Route path="/profile" element={<Profile userData={userData} setdataReset={setdataReset}/>} />
+            <Route path="/profile" element={<Profile setisPopupOpen={setisPopupOpen}/>} />
           </Route>
 
           <Route element={<ProtectedRoute />}>
-            <Route path="/notification" element={<Notification userData={userData} />} />
+            <Route path="/notification" element={<Notification/>} />
           </Route>
 
         </Routes>

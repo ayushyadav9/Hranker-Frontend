@@ -1,93 +1,49 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Footer from "../../../components/Registration/Footer";
 import Left from "../../../components/Registration/Left";
 import { GoogleLogin } from "react-google-login";
-import { baseURL } from "../../../api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../../utils/Loader";
+import { useDispatch,useSelector } from "react-redux";
+import { googleLoginUser, loginUser } from "../../../redux/ApiCalls";
 
-const SignIn = ({setdataReset,seturl}) => {
-  const [isLoader, setisLoader] = useState(false)
+const SignIn = ({seturl}) => {
+  const dispatch = useDispatch()
+  let  { isLoggedIn,userToken,loadings,error } = useSelector((state)=>state.user);
   let navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [formData, setFormData] = useState({email: "",password: ""});
 
+  useEffect(() => {
+    if(isLoggedIn===true && userToken){
+      seturl(true)
+      localStorage.setItem("userJWT", userToken);
+      if(error) toast.info(error);
+      navigate("/")
+    }
+    // eslint-disable-next-line
+  }, [isLoggedIn])
+  
   const handelLogin = (e) => {
     e.preventDefault();
     if (formData.email && formData.password) {
-      setisLoader(true)
-      fetch(`${baseURL}/auth/login/local`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      })
-        .then((res) => res.json())
-        .then(
-          (result) => {
-            setisLoader(false)
-            if (result.success) {
-              localStorage.setItem("userJWT", result.data.token);
-              toast.success(`Logged in as ${result.data.user.name}`);
-              setdataReset(pre=>!pre)
-              seturl(true)
-              navigate("/");
-            } else {
-              toast.info(result.message);
-            }
-            console.log(result);
-          },
-          (error) => {
-            toast.info(error.message);
-            console.log(error);
-          }
-        );
+      dispatch(loginUser(formData));
     } else {
       toast.info("Please enter valid details");
     }
   };
+
   const successResponseGoogle = (res) => {
-    setisLoader(true)
-    fetch(`${baseURL}/auth/googleSignup`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ tokenId: res.tokenId }),
-    })
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setisLoader(false)
-          if (result.success) {
-            localStorage.setItem("userJWT", result.data.token);
-            toast.success(result.message);
-            setdataReset(pre=>!pre)
-            seturl(true)
-            navigate("/");
-          } else {
-            toast.info(result.message);
-          }
-          console.log(result);
-        },
-        (error) => {
-          toast.info(error.message);
-          console.log(error);
-        }
-      );
+    dispatch(googleLoginUser(res.tokenId))
   };
+
   const failedResponseGoogle = (res) => {
-    toast.error("Some error occured");
     console.log(res);
   };
 
   return (
     <>
-    {isLoader && <Loader isSmall={false}/>}
+    {loadings.loginLoading && <Loader isSmall={false}/>}
       <div className="sign-in">
         <div className="wrapper">
           <div className="sign-in-page">

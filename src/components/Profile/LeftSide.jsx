@@ -6,7 +6,7 @@ const LeftSide = ({userData}) => {
     <div className="main-left-sidebar">
       <div className="user_profile">
         <div className="user-pro-img">
-          <img src={userData.image?baseURL+"/file/"+ userData.image:"images/resources/user-pro-img.png"} alt="" />
+          <img src={userData.image?baseURL+"/file/"+ userData.image:"https://assets.leetcode.com/users/avatars/avatar_1654408436.png"} alt="" />
           <div className="add-dp" id="OpenImgUpload">
             <input type="file" id="file" />
             <label for="file">
@@ -18,15 +18,15 @@ const LeftSide = ({userData}) => {
           <ul className="flw-status">
             <li>
               <span>Following</span>
-              <b>34</b>
+              <b>{userData.following ? userData.following.length : 0}</b>
             </li>
             <li>
               <span>Followers</span>
-              <b>155</b>
+              <b>{userData.followers ? userData.followers.length : 0}</b>
             </li>
           </ul>
         </div>
-        <ul className="social_links">
+        {/* <ul className="social_links">
           <li>
             <a href="/" title="">
               <i className="la la-globe"></i> www.example.com
@@ -74,7 +74,7 @@ const LeftSide = ({userData}) => {
               Http://www.youtube.com/john...
             </a>
           </li>
-        </ul>
+        </ul> */}
       </div>
       <div className="suggestions full-width">
         <div className="sd-title">

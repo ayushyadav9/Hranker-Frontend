@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { baseURL } from "../../api";
 import { func } from "../../utils/timeCalculator";
 import Loader from "../../utils/Loader"
+import { useSelector } from "react-redux";
 
-const Notification = ({userData}) => {
+const Notification = () => {
+  let  { userData } = useSelector((state)=>state.user);
   const [activeTab, setactiveTab] = useState(0);
   const [notiData, setnotiData] = useState(null);
   useEffect(() => {

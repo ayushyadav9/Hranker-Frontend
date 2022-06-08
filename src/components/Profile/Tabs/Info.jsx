@@ -1,165 +1,120 @@
 import React from "react";
 
-const Info = ({activeTab}) => {
+const Info = ({ info, activeTab, handelActivePopup }) => {
   return (
-    <div className={`product-feed-tab ${activeTab===1&&"current"}`} id="info-dd">
+    <div
+      className={`product-feed-tab ${activeTab === 1 && "current"}`}
+      id="info-dd"
+    >
       <div className="user-profile-ov">
         <h3>
-          <a href="/" title="" className="overview-open">
+          <div href="/" title="" className="overview-open">
             Overview
-          </a>{" "}
-          <a href="/" title="" className="overview-open">
+          </div>{" "}
+          <div
+            onClick={() => handelActivePopup(1)}
+            title=""
+            className="overview-open"
+          >
             <i className="fa fa-pencil"></i>
-          </a>
+          </div>
         </h3>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-          tempor aliquam felis, nec condimentum ipsum commodo id. Vivamus sit
-          amet augue nec urna efficitur tincidunt. Vivamus consectetur aliquam
-          lectus commodo viverra. Nunc eu augue nec arcu efficitur faucibus.
-          Aliquam accumsan ac magna convallis bibendum. Quisque laoreet augue
-          eget augue fermentum scelerisque. Vivamus dignissim mollis est dictum
-          blandit. Nam porta auctor neque sed congue. Nullam rutrum eget ex at
-          maximus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          Donec eget vestibulum lorem.
-        </p>
+        <p>{info.overview}</p>
       </div>
       <div className="user-profile-ov st2">
         <h3>
-          <a href="/" title="" className="exp-bx-open">
+          <div href="/" title="" className="exp-bx-open">
             Experience{" "}
-          </a>
-          <a href="/" title="" className="exp-bx-open">
-            <i className="fa fa-pencil"></i>
-          </a>{" "}
-          <a href="/" title="" className="exp-bx-open">
+          </div>
+          <div
+            onClick={() => handelActivePopup(2)}
+            title=""
+            className="exp-bx-open"
+          >
             <i className="fa fa-plus-square"></i>
-          </a>
+          </div>
         </h3>
-        <h4>
-          Web designer{" "}
-          <a href="/" title="">
-            <i className="fa fa-pencil"></i>
-          </a>
-        </h4>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-          tempor aliquam felis, nec condimentum ipsum commodo id. Vivamus sit
-          amet augue nec urna efficitur tincidunt. Vivamus consectetur aliquam
-          lectus commodo viverra.{" "}
-        </p>
-        <h4>
-          UI / UX Designer{" "}
-          <a href="/" title="">
-            <i className="fa fa-pencil"></i>
-          </a>
-        </h4>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-          tempor aliquam felis, nec condimentum ipsum commodo id.
-        </p>
-        <h4>
-          PHP developer{" "}
-          <a href="/" title="">
-            <i className="fa fa-pencil"></i>
-          </a>
-        </h4>
-        <p className="no-margin">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-          tempor aliquam felis, nec condimentum ipsum commodo id. Vivamus sit
-          amet augue nec urna efficitur tincidunt. Vivamus consectetur aliquam
-          lectus commodo viverra.{" "}
-        </p>
+        {info.experience.map((inf, i) => {
+          return (
+            <>
+              <h4>
+                {inf.title}
+                <div href="/" title="">
+                  {/* <i className="fa fa-pencil"></i> */}
+                </div>
+              </h4>
+              <p>{inf.description}</p>
+            </>
+          );
+        })}
       </div>
       <div className="user-profile-ov">
         <h3>
-          <a href="/" title="" className="ed-box-open">
+          <div href="/" title="" className="ed-box-open">
             Education
-          </a>{" "}
-          <a href="/" title="" className="ed-box-open">
-            <i className="fa fa-pencil"></i>
-          </a>{" "}
-          <a href="/" title="">
+          </div>{" "}
+          <div
+            onClick={() => handelActivePopup(3)}
+            title=""
+            className="ed-box-open"
+          >
             <i className="fa fa-plus-square"></i>
-          </a>
+          </div>{" "}
         </h3>
-        <h4>Master of Computer Science</h4>
-        <span>2015 - 2018</span>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-          tempor aliquam felis, nec condimentum ipsum commodo id. Vivamus sit
-          amet augue nec urna efficitur tincidunt. Vivamus consectetur aliquam
-          lectus commodo viverra.{" "}
-        </p>
+        {info.education.map((inf, i) => {
+          return (
+            <>
+              <h4>{inf.degree}</h4>
+              <span>
+                {inf.from} - {inf.to}
+              </span>
+              <p>{inf.description}</p>
+            </>
+          );
+        })}
       </div>
       <div className="user-profile-ov">
         <h3>
-          <a href="/" title="" className="lct-box-open">
+          <div href="/" title="" className="lct-box-open">
             Location
-          </a>{" "}
-          <a href="/" title="" className="lct-box-open">
+          </div>{" "}
+          <div
+            onClick={() => handelActivePopup(4)}
+            title=""
+            className="lct-box-open"
+          >
             <i className="fa fa-pencil"></i>
-          </a>{" "}
-          <a href="/" title="">
+          </div>{" "}
+          <div href="/" title="">
             <i className="fa fa-plus-square"></i>
-          </a>
+          </div>
         </h3>
-        <h4>India</h4>
-        <p>151/4 BT Chownk, Delhi </p>
+        <h4>{info.location.country}</h4>
+        <p>{info.location.city}</p>
       </div>
       <div className="user-profile-ov">
         <h3>
-          <a href="/" title="" className="skills-open">
+          <div href="/" title="" className="skills-open">
             Skills
-          </a>{" "}
-          <a href="/" title="" className="skills-open">
+          </div>{" "}
+          <div
+            onClick={() => handelActivePopup(5)}
+            title=""
+            className="skills-open"
+          >
             <i className="fa fa-pencil"></i>
-          </a>{" "}
-          <a href="/">
-            <i className="fa fa-plus-square"></i>
-          </a>
+          </div>
         </h3>
         <ul>
-          <li>
-            <a href="/" title="">
-              HTML
-            </a>
-          </li>
-          <li>
-            <a href="/" title="">
-              PHP
-            </a>
-          </li>
-          <li>
-            <a href="/" title="">
-              CSS
-            </a>
-          </li>
-          <li>
-            <a href="/" title="">
-              Javascript
-            </a>
-          </li>
-          <li>
-            <a href="/" title="">
-              Wordpress
-            </a>
-          </li>
-          <li>
-            <a href="/" title="">
-              Photoshop
-            </a>
-          </li>
-          <li>
-            <a href="/" title="">
-              Illustrator
-            </a>
-          </li>
-          <li>
-            <a href="/" title="">
-              Corel Draw
-            </a>
-          </li>
+          {info.skills.map((skill, i) => {
+            return (
+              <li>
+                <div href="/" title="">
+                  {skill}
+                </div>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </div>

@@ -1,22 +1,28 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Footer from "../../../components/Registration/Footer";
 import Left from "../../../components/Registration/Left";
 import { GoogleLogin } from "react-google-login";
-import { baseURL } from "../../../api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../../utils/Loader";
+import { useDispatch,useSelector } from "react-redux";
+import { registerUser,googleLoginUser } from "../../../redux/ApiCalls";
 
-const SignUp = ({setdataReset, seturl}) => {
-  const [isLoader, setisLoader] = useState(false)
+const SignUp = ({ seturl}) => {
+  const dispatch = useDispatch()
+  let  { isLoggedIn,userToken,loadings,error } = useSelector((state)=>state.user);
   let navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    password: "",
-    rePassword: "",
-  });
+  const [formData, setFormData] = useState({name: "", phone: "", username:"", email: "",password: "", rePassword: ""});
+
+  useEffect(() => {
+    if(isLoggedIn===true && userToken){
+      seturl(true)
+      localStorage.setItem("userJWT", userToken);
+      if(error) toast.info(error);
+      navigate("/")
+    }
+    // eslint-disable-next-line
+  }, [isLoggedIn])
 
   const handelRegister = (e) => {
     e.preventDefault();
@@ -25,36 +31,10 @@ const SignUp = ({setdataReset, seturl}) => {
       formData.name &&
       formData.password &&
       formData.phone &&
+      formData.username &&
       formData.rePassword === formData.password
     ) {
-      setisLoader(true)
-      fetch(`${baseURL}/auth/register/local`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      })
-        .then((res) => res.json())
-        .then(
-          (result) => {
-            setisLoader(false)
-            if (result.success) {
-              localStorage.setItem("userJWT", result.data.token);
-              toast.success(`Account created for ${result.data.user.name}`);
-              setdataReset(pre=>!pre)
-              seturl(true)
-              navigate("/");
-            } else {
-              toast.info(result.message);
-            }
-            console.log(result);
-          },
-          (error) => {
-            toast.info(error.message);
-            console.log(error);
-          }
-        );
+      dispatch(registerUser(formData))
     } else if (formData.rePassword !== formData.password) {
       toast.error("Password didn't match");
     } else {
@@ -63,36 +43,7 @@ const SignUp = ({setdataReset, seturl}) => {
   };
 
   const successResponseGoogle = (res) => {
-    console.log(res)
-    setisLoader(true)
-    fetch(`${baseURL}/auth/googleSignup`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        // Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify({ tokenId: res.tokenId }),
-    })
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setisLoader(false)
-          if (result.success) {
-            localStorage.setItem("userJWT", result.data.token);
-            toast.success(result.message);
-            setdataReset(pre=>!pre)
-            seturl(true)
-            navigate("/");
-          } else {
-            toast.info(result.message);
-          }
-          console.log(result);
-        },
-        (error) => {
-          toast.info(error.message);
-          console.log(error);
-        }
-      );
+    dispatch(googleLoginUser(res.tokenId))
   };
   
   const failedResponseGoogle = (res) => {
@@ -101,7 +52,7 @@ const SignUp = ({setdataReset, seturl}) => {
 
   return (
     <>
-    {isLoader && <Loader/>}
+    {loadings.loginLoading && <Loader/>}
       <div className="sign-in">
         <div className="wrapper">
           <div className="sign-in-page">
@@ -160,6 +111,24 @@ const SignUp = ({setdataReset, seturl}) => {
                                 <div className="sn-field">
                                   <input
                                     type="text"
+                                    name="username"
+                                    placeholder="Username"
+                                    value={formData.username}
+                                    onChange={(e) =>
+                                      setFormData({
+                                        ...formData,
+                                        username: e.target.value,
+                                      })
+                                    }
+                                  />
+                                  <i className="la la-globe"></i>
+                                </div>
+                              </div>
+
+                              <div className="col-lg-12 no-pdd">
+                                <div className="sn-field">
+                                  <input
+                                    type="text"
                                     name="mobile number"
                                     placeholder="Mobile Number"
                                     value={formData.phone}
@@ -170,7 +139,7 @@ const SignUp = ({setdataReset, seturl}) => {
                                       })
                                     }
                                   />
-                                  <i className="la la-globe"></i>
+                                  <i className="la la-user"></i>
                                 </div>
                               </div>
 

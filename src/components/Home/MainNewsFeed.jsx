@@ -1,38 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { baseURL } from "../../api";
 import Loader from "../../utils/Loader";
 import Post from "./Post";
-// import TopProfiles from "./TopProfiles";
+import { useDispatch,useSelector } from "react-redux";
+import { getNewsFeed } from "../../redux/ApiCalls";
 
-const MainNewsFeed = ({ userData, setisActive, resetPost, setresetPost }) => {
-  const [postsData, setpostsData] = useState(null);
-  const [isLoader, setisLoader] = useState(false);
+const MainNewsFeed = ({ handelPopupOpen, resetPost, setresetPost }) => {
+  const dispatch = useDispatch();
+  
+  let  { postsData,loadings } = useSelector((state)=>state.post);
+  let  { userData } = useSelector((state)=>state.user);
+
   useEffect(() => {
     let token = localStorage.getItem("userJWT");
     if (token) {
-      setisLoader(true)
-      fetch(`${baseURL}/post/getNewsFeed`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((res) => res.json())
-        .then(
-          (result) => {
-            setisLoader(false)
-            if (result.success) {
-              setpostsData(result.data);
-            }
-            console.log(result);
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
+      dispatch(getNewsFeed(token))
     }
-  }, [resetPost]);
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div className="col-lg-6 col-md-8 no-pd">
@@ -50,7 +35,7 @@ const MainNewsFeed = ({ userData, setisActive, resetPost, setresetPost }) => {
               <li>
                 <div
                   className="post_project"
-                  onClick={() => setisActive(1)}
+                  onClick={() => handelPopupOpen(1)}
                   title=""
                 >
                   Post a Blog
@@ -59,7 +44,7 @@ const MainNewsFeed = ({ userData, setisActive, resetPost, setresetPost }) => {
               <li>
                 <div
                   className="post-jb active"
-                  onClick={() => setisActive(2)}
+                  onClick={() => handelPopupOpen(2)}
                   title=""
                 >
                   Post a Question
@@ -69,7 +54,7 @@ const MainNewsFeed = ({ userData, setisActive, resetPost, setresetPost }) => {
           </div>
         </div>
         <div className="posts-section">
-          {isLoader ? (
+          {loadings.newsFeedLoading ? (
             <Loader isSmall={true} />
           ) : (
             postsData &&

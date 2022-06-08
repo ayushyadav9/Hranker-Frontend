@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const QuesPost = ({isActive,setisActive,userData}) => {
+const QuesPost = ({handelPopupClose, isActive, setisActive,}) => {
 
   const [question, setQuestion] = useState({
     title:"",
@@ -21,7 +21,7 @@ const QuesPost = ({isActive,setisActive,userData}) => {
 
   const handelClose = (e)=>{
     e.preventDefault()
-    setisActive(0)
+    handelPopupClose()
   }
   return (
     <div className={`post-popup pst-pj ${isActive===2?"active":""}`}>
@@ -63,7 +63,8 @@ const QuesPost = ({isActive,setisActive,userData}) => {
             </div>
           </form>
         </div>
-        <span onClick={handelClose} title="">
+
+        <span className="close" onClick={handelClose} title="">
           <i className="la la-times-circle-o"></i>
         </span>
       </div>

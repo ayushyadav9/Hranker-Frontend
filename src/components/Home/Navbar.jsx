@@ -2,14 +2,18 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { baseURL } from "../../api";
 import Notifications from "./Popups/Notifications";
+import { useDispatch,useSelector } from "react-redux";
+import { logOut } from "../../redux/reducers/userReducers";
 
-const Navbar = ({ userData, setresetPost }) => {
+const Navbar = ({ setresetPost }) => {
   const navigate = useNavigate();
-  
+  let  { userData } = useSelector((state)=>state.user);
+  const dispatch = useDispatch()
   const [SideNav, setSideNav] = useState(false)
   const [isNotiOpen, setisNotiOpen] = useState(false);
   const [isUserOpen, setisUserOpen] = useState(false);
   const [notis, setnotis] = useState(null);
+
   useEffect(() => {
     if (userData) {
       setnotis(userData.notifications);
@@ -20,6 +24,7 @@ const Navbar = ({ userData, setresetPost }) => {
     setisNotiOpen(false);
     setisUserOpen(false);
     localStorage.removeItem("userJWT");
+    dispatch(logOut())
     navigate("/sign-in");
   };
   const handelRedirect = (url)=>{

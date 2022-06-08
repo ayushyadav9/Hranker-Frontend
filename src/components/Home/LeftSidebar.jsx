@@ -1,38 +1,54 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { baseURL } from "../../api";
+import { useSelector } from "react-redux";
 
-const LeftSidebar = ({userData}) => {
+const LeftSidebar = () => {
+  let  { userData } = useSelector((state)=>state.user);
   return (
     <div className="col-lg-3 col-md-4 pd-left-none no-pd">
       <div className="main-left-sidebar no-margin">
-        {/* User details */}
         <div className="user-data full-width">
           <div className="user-profile">
             <div className="username-dt">
               <div className="usr-pic">
-                <img src={userData.image?baseURL+"/file/"+ userData.image:"images/user.png"} alt="" />
+                <img
+                  src={
+                    userData.image
+                      ? baseURL + "/file/" + userData.image
+                      : "https://assets.leetcode.com/users/avatars/avatar_1654408436.png"
+                  }
+                  alt=""
+                />
                 {/* <img src="images/resources/user-pic.png" alt="" /> */}
               </div>
             </div>
             <div className="user-specs">
               <h3>{userData.name}</h3>
               {/* <h3>sads</h3> */}
-              <span>{userData.about? userData.about: "No bio yet"}</span>
+              <span>{userData.about ? userData.about : "No bio yet"}</span>
+              <h2>1237 Points</h2>
             </div>
           </div>
           <ul className="user-fw-status">
+              <div>
+                <li>
+                  <h4>Following</h4>
+                  <span>
+                    {userData.following ? userData.following.length : 0}
+                  </span>
+                </li>
+                <li>
+                  <h4>Followers</h4>
+                  <span>
+                    {userData.followers ? userData.followers.length : 0}
+                  </span>
+                </li>
+              </div>
             <li>
-              <h4>Following</h4>
-              <span>34</span>
-            </li>
-            <li>
-              <h4>Followers</h4>
-              <span>155</span>
-            </li>
-            <li>
-              <a href="my-profile-feed.html" title="">
+              <Link to="/profile" title="">
                 View Profile
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

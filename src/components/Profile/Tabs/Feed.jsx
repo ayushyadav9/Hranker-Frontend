@@ -8,20 +8,13 @@ const Feed = ({ userData, activeTab }) => {
       id="feed-dd"
     >
       <div className="posts-section">
-        {userData.posts.length > 0 ? (
-          userData.posts.map((post, i) => {
+        {userData.posts.blogPosts.length > 0 ? (
+          userData.posts.blogPosts.map((post, i) => {
             return <UserPost key={i} post={post} userData={userData} />;
           })
         ) : (
           <div className="noPost">No post yet</div>
         )}
-        {/* <div className="process-comm">
-          <div className="spinner">
-            <div className="bounce1"></div>
-            <div className="bounce2"></div>
-            <div className="bounce3"></div>
-          </div>
-        </div> */}
       </div>
     </div>
   );

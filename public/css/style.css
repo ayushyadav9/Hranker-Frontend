@@ -367,22 +367,23 @@ header {
 	position: relative;
 }
 .search-bar form input {
-	width: 100%;
-	background-color: #fff;
-	height: 38px;
-	color: #b2b2b2;
-	font-size: 12px;
-	border: 0;
-	padding: 0 10px;
+	width: 72%;
+    background-color: #fff;
+    height: 32px;
+    color: #b2b2b2;
+    font-size: 12px;
+    margin-top: 3px;
+    border: 0;
+    padding: 0 10px;
 }
 .search-bar form button {
 	position: absolute;
-	top: 0;
-	right: 0;
-	background-color: #efefef;
-	width: 38px;
-	height: 100%;
-	border: 0;
+	top: 3px;
+    right: 33px;
+    background-color: #efefef;
+    width: 37px;
+    height: 31px;
+    border: 0;
 }
 .search-bar form button i {
 	color: #e44d3a;
@@ -783,13 +784,15 @@ main {
 }
 .usr-pic > img {
 	float: none;
-	border: 5px solid #fff;
+	padding: 10px;
+    border-top: 5px solid #fff;
+    border-bottom: 5px solid black;
 	-webkit-border-radius: 100px;
 	-moz-border-radius: 100px;
 	-ms-border-radius: 100px;
 	-o-border-radius: 100px;
 	border-radius: 100px;
-	width: 100%;
+	width: 98%;
     height: 100%;
 }
 .user-profile {
@@ -799,7 +802,10 @@ main {
 .user-specs {
 	float: left;
 	width: 100%;
-	padding: 63px 0 27px 0;
+	padding: 63px 0 12px 0;
+}
+.user-specs h2{
+	margin: 10px 0px;
 }
 .user-specs h3 {
 	color: #000000;
@@ -826,6 +832,9 @@ main {
 	border-top: 1px solid #e5e5e5;
 	padding: 15px 0;
 }
+.user-fw-status div {
+	display: flex;
+}
 .user-fw-status li:last-child {
 	border-bottom: 0;
 }
@@ -833,14 +842,14 @@ main {
 .user-fw-status li:nth-child(2) {
 	border-bottom: 0;
 }
-.user-fw-status li h4 {
+.user-fw-status div h4 {
 	color: #686868;
-	font-size: 20px;
-	margin-bottom: 10px;
+	font-size: 18px;
+	margin-bottom: 8px;
 }
 .user-fw-status span {
 	color: #000000;
-	font-size: 20px;
+	font-size: 18px;
 }
 .user-fw-status li a {
 	color: #e44d3a;
@@ -1031,7 +1040,8 @@ main {
 }
 .user-picy img {
 	border-radius: 50%;
-	width: 100%;
+	height: 50px;
+    width: 50px;
 	object-fit: cover;
 }
 .user-picy div {
@@ -1989,7 +1999,7 @@ main {
 	z-index: 999;
 	-webkit-transform: scale(1) translateX(-50%) translateY(-50%);
 }
-.post-project > span {
+.post-project .close {
 	position: absolute;
 	top: -20px;
 	right: -20px;
@@ -1997,7 +2007,7 @@ main {
 	font-size: 22px;
 	cursor: pointer;
 }
-.post-project > span:hover {
+.post-project > .close:hover {
 	color: #fff;
 }
 .post-project {
@@ -2718,15 +2728,18 @@ footer {
 	margin-top: 30px;
 }
 .fl-rgt {
-	float: right;
-	margin-top: 34px;
-	padding-right: 30px;
+	width: 114px;
+    float: right;
+    margin-top: 28px;
+    padding-right: 2px;
 }
 
 /* ================== USER PROFILE =================== */
 
 .cover-sec img {
-	width: 100%;
+	max-height: 337px;
+    width: 100%;
+    object-fit: cover;
 }
 .cover-sec > a {
 	display: inline-block;
@@ -2778,6 +2791,7 @@ footer {
     border-radius: 50px;
     width: 40px;
     height: 40px;
+	border: 2px solid black;
     text-align: center;
     background: cornflowerblue;
     padding: 12px;
@@ -2805,13 +2819,15 @@ footer {
 .user-pro-img img {
 	width: 181px;
     height: 181px;
+	padding: 15px;
 	-webkit-border-radius: 100px;
 	-moz-border-radius: 100px;
 	-ms-border-radius: 100px;
 	-o-border-radius: 100px;
 	border-radius: 100px;
 	float: none;
-	border: 5px solid #fff;
+	border-top: 5px solid #fff;
+    border-bottom: 5px solid black;
 }
 .user_pro_status {
 	float: left;
@@ -2942,7 +2958,13 @@ footer {
     font-size: 24px;
     font-weight: 600;
     text-transform: capitalize;
-    margin-bottom: 15px;
+    margin-bottom: 6px;
+}
+.user-tab-sec h2 {
+	color: #000000;
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 6px;
 }
 .star-descp {
 	float: left;
@@ -3120,15 +3142,18 @@ footer {
 	font-weight: 600;
 	margin-bottom: 20px;
 }
-.user-profile-ov h3 a {
+.user-profile-ov h3 div {
+	display: contents;
 	color: #000000;
 }
 .user-profile-ov i {
+	cursor: pointer;
 	color: #000000;
 	font-size: 13px;
 	padding-left: 5px;
 }
 .user-profile-ov h4 {
+	display: flex;
 	font-size: 16px;
 	color: #000;
 	font-weight: 600;
@@ -3162,7 +3187,7 @@ footer {
 	margin-bottom: 10px;
 	padding: 0 2px;
 }
-.user-profile-ov ul li a {
+.user-profile-ov ul li div {
 	display: inline-block;
 	color: #b2b2b2;
 	font-size: 14px;
@@ -3310,6 +3335,7 @@ footer {
 	font-weight: 600;
 }
 .close-box:hover {
+	cursor: pointer;
 	color: #fff;
 }
 .overview-box.open {
@@ -5918,7 +5944,6 @@ a:hover {
 }
 
 .add-pic-box [type="file"] + label {
-	background: #d8d8d8;
     border: 2px solid #000000;
     border-radius: 3px;
     color: #000000;

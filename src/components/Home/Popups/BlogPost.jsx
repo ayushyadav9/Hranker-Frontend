@@ -54,7 +54,7 @@ let defaultTags = [
     isActive: 0,
   },
 ];
-const BlogPost = ({ isActive, setisActive, userData, setresetPost }) => {
+const BlogPost = ({ handelPopupClose, isActive, setisActive, setresetPost }) => {
   const [isLoader, setisLoader] = useState(false);
   const [tags, setTags] = useState(defaultTags);
   const [formData, setformdata] = useState({
@@ -81,7 +81,7 @@ const BlogPost = ({ isActive, setisActive, userData, setresetPost }) => {
   };
   const handelClose = (e) => {
     e.preventDefault();
-    setisActive(0);
+    handelPopupClose()
   };
 
   const handelPost = (e) => {
@@ -191,7 +191,7 @@ const BlogPost = ({ isActive, setisActive, userData, setresetPost }) => {
             </div>
           </form>
         </div>
-        <span onClick={handelClose} title="">
+        <span className="close" onClick={handelClose} title="">
           <i className="la la-times-circle-o"></i>
         </span>
       </div>
