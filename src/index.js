@@ -8,12 +8,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from 'react-redux';
 import userReducer from './redux/reducers/userReducers';
 import postReducers from './redux/reducers/postReducers';
+import navReducer from './redux/reducers/navReducer';
 
 
 const store = configureStore({
   reducer:{
     user:userReducer,
-    post:postReducers
+    post:postReducers,
+    nav:navReducer
   }
 })
 

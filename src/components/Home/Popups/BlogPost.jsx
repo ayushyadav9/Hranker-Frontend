@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { baseURL } from "../../../api";
 import { toast } from "react-toastify";
 import Loader from "../../../utils/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleBlogPopup } from "../../../redux/reducers/postReducers";
+import { getNewsFeed } from "../../../redux/ApiCalls";
+import { updatePoints } from "../../../redux/reducers/userReducers";
+
 let defaultTags = [
   {
     id: 0,
@@ -54,8 +59,11 @@ let defaultTags = [
     isActive: 0,
   },
 ];
-const BlogPost = ({ handelPopupClose, isActive, setisActive, setresetPost }) => {
+const BlogPost = () => {
   const [isLoader, setisLoader] = useState(false);
+  const {popups} = useSelector((state)=>state.post)
+  const {userToken} = useSelector((state)=>state.user)
+  const dispatch = useDispatch()
   const [tags, setTags] = useState(defaultTags);
   const [formData, setformdata] = useState({
     title: "",
@@ -79,9 +87,10 @@ const BlogPost = ({ handelPopupClose, isActive, setisActive, setresetPost }) => 
     t[id].isActive = !t[id].isActive;
     setTags(t);
   };
+
   const handelClose = (e) => {
     e.preventDefault();
-    handelPopupClose()
+    dispatch(toggleBlogPopup())
   };
 
   const handelPost = (e) => {
@@ -102,8 +111,9 @@ const BlogPost = ({ handelPopupClose, isActive, setisActive, setresetPost }) => 
         (result) => {
           setisLoader(false);
           if (result.success) {
-            setisActive(0);
-            setresetPost((pre) => !pre);
+            dispatch(updatePoints(-25))
+            dispatch(toggleBlogPopup())
+            dispatch(getNewsFeed(userToken))
             toast.success("Post added successfuly");
             resetData();
           } else {
@@ -117,7 +127,7 @@ const BlogPost = ({ handelPopupClose, isActive, setisActive, setresetPost }) => 
   };
 
   return (
-    <div className={`post-popup pst-pj ${isActive === 1 ? "active" : ""}`}>
+    <div className={`post-popup pst-pj ${popups.blogPopup===true ? "active" : ""}`}>
       <div className="post-project">
         <h3>Post a Blog</h3>
         <div className="post-project-fields">
@@ -182,7 +192,7 @@ const BlogPost = ({ handelPopupClose, isActive, setisActive, setresetPost }) => 
                     </button>
                   </li>
                   <li>
-                    <button onClick={handelClose} title="">
+                    <button onClick={(e)=>handelClose(e)} title="">
                       Cancel
                     </button>
                   </li>

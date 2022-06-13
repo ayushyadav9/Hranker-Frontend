@@ -4,8 +4,9 @@ import Loader from "../../utils/Loader";
 import Post from "./Post";
 import { useDispatch,useSelector } from "react-redux";
 import { getNewsFeed } from "../../redux/ApiCalls";
+import { toggleBlogPopup, toggleQuesPopup } from "../../redux/reducers/postReducers";
 
-const MainNewsFeed = ({ handelPopupOpen, resetPost, setresetPost }) => {
+const MainNewsFeed = () => {
   const dispatch = useDispatch();
   
   let  { postsData,loadings } = useSelector((state)=>state.post);
@@ -35,7 +36,7 @@ const MainNewsFeed = ({ handelPopupOpen, resetPost, setresetPost }) => {
               <li>
                 <div
                   className="post_project"
-                  onClick={() => handelPopupOpen(1)}
+                  onClick={() => dispatch(toggleBlogPopup())}
                   title=""
                 >
                   Post a Blog
@@ -44,7 +45,7 @@ const MainNewsFeed = ({ handelPopupOpen, resetPost, setresetPost }) => {
               <li>
                 <div
                   className="post-jb active"
-                  onClick={() => handelPopupOpen(2)}
+                  onClick={() => dispatch(toggleQuesPopup())}
                   title=""
                 >
                   Post a Question
@@ -60,13 +61,7 @@ const MainNewsFeed = ({ handelPopupOpen, resetPost, setresetPost }) => {
             postsData &&
             postsData.map((post, i) => {
               return (
-                <Post
-                  key={i}
-                  post={post}
-                  userData={userData}
-                  setresetPost={setresetPost}
-                  resetPost={resetPost}
-                />
+                <Post key={i} post={post} userData={userData} />
               );
             })
           )}

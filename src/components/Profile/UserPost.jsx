@@ -1,6 +1,8 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
-const UserPost = ({ post, userData }) => {
+const UserPost = ({ post }) => {
+  let { userData } = useSelector((state) => state.user);
   return (
     <div className="post-bar">
       <div className="post_topbar">

@@ -96,6 +96,7 @@
 	.usy-dt .reply {
 		width: 450px;
 	}
+	.points-list{width: auto;}
 	
 }
 
@@ -131,6 +132,7 @@
 	.usy-dt .reply {width: 270px;}
 	.privacy i {margin-left: 10px;}
 	.bids-detail ul { display: block;}
+	.points-list{width: auto;}
 }
 
 
@@ -197,10 +199,14 @@
 	.conversation-box {left: -20px;width: 280px;}
 	.innertitle {margin-top: 120px;}
 	.bennertext {left: 5%;right: 5%;}
+	.points-list{width: auto;}
+	.points-list span {width: auto;padding: 1px 12px;}
 	.search-container input[type=text] {height: 45px;font-size: 16px;}
 	.search-container button {width: 12%; height: 45px;}
 	.user-pro-img{margin-top:-79px}
+	.user_profile{border-radius: 12px;}
 	.user-pro-img img{width: 150px;height: 150px;}
+	.add-pic-box [type="file"] + label {display: none;}
 	.devepbtn a{
 		display: inline-block;
 		margin-bottom: 5px;

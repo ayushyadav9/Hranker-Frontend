@@ -6,17 +6,19 @@ import RightSide from "../../components/Profile/RightSide";
 import Bids from "../../components/Profile/Tabs/Bids";
 import Feed from "../../components/Profile/Tabs/Feed";
 import Info from "../../components/Profile/Tabs/Info";
-import Jobs from "../../components/Profile/Tabs/Jobs";
 import Payments from "../../components/Profile/Tabs/Payments";
 import Portfolio from "../../components/Profile/Tabs/Portfolio";
 import Review from "../../components/Profile/Tabs/Review";
 import Loader from "../../utils/Loader";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
+import Saved from "../../components/Profile/Tabs/Jobs";
+import {getUser} from "../../redux/ApiCalls"
 
 const Profile = ({ setisPopupOpen }) => {
-  let  { userData,loadings } = useSelector((state)=>state.user);
+  let { userData, loadings, userToken } = useSelector((state) => state.user);
+  const dispatch = useDispatch()
   const [activeTab, setactiveTab] = useState(0);
   const [activePopup, setactivePopup] = useState(0);
   const [isLoader, setisLoader] = useState(false);
@@ -32,7 +34,7 @@ const Profile = ({ setisPopupOpen }) => {
   };
 
   const handelUploadDP = (e) => {
-    console.log(isLoader)
+    console.log(isLoader);
     const formData = new FormData();
     formData.append("file", e.target.files[0]);
     setisLoader(true);
@@ -56,11 +58,11 @@ const Profile = ({ setisPopupOpen }) => {
       });
   };
 
-  const handelEditInfo = (e,section)=>{
-    e.preventDefault()
-    let formdata = new FormData(e.target)
+  const handelEditInfo = (e, section) => {
+    e.preventDefault();
+    let formdata = new FormData(e.target);
     let val = Object.fromEntries(formdata.entries());
-    console.log(val)
+    console.log(val);
 
     fetch(`${baseURL}/auth/editDetails/${section}`, {
       method: "POST",
@@ -73,24 +75,27 @@ const Profile = ({ setisPopupOpen }) => {
       .then((response) => response.json())
       .then((result) => {
         setisLoader(false);
-        if(result.success){
-          // setdataReset(pre=>!pre)
+        if (result.success) {
+          dispatch(getUser(userToken))
           toast.success(result.message);
-          handelClosePopup(e)
+          handelClosePopup(e);
         }
       })
       .catch((error) => {
         toast.error("Some error occured, please try again");
         console.error("Error:", error);
       });
-  }
+  };
   return (
     <>
       {loadings.getUserLoading && <Loader />}
       {userData && (
         <div>
           <section className="cover-sec">
-            <img src="https://atiinc.org/wp-content/themes/ati-2016/images/homepage-banner-bg.jpg" alt="" />
+            <img
+              src="https://atiinc.org/wp-content/themes/ati-2016/images/homepage-banner-bg.jpg"
+              alt=""
+            />
             <div className="add-pic-box">
               <div className="container">
                 <div className="row no-gutters">
@@ -123,24 +128,6 @@ const Profile = ({ setisPopupOpen }) => {
                             <span>
                               {userData.about ? userData.about : "No bio yet"}
                             </span>
-                            {/* <ul>
-                              <li>
-                                <i className="fa fa-star"></i>
-                              </li>
-                              <li>
-                                <i className="fa fa-star"></i>
-                              </li>
-                              <li>
-                                <i className="fa fa-star"></i>
-                              </li>
-                              <li>
-                                <i className="fa fa-star"></i>
-                              </li>
-                              <li>
-                                <i className="fa fa-star-half-o"></i>
-                              </li>
-                            </ul> */}
-                            
                           </div>
                           <div className="tab-feed st2 settingjb">
                             <ul>
@@ -157,10 +144,7 @@ const Profile = ({ setisPopupOpen }) => {
                                 data-tab="info-dd"
                                 className={activeTab === 1 && "active"}
                               >
-                                <div
-                                  title=""
-                                  onClick={() => setactiveTab(1)}
-                                >
+                                <div title="" onClick={() => setactiveTab(1)}>
                                   <img src="images/ic2.png" alt="" />
                                   <span>Info</span>
                                 </div>
@@ -169,22 +153,16 @@ const Profile = ({ setisPopupOpen }) => {
                                 data-tab="saved-jobs"
                                 className={activeTab === 2 && "active"}
                               >
-                                <div
-                                  title=""
-                                  onClick={() => setactiveTab(2)}
-                                >
+                                <div title="" onClick={() => setactiveTab(2)}>
                                   <img src="images/ic4.png" alt="" />
-                                  <span>Jobs</span>
+                                  <span>Saved</span>
                                 </div>
                               </li>
                               <li
                                 data-tab="my-bids"
                                 className={activeTab === 3 && "active"}
                               >
-                                <div
-                                  title=""
-                                  onClick={() => setactiveTab(3)}
-                                >
+                                <div title="" onClick={() => setactiveTab(3)}>
                                   <img src="images/ic5.png" alt="" />
                                   <span>Bids</span>
                                 </div>
@@ -193,10 +171,7 @@ const Profile = ({ setisPopupOpen }) => {
                                 data-tab="portfolio-dd"
                                 className={activeTab === 4 && "active"}
                               >
-                                <div
-                                  title=""
-                                  onClick={() => setactiveTab(4)}
-                                >
+                                <div title="" onClick={() => setactiveTab(4)}>
                                   <img src="images/ic3.png" alt="" />
                                   <span>Portfolio</span>
                                 </div>
@@ -205,10 +180,7 @@ const Profile = ({ setisPopupOpen }) => {
                                 data-tab="rewivewdata"
                                 className={activeTab === 5 && "active"}
                               >
-                                <div
-                                  title=""
-                                  onClick={() => setactiveTab(5)}
-                                >
+                                <div title="" onClick={() => setactiveTab(5)}>
                                   <img src="images/review.png" alt="" />
                                   <span>Reviews</span>
                                 </div>
@@ -217,10 +189,7 @@ const Profile = ({ setisPopupOpen }) => {
                                 data-tab="payment-dd"
                                 className={activeTab === 6 && "active"}
                               >
-                                <div
-                                  title=""
-                                  onClick={() => setactiveTab(6)}
-                                >
+                                <div title="" onClick={() => setactiveTab(6)}>
                                   <img src="images/ic6.png" alt="" />
                                   <span>Payment</span>
                                 </div>
@@ -228,7 +197,7 @@ const Profile = ({ setisPopupOpen }) => {
                             </ul>
                           </div>
                         </div>
-                        <Jobs activeTab={activeTab} />
+                        <Saved activeTab={activeTab} />
                         <Feed userData={userData} activeTab={activeTab} />
                         <Bids activeTab={activeTab} />
                         <Info
@@ -249,6 +218,7 @@ const Profile = ({ setisPopupOpen }) => {
               </div>
             </div>
           </main>
+          
           <footer>
             <div className="footy-sec mn no-margin">
               <div className="container">
@@ -315,10 +285,18 @@ const Profile = ({ setisPopupOpen }) => {
             <div className="overview-edit">
               <h3>Overview</h3>
               <span>5000 character left</span>
-              <form onSubmit={(e)=>handelEditInfo(e,"overview")} >
+              <form onSubmit={(e) => handelEditInfo(e, "overview")}>
                 <textarea type="text" name="overview"></textarea>
-                <button type="submit" className="save">Save</button>
-                <button onClick={handelClosePopup} type="submit" className="cancel">Cancel</button>
+                <button type="submit" className="save">
+                  Save
+                </button>
+                <button
+                  onClick={handelClosePopup}
+                  type="submit"
+                  className="cancel"
+                >
+                  Cancel
+                </button>
               </form>
               <div onClick={handelClosePopup} title="" className="close-box">
                 <i className="la la-close"></i>
@@ -326,13 +304,18 @@ const Profile = ({ setisPopupOpen }) => {
             </div>
           </div>
           <div
-            className={activePopup === 2 ? "overview-box open" : "overview-box"} id="experience-box"
+            className={activePopup === 2 ? "overview-box open" : "overview-box"}
+            id="experience-box"
           >
             <div className="overview-edit">
               <h3>Experience</h3>
-              <form onSubmit={(e)=>handelEditInfo(e,"experience")}>
+              <form onSubmit={(e) => handelEditInfo(e, "experience")}>
                 <input type="text" name="title" placeholder="Subject" />
-                <textarea type="text" name="description" placeholder="Description"></textarea>
+                <textarea
+                  type="text"
+                  name="description"
+                  placeholder="Description"
+                ></textarea>
                 <button type="submit" className="save">
                   Save
                 </button>
@@ -358,7 +341,7 @@ const Profile = ({ setisPopupOpen }) => {
           >
             <div className="overview-edit">
               <h3>Education</h3>
-              <form onSubmit={(e)=>handelEditInfo(e,"education")}>
+              <form onSubmit={(e) => handelEditInfo(e, "education")}>
                 <input
                   type="text"
                   name="institute"
@@ -368,22 +351,24 @@ const Profile = ({ setisPopupOpen }) => {
                   <div className="row">
                     <div className="col-lg-6 no-left-pd">
                       <div className="datefm">
-                        
-                      <DatePicker name="from" placeholder="From"  />
+                        <DatePicker name="from" placeholder="From" />
                         <i className="fa fa-calendar"></i>
-
                       </div>
                     </div>
                     <div className="col-lg-6 no-righ-pd">
                       <div className="datefm">
-                      <DatePicker name="from" placeholder="From" />
+                        <DatePicker name="from" placeholder="From" />
                         <i className="fa fa-calendar"></i>
                       </div>
                     </div>
                   </div>
                 </div>
                 <input type="text" name="degree" placeholder="Degree" />
-                <textarea type="text" name="description" placeholder="Description" ></textarea>
+                <textarea
+                  type="text"
+                  name="description"
+                  placeholder="Description"
+                ></textarea>
                 <button type="submit" className="save">
                   Save
                 </button>

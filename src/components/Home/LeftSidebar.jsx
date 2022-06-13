@@ -4,7 +4,7 @@ import { baseURL } from "../../api";
 import { useSelector } from "react-redux";
 
 const LeftSidebar = () => {
-  let  { userData } = useSelector((state)=>state.user);
+  let  { userData,points } = useSelector((state)=>state.user);
   return (
     <div className="col-lg-3 col-md-4 pd-left-none no-pd">
       <div className="main-left-sidebar no-margin">
@@ -27,7 +27,7 @@ const LeftSidebar = () => {
               <h3>{userData.name}</h3>
               {/* <h3>sads</h3> */}
               <span>{userData.about ? userData.about : "No bio yet"}</span>
-              <h2>1237 Points</h2>
+              <h2>{points} Points</h2>
             </div>
           </div>
           <ul className="user-fw-status">

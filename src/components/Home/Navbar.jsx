@@ -1,132 +1,103 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { baseURL } from "../../api";
 import Notifications from "./Popups/Notifications";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../../redux/reducers/userReducers";
+import {
+  closeAll,
+  toggleMessage,
+  toggleNoti,
+  toggleUser,
+} from "../../redux/reducers/navReducer";
 
-const Navbar = ({ setresetPost }) => {
+const Navbar = () => {
   const navigate = useNavigate();
-  let  { userData } = useSelector((state)=>state.user);
-  const dispatch = useDispatch()
-  const [SideNav, setSideNav] = useState(false)
-  const [isNotiOpen, setisNotiOpen] = useState(false);
-  const [isUserOpen, setisUserOpen] = useState(false);
-  const [notis, setnotis] = useState(null);
-
-  useEffect(() => {
-    if (userData) {
-      setnotis(userData.notifications);
-    }
-  }, [userData]);
+  const dispatch = useDispatch();
+  let { userData,isLoggedIn } = useSelector((state) => state.user);
+  let { userPopup, messagePopup } = useSelector((state) => state.nav );
+  const [SideNav, setSideNav] = useState(false);
+  const [userInput, setuserInput] = useState("")
 
   const handelLogout = () => {
-    setisNotiOpen(false);
-    setisUserOpen(false);
+    dispatch(closeAll());
     localStorage.removeItem("userJWT");
-    dispatch(logOut())
+    dispatch(logOut());
     navigate("/sign-in");
   };
-  const handelRedirect = (url)=>{
-    setisUserOpen(false)
-    navigate(url)
+  const handelRedirect = (url) => {
+    dispatch(closeAll());
+    navigate(url);
+  };
+
+  const handelSearchUser = (e) =>{
+    e.preventDefault();
+    dispatch(closeAll());
+    navigate(`user-profile/${userInput}`)
   }
 
   return (
     <>
-      {userData !== null ? (
+      {isLoggedIn ? (
         <header>
           <div className="container">
             <div className="header-data">
-              <div className="logo">
-                <Link to="/" title="">
-                  <img src="images/logonav.png" alt="" />
-                </Link>
+              <div onClick={()=>handelRedirect("/")} className="logo">
+                  <img src="/images/navLogo.png" alt="" />
               </div>
               <div className="search-bar">
-                <form>
+                {/* <form>
                   <input type="text" name="search" placeholder="Search..." />
                   <button type="submit">
                     <i className="la la-search"></i>
                   </button>
-                </form>
+                </form> */}
               </div>
-              <nav className={SideNav?"active":""}>
+              <nav className={SideNav ? "active" : ""}>
                 <ul>
                   <li>
-                    <Link to="/">
-                      <div title="">
+                      <div onClick={()=>handelRedirect("/")} title="">
                         <span>
-                          <img src="images/icon1.png" alt="" />
+                          <img src="/images/house-solid.svg" alt="" />
                         </span>
-                        Home
+                        <span>Home</span>
                       </div>
-                    </Link>
                   </li>
                   <li>
                     <div title="">
                       <span>
-                        <img src="images/icon2.png" alt="" />
+                        <img src="/images/leaderboard.svg" alt="" />
                       </span>
-                      Companies
-                    </div>
-                    <ul>
-                      <li>
-                        <a href="companies.html" title="">
-                          Companies
-                        </a>
-                      </li>
-                      <li>
-                        <a href="company-profile.html" title="">
-                          Company Profile
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <div title="">
-                      <span>
-                        <img src="images/icon3.png" alt="" />
-                      </span>
-                      Projects
+                      <span>Leaderboard</span>
                     </div>
                   </li>
                   <li>
-                    <div title="">
+                    <div onClick={()=>handelRedirect("/points")} title="">
                       <span>
-                        <img src="images/icon4.png" alt="" />
+                        <img src="/images/coins.svg" alt="" />
                       </span>
-                      Profiles
-                    </div>
-                    <ul>
-                      <li>
-                        <a href="user-profile.html" title="">
-                          User Profile
-                        </a>
-                      </li>
-                      <li>
-                        <a href="my-profile-feed.html" title="">
-                          my-profile-feed
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <div title="">
-                      <span>
-                        <img src="images/icon5.png" alt="" />
-                      </span>
-                      Jobs
+                      <span>Points</span>
                     </div>
                   </li>
                   <li>
-                    <div title="" className="not-box-openm">
+                    <div
+                      onClick={() => {
+                        dispatch(toggleMessage());
+                      }}
+                      title=""
+                      className="not-box-openm"
+                    >
                       <span>
-                        <img src="images/icon6.png" alt="" />
+                        <img src="/images/message.svg" alt="" />
                       </span>
-                      Messages
+                      <span>Messages</span>
                     </div>
-                    <div className="notification-box msg" id="message">
+                    <div
+                      className={`notification-box msg ${
+                        messagePopup ? "active" : ""
+                      }`}
+                      id="message"
+                    >
                       <div className="nt-title">
                         <h4>Setting</h4>
                         <a href="/" title="">
@@ -136,7 +107,7 @@ const Navbar = ({ setresetPost }) => {
                       <div className="nott-list">
                         <div className="notfication-details">
                           <div className="noty-user-img">
-                            <img src="images/resources/ny-img1.png" alt="" />
+                            <img src="/images/resources/ny-img1.png" alt="" />
                           </div>
                           <div className="notification-info">
                             <h3>
@@ -153,7 +124,7 @@ const Navbar = ({ setresetPost }) => {
                         </div>
                         <div className="notfication-details">
                           <div className="noty-user-img">
-                            <img src="images/resources/ny-img2.png" alt="" />
+                            <img src="/images/resources/ny-img2.png" alt="" />
                           </div>
                           <div className="notification-info">
                             <h3>
@@ -167,7 +138,7 @@ const Navbar = ({ setresetPost }) => {
                         </div>
                         <div className="notfication-details">
                           <div className="noty-user-img">
-                            <img src="images/resources/ny-img3.png" alt="" />
+                            <img src="/images/resources/ny-img3.png" alt="" />
                           </div>
                           <div className="notification-info">
                             <h3>
@@ -194,44 +165,37 @@ const Navbar = ({ setresetPost }) => {
                   <li>
                     <div
                       onClick={() => {
-                        setisUserOpen(false);
-                        setisNotiOpen((pre) => !pre);
+                        dispatch(toggleNoti());
                       }}
                       title=""
                       className="not-box-open"
                     >
                       <span>
-                        <img src="images/icon7.png" alt="" />
+                        <img src="/images/noti.svg" alt="" />
                       </span>
-                      Notification
+                      <span>Notification</span>
                     </div>
-                    <Notifications
-                      setresetPost={setresetPost}
-                      notis={notis}
-                      setnotis={setnotis}
-                      setisNotiOpen={setisNotiOpen}
-                      isNotiOpen={isNotiOpen}
-                    />
+                    <Notifications/>
                   </li>
                 </ul>
               </nav>
               <div className="menu-btn">
-                <div title="" onClick={()=>setSideNav(pre=>!pre)}>
+                <div title="" onClick={() => setSideNav((pre) => !pre)}>
                   <i className="fa fa-bars"></i>
                 </div>
               </div>
               <div className="user-account">
                 <div
                   onClick={() => {
-                    setisNotiOpen(false);
-                    setisUserOpen((pre) => !pre);
+                    dispatch(toggleUser());
                   }}
                   className="user-info"
                 >
                   {userData.image ? (
-                    <img src={baseURL+"/file/"+ userData.image} alt="" />
-                  ) : (
-                    <div className="dummy-img">{userData.name.charAt(0)}</div>
+                    <img src={baseURL + "/file/" + userData.image} alt="" />
+                    ) : (
+                      <img src="/images/user.svg" alt="" />
+                      // <div className="dummy-img">{userData.name.charAt(0)}</div>
                   )}
 
                   <div className="username" href="/" title="">
@@ -239,11 +203,10 @@ const Navbar = ({ setresetPost }) => {
                   </div>
                   <i
                     className="la la-sort-down"
-                    style={{ marginTop: "-2px" }}
                   ></i>
                 </div>
                 <div
-                  className={`user-account-settingss ${isUserOpen && "active"}`}
+                  className={`user-account-settingss ${userPopup && "active"}`}
                   id="users"
                 >
                   {/*<h3>Online Status</h3>
@@ -267,32 +230,32 @@ const Navbar = ({ setresetPost }) => {
                       </div>
                     </li>
                   </ul> */}
-                  <h3>Custom Status</h3>
+                  <h3>Search User</h3>
                   <div className="search_form">
                     <form>
-                      <input type="text" name="search" />
-                      <button type="submit">Ok</button>
+                      <input type="text" value={userInput} onChange={(e)=>setuserInput(e.target.value)} name="search" />
+                      <button type="submit" onClick={handelSearchUser}>Search</button>
                     </form>
                   </div>
                   <h3>Setting</h3>
                   <ul className="us-links">
                     <li>
-                      <div onClick={()=>handelRedirect("/profile")} title="">
+                      <div onClick={() => handelRedirect("/profile")} title="">
                         Show Profile
                       </div>
                     </li>
                     <li>
-                      <div onClick={()=>handelRedirect("/")} title="">
+                      <div onClick={() => handelRedirect("/")} title="">
                         Privacy
                       </div>
                     </li>
                     <li>
-                      <div onClick={()=>handelRedirect("/")} title="">
+                      <div onClick={() => handelRedirect("/")} title="">
                         Faqs
                       </div>
                     </li>
                     <li>
-                      <div onClick={()=>handelRedirect("/")} title="">
+                      <div onClick={() => handelRedirect("/")} title="">
                         Terms & Conditions
                       </div>
                     </li>
@@ -313,7 +276,7 @@ const Navbar = ({ setresetPost }) => {
             <div className="header-data">
               <div className="logo pd-btm">
                 <a href="index.html" title="">
-                  <img src="images/logonav.png" alt="" />
+                  <img src="/images/logonav.png" alt="" />
                 </a>
               </div>
               <div className="forum-bar">

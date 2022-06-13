@@ -3,12 +3,16 @@ import { baseURL } from "../../api";
 import { toast } from "react-toastify";
 import { getDateAndTime } from "../../utils/timeCalculator";
 import Loader from "../../utils/Loader";
+import { useDispatch,useSelector } from "react-redux";
+import { getNewsFeed, getNotifications, toggleLike } from "../../redux/ApiCalls";
 
-const Post = ({ post, userData, resetPost, setresetPost }) => {
+const Post = ({ post, userData }) => {
+  const dispatch = useDispatch()
+  const {userToken} = useSelector(state=>state.user)
+  const {loadings} = useSelector(state=>state.post)
   const [commentValue, setCommentValue] = useState("");
   const [showCommentSection, setShowCommentSection] = useState(false);
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
-  const [isLoader, setisLoader] = useState(false);
   const [isComLoader, setisComLoader] = useState(false);
 
   const handelAddComment = (e) => {
@@ -33,7 +37,7 @@ const Post = ({ post, userData, resetPost, setresetPost }) => {
           } else {
             toast.info(result.message);
           }
-          setresetPost(!resetPost);
+          dispatch(getNewsFeed(userToken))
           console.log(result);
         },
         (error) => {
@@ -43,39 +47,18 @@ const Post = ({ post, userData, resetPost, setresetPost }) => {
       );
     console.log(post._id);
   };
-  const handelToggleLike = (e) => {
+  const handelToggleLike = async (e) => {
     e.preventDefault();
-    setisLoader(true);
-    fetch(`${baseURL}/post/toggleLike`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("userJWT")}`,
-      },
-      body: JSON.stringify({ postId: post._id }),
-    })
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setisLoader(false);
-          if (result.success) {
-            toast.success(result.message);
-          } else {
-            toast.info(result.message);
-          }
-          setresetPost(!resetPost);
-          console.log(result);
-        },
-        (error) => {
-          toast.info(error.message);
-          console.log(error);
-        }
-      );
+    let data = {
+      token:localStorage.getItem("userJWT"),
+      postId: post._id
+    }
+    await dispatch(toggleLike(data))
+    dispatch(getNotifications(data.token))
   };
 
   return (
     <>
-      
       <div className="posty">
         <div className="post-bar no-margin">
           <div className="post_topbar">
@@ -89,7 +72,7 @@ const Post = ({ post, userData, resetPost, setresetPost }) => {
               <div className="usy-name">
                 <h3>{post.user.name}</h3>
                 <span>
-                  <img src="images/clock.png" alt="" />
+                  <img src="images/clock.svg" alt="" />
                   {getDateAndTime(post.createdAt)}
                 </span>
               </div>
@@ -138,7 +121,7 @@ const Post = ({ post, userData, resetPost, setresetPost }) => {
                 <span>SSC Student</span>
               </li>
               <li>
-                <img src="images/icon9.png" alt="" />
+                <img src="images/location.svg" alt="" />
                 <span>India</span>
               </li>
             </ul>
@@ -168,10 +151,6 @@ const Post = ({ post, userData, resetPost, setresetPost }) => {
                 );
               })}
               {post.image && <img src={post.image} alt=""></img>}
-
-              {/* <li>
-              <span>$30 / hr</span>
-            </li> */}
             </ul>
             <p>
               {post.description.length > 25 ? (
@@ -222,7 +201,7 @@ const Post = ({ post, userData, resetPost, setresetPost }) => {
                   }
                   onClick={handelToggleLike}
                 >
-                  {isLoader?<Loader isSmall={true} />:<>
+                  {loadings.toggleLikeLoading?<Loader isSmall={true} />:<>
                   <i className="fas fa-heart"></i> Like{" "}
                   {post.likers ? post.likers.length : 0}</>}
                 </div>
@@ -242,6 +221,7 @@ const Post = ({ post, userData, resetPost, setresetPost }) => {
             </div>
           </div>
         </div>
+        
         <div className="comment-section">
           <div className="post-comment">
             <div className="cm_img">
@@ -288,7 +268,7 @@ const Post = ({ post, userData, resetPost, setresetPost }) => {
                               />
                               <h3>{com.user.name}</h3>
                               <span>
-                                <img src="images/clock.png" alt="" />{" "}
+                                <img src="images/clock.svg" alt="" />{" "}
                                 {getDateAndTime(com.createdAt)}
                               </span>
                             </div>
@@ -317,7 +297,7 @@ const Post = ({ post, userData, resetPost, setresetPost }) => {
                                       />
                                       <h3>{rep.user.name}</h3>
                                       <span>
-                                        <img src="images/clock.png" alt="" />{" "}
+                                        <img src="images/clock.svg" alt="" />{" "}
                                         {getDateAndTime(rep.createdAt)}
                                       </span>
                                     </div>

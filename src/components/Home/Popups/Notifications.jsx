@@ -1,10 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { baseURL } from "../../../api";
 import { getDateAndTime } from "../../../utils/timeCalculator";
+import { useSelector,useDispatch } from "react-redux";
+import { toggleNoti } from "../../../redux/reducers/navReducer";
+import { getNotifications } from "../../../redux/ApiCalls";
 
-const Notifications = ({ notis, setnotis, isNotiOpen, setisNotiOpen }) => {
+const Notifications = () => {
+  let { notiPopup } = useSelector((state) => state.nav);
+  let { isLoggedIn,userToken,notifications } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      dispatch(getNotifications(userToken))
+    }
+    // eslint-disable-next-line
+  }, [isLoggedIn]);
+  
   const handelAllRead = () => {
     fetch(`${baseURL}/noti/markAllNotificationsAsRead`, {
       method: "POST",
@@ -17,8 +31,7 @@ const Notifications = ({ notis, setnotis, isNotiOpen, setisNotiOpen }) => {
       .then(
         (result) => {
           if (result.success) {
-            notis.map((i) => (i.isRead = true));
-            setnotis([...notis]);
+           
           } else {
           }
           console.log(result);
@@ -29,12 +42,12 @@ const Notifications = ({ notis, setnotis, isNotiOpen, setisNotiOpen }) => {
       );
   };
   const handelRedirect = ()=>{
-    setisNotiOpen(false)
+    dispatch(toggleNoti());
     navigate("/notification")
   }
   return (
     <div
-      className={`notification-box noti ${isNotiOpen && "active"}`}
+      className={`notification-box noti ${notiPopup && "active"}`}
       id="notification"
     >
       <div className="nt-title">
@@ -44,9 +57,9 @@ const Notifications = ({ notis, setnotis, isNotiOpen, setisNotiOpen }) => {
         </div>
       </div>
       <div className="nott-list">
-        {notis && notis
+        {notifications && notifications.slice()
           .sort((a, b) => b.createdAt - a.createdAt)
-          .slice(0, Math.min(6, notis.length))
+          .slice(0, Math.min(6, notifications.length))
           .map((n, i) => {
             return (
               // <Link key={i} to={`notification`}>
@@ -62,7 +75,7 @@ const Notifications = ({ notis, setnotis, isNotiOpen, setisNotiOpen }) => {
                       <div href="/" title="">
                         {n.content.split(" ")[0]}
                       </div>{" "}
-                      {n.content
+                      {n.content.slice()
                         .split(" ")
                         .splice(1, n.content.split(" ").length)
                         .join(" ")}

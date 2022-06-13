@@ -8,14 +8,17 @@ import SignIn from "./pages/Registration/SignIn/SignIn";
 import SignUp from "./pages/Registration/SignUp/SignUp";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import {  useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "./redux/ApiCalls";
 import { setToken } from "./redux/reducers/userReducers";
+import Points from "./pages/Points/Points";
+import UserProfile from "./pages/UserProfile/UserProfile";
 
 function App() {
   const location = useLocation();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [isPopupOpen, setisPopupOpen] = useState(false)
+  const {popups} = useSelector((state)=>state.post)
   const [url, seturl] = useState(true)
 
   useEffect(() => {
@@ -35,12 +38,12 @@ function App() {
   }, [])
 
   return (
-    <div className={isPopupOpen?"wrapper overlay":"wrapper"}>
+    <div className={popups.blogPopup || popups.quesPopup|| isPopupOpen?"wrapper overlay":"wrapper"}>
         {url && <Navbar/>}
         <Routes>
 
           <Route element={<ProtectedRoute />}>
-            <Route path="/" element={<Homepage setisPopupOpen={setisPopupOpen}/>} />
+            <Route path="/" element={<Homepage/>} />
           </Route>
 
           <Route path="/sign-in" element={<SignIn seturl={seturl}/>} />
@@ -51,7 +54,15 @@ function App() {
           </Route>
 
           <Route element={<ProtectedRoute />}>
+            <Route path="/user-profile/:username" element={<UserProfile/>} />
+          </Route>
+
+          <Route element={<ProtectedRoute />}>
             <Route path="/notification" element={<Notification/>} />
+          </Route>
+
+          <Route element={<ProtectedRoute />}>
+            <Route path="/points" element={<Points/>} />
           </Route>
 
         </Routes>

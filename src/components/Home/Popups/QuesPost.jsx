@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useDispatch,useSelector } from "react-redux";
+import { toggleQuesPopup } from "../../../redux/reducers/postReducers";
 
-const QuesPost = ({handelPopupClose, isActive, setisActive,}) => {
-
+const QuesPost = () => {
+  const {popups} = useSelector((state)=>state.post)
   const [question, setQuestion] = useState({
     title:"",
     description:"",
@@ -18,13 +20,13 @@ const QuesPost = ({handelPopupClose, isActive, setisActive,}) => {
       },
     ]
   })
-
+  const dispatch = useDispatch()
   const handelClose = (e)=>{
     e.preventDefault()
-    handelPopupClose()
+    dispatch(toggleQuesPopup())
   }
   return (
-    <div className={`post-popup pst-pj ${isActive===2?"active":""}`}>
+    <div className={`post-popup pst-pj ${popups.quesPopup===true?"active":""}`}>
       <div className="post-project">
         <h3>Post a Question</h3>
         <div className="post-project-fields">

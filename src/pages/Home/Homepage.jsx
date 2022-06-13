@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import LeftSidebar from "../../components/Home/LeftSidebar";
 import MainNewsFeed from "../../components/Home/MainNewsFeed";
 import BlogPost from "../../components/Home/Popups/BlogPost";
@@ -7,20 +7,8 @@ import RightSidebar from "../../components/Home/RightSidebar";
 import Loader from "../../utils/Loader";
 import { useSelector } from "react-redux";
 
-const Homepage = ({ setisPopupOpen}) => {
+const Homepage = () => {
   let  { userData} = useSelector((state)=>state.user);
-  const [isActive, setisActive] = useState(0);
-  const [resetPost, setresetPost] = useState(0);
-  
-  const handelPopupOpen = (id)=>{
-    setisActive(id);
-    setisPopupOpen(true)
-  }
-  const handelPopupClose = ()=>{
-    setisActive(0);
-    setisPopupOpen(false)
-  }
-  
   return (
     <>
       {userData? (
@@ -31,26 +19,15 @@ const Homepage = ({ setisPopupOpen}) => {
               <div className="main-section-data">
                 <div className="row">
                   <LeftSidebar/>
-                  <MainNewsFeed
-                    handelPopupOpen={handelPopupOpen}
-                    resetPost={resetPost}
-                    setresetPost={setresetPost}
-                  />
+                  <MainNewsFeed/>
                   <RightSidebar/>
                 </div>
               </div>
             </div>
           </div>
         </main>
-        <BlogPost
-          isActive={isActive}
-          handelPopupClose={handelPopupClose}
-          setresetPost={setresetPost}
-        />
-        <QuesPost
-          isActive={isActive}
-          handelPopupClose={handelPopupClose}
-        />
+        <BlogPost/>
+        <QuesPost/>
       </div>
       ):<Loader isSmall={false}/>}
     </>

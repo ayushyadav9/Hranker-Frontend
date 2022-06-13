@@ -1,72 +1,52 @@
 import React, { useEffect, useState } from "react";
-import { baseURL } from "../../api";
 import { func } from "../../utils/timeCalculator";
 import Loader from "../../utils/Loader"
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
+import { getNotifications, markNotiAsRead } from "../../redux/ApiCalls";
 
 const Notification = () => {
-  let  { userData } = useSelector((state)=>state.user);
+  let  { loadings,userToken,notifications,isLoggedIn } = useSelector((state)=>state.user);
+  const dispatch = useDispatch();
   const [activeTab, setactiveTab] = useState(0);
   const [notiData, setnotiData] = useState(null);
-  useEffect(() => {
-    if(userData){
-      setnotiData(userData.notifications)
-    }
-  }, [userData])
   
-  const [isLoader, setisLoader] = useState(false)
+  useEffect(() => {
+    if(isLoggedIn){
+      dispatch(getNotifications(userToken))
+      setnotiData(notifications)
+    }
+    // eslint-disable-next-line
+  }, [isLoggedIn])
+  
 
   const changeTab = (id) => {
     let data;
     if (id === 0) {
-      data = userData ? userData.notifications : [];
+      data = notifications ? notifications : [];
     } else if (id === 1) {
-      data = userData.notifications.filter((i) => !i.isRead);
+      data = notifications.filter((i) => !i.isRead);
     } else if (id === 2) {
-      data = userData.notifications.filter((i) => i.isRead);
+      data = notifications.filter((i) => i.isRead);
     }
     setnotiData(data);
+    console.log(notiData)
     setactiveTab(id);
   };
 
   const markAsRead = (id) => {
     if (id && id.length === 24) {
-      setisLoader(true)
-      fetch(`${baseURL}/noti/markNotificationAsRead`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("userJWT")}`,
-        },
-        body: JSON.stringify({ notiId: id }),
-      })
-        .then((res) => res.json())
-        .then(
-          (result) => {
-            setisLoader(false)
-            if (result.success) {
-              let d = notiData.map((n, i) => {
-                if (n._id === id) {
-                  n.isRead = true;
-                }
-                return n;
-              });
-              setnotiData(d);
-            } else {
-            }
-            console.log(result);
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
+      let data = {
+        token: localStorage.getItem("userJWT"),
+        id:id
+      }
+      dispatch(markNotiAsRead(data))
     }
   };
 
   return (
     <>
-    {isLoader&&<Loader/>}
-      {userData ? (
+    {loadings.notiReadLoading&&<Loader/>}
+      {!loadings.getNotiLoading ? (
         <>
           <section className="forum-sec">
             <div className="container">
@@ -102,8 +82,8 @@ const Notification = () => {
                 <div className="row">
                   <div className="col-lg-8">
                     <div className="forum-questions">
-                      {notiData &&
-                        notiData
+                      {notifications &&
+                        notifications.slice()
                           .sort((a, b) => b.createdAt - a.createdAt)
                           .map((noti, i) => {
                             return (
@@ -144,53 +124,7 @@ const Notification = () => {
                             );
                           })}
                     </div>
-                    <nav
-                      aria-label="Page navigation example"
-                      className="full-pagi"
-                    >
-                      <ul className="pagination">
-                        <li className="page-item">
-                          <a className="page-link pvr" href="/">
-                            Previous
-                          </a>
-                        </li>
-                        <li className="page-item">
-                          <a className="page-link active" href="/">
-                            1
-                          </a>
-                        </li>
-                        <li className="page-item">
-                          <a className="page-link" href="/">
-                            2
-                          </a>
-                        </li>
-                        <li className="page-item">
-                          <a className="page-link" href="/">
-                            3
-                          </a>
-                        </li>
-                        <li className="page-item">
-                          <a className="page-link" href="/">
-                            4
-                          </a>
-                        </li>
-                        <li className="page-item">
-                          <a className="page-link" href="/">
-                            5
-                          </a>
-                        </li>
-                        <li className="page-item">
-                          <a className="page-link" href="/">
-                            6
-                          </a>
-                        </li>
-                        <li className="page-item">
-                          <a className="page-link pvr" href="/">
-                            Next
-                          </a>
-                        </li>
-                      </ul>
-                    </nav>
+                    
                   </div>
                   <div className="col-lg-4">
                     <div className="widget widget-user">
@@ -271,7 +205,7 @@ const Notification = () => {
               <div className="container">
                 <ul>
                   <li>
-                    <a href="help-center.html" title="">
+                    <a href="/" title="">
                       Help Center
                     </a>
                   </li>
@@ -301,7 +235,7 @@ const Notification = () => {
                     </a>
                   </li>
                   <li>
-                    <a href="forum.html" title="">
+                    <a href="/" title="">
                       Forum
                     </a>
                   </li>
@@ -320,7 +254,7 @@ const Notification = () => {
                   <img src="images/copy-icon2.png" alt="" />
                   Copyright 2019
                 </p>
-                <img className="fl-rgt" src="images/logo2.png" alt="" />
+                <img className="fl-rgt" src="images/logo.png" alt="" />
               </div>
             </div>
           </footer>
