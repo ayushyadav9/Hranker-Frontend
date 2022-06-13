@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Footer from "../../components/Registration/Footer";
 import { getUser } from "../../redux/ApiCalls";
 import { getDateAndTime } from "../../utils/timeCalculator";
 const Points = () => {
