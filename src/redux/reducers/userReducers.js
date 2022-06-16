@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginUser, getUser, googleLoginUser, registerUser, getSavedPosts, markNotiAsRead, getNotifications } from "../ApiCalls";
+import { loginUser, getUser, googleLoginUser, registerUser, getSavedPosts, markNotiAsRead, getNotifications, addToSave } from "../ApiCalls";
 
 const initialState = {
   isLoggedIn: false,
@@ -15,6 +15,10 @@ const initialState = {
   points:null,
   notifications:null,
   savedPosts: null,
+  notify:{
+    login:null,
+    register:null
+  },
   error: null,
 };
 
@@ -65,6 +69,7 @@ const userReducer = createSlice({
           state.isLoggedIn = true;
           state.userToken = action.payload.data.token;
         } else {
+          state.notify.login = action.payload.message;
           state.error = action.payload.message;
         }
       })
@@ -102,6 +107,7 @@ const userReducer = createSlice({
           state.isLoggedIn = true;
           state.userToken = action.payload.data.token;
         } else {
+          state.notify.register = action.payload.message;
           state.error = action.payload.message;
         }
       })
@@ -167,7 +173,26 @@ const userReducer = createSlice({
       .addCase(getNotifications.rejected, (state, action) => {
         state.loadings.getNotiLoading = false;
         state.error = true;
-      });
+      })
+
+      //Add Post To Save
+      .addCase(addToSave.fulfilled, (state, action) => {
+        if (action.payload.success === true && action.payload.isRemoved === false) {
+          state.userData.saved.blogPosts.push(action.payload._id)
+        } else if(action.payload.success === true && action.payload.isRemoved === true) {
+          const index = state.userData.saved.blogPosts.indexOf(action.payload._id);
+          state.userData.saved.blogPosts.splice(index, 1);
+        } else{
+          state.error = action.payload.message;
+        }
+      })
+      .addCase(addToSave.pending, (state, action) => {
+        // state.loadings.getNotiLoading = true;
+      })
+      .addCase(addToSave.rejected, (state, action) => {
+        // state.loadings.getNotiLoading = false;
+        state.error = true;
+      })
   },
 });
 

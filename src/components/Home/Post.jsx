@@ -1,23 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { baseURL } from "../../api";
 import { toast } from "react-toastify";
 import { getDateAndTime } from "../../utils/timeCalculator";
 import Loader from "../../utils/Loader";
-import { useDispatch,useSelector } from "react-redux";
-import { getNewsFeed, getNotifications, toggleLike } from "../../redux/ApiCalls";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addToSave,
+  getNewsFeed,
+  getNotifications,
+  toggleLike,
+} from "../../redux/ApiCalls";
+import { Link } from "react-router-dom";
 
 const Post = ({ post, userData }) => {
-  const dispatch = useDispatch()
-  const {userToken} = useSelector(state=>state.user)
-  const {loadings} = useSelector(state=>state.post)
+  const dispatch = useDispatch();
+  const { userToken } = useSelector((state) => state.user);
+  const optionRef = useRef()
   const [commentValue, setCommentValue] = useState("");
+  const [likeLoading, setlikeLoading] = useState(false);
   const [showCommentSection, setShowCommentSection] = useState(false);
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
   const [isComLoader, setisComLoader] = useState(false);
+  const [saveLoader, setsaveLoader] = useState(false);
 
+  useEffect(() => {
+    document.body.addEventListener('click',(e)=>{
+      if(!optionRef.current.contains(e.target)){
+        setIsOptionsOpen(false)
+      }
+    })
+  }, [])
+  
   const handelAddComment = (e) => {
     e.preventDefault();
     setisComLoader(true);
+
     fetch(`${baseURL}/post/addComment`, {
       method: "POST",
       headers: {
@@ -37,7 +54,7 @@ const Post = ({ post, userData }) => {
           } else {
             toast.info(result.message);
           }
-          dispatch(getNewsFeed(userToken))
+          dispatch(getNewsFeed(userToken));
           console.log(result);
         },
         (error) => {
@@ -47,14 +64,27 @@ const Post = ({ post, userData }) => {
       );
     console.log(post._id);
   };
+
   const handelToggleLike = async (e) => {
     e.preventDefault();
     let data = {
-      token:localStorage.getItem("userJWT"),
-      postId: post._id
-    }
-    await dispatch(toggleLike(data))
-    dispatch(getNotifications(data.token))
+      token: localStorage.getItem("userJWT"),
+      postId: post._id,
+    };
+    setlikeLoading(true);
+    await dispatch(toggleLike(data));
+    dispatch(getNotifications(data.token));
+    setlikeLoading(false);
+  };
+
+  const handelSavePost = async () => {
+    let data = {
+      token: localStorage.getItem("userJWT"),
+      postId: post._id,
+    };
+    setsaveLoader(true);
+    await dispatch(addToSave(data));
+    setsaveLoader(false);
   };
 
   return (
@@ -64,13 +94,22 @@ const Post = ({ post, userData }) => {
           <div className="post_topbar">
             <div className="usy-dt">
               {post.user.image ? (
-                <img className="postUserDP" src={baseURL + "/file/" + post.user.image} alt="" />
+                <img
+                  className="postUserDP"
+                  src={baseURL + "/file/" + post.user.image}
+                  alt=""
+                />
               ) : (
                 <div className="user-dummy">{post.user.name.charAt(0)}</div>
               )}
               {/*  */}
               <div className="usy-name">
-                <h3>{post.user.name}</h3>
+                <Link
+                  to={`/user-profile/${post.user.username}`}
+                  target="_blank"
+                >
+                  <h3>{post.user.name}</h3>
+                </Link>
                 <span>
                   <img src="images/clock.svg" alt="" />
                   {getDateAndTime(post.createdAt)}
@@ -79,6 +118,7 @@ const Post = ({ post, userData }) => {
             </div>
             <div className="ed-opts">
               <div
+                ref={optionRef}
                 onClick={() => setIsOptionsOpen((pre) => !pre)}
                 title=""
                 className="ed-opts-open"
@@ -127,83 +167,99 @@ const Post = ({ post, userData }) => {
             </ul>
             <ul className="bk-links">
               <li>
-                <a href="/" title="">
-                  <i className="la la-bookmark"></i>
-                </a>
-              </li>
-              <li>
-                <a href="/" title="">
-                  <i className="la la-envelope"></i>
-                </a>
+                <div onClick={handelSavePost} href="/" title="">
+                  <div className="save">
+                    {saveLoader ? (
+                      <Loader isSmall={true} />
+                    ) : (
+                      <i
+                        className={`${
+                          userData.saved.blogPosts.filter((i) => i === post._id).length > 0
+                            ? "la la-check"
+                            : "la la-bookmark"
+                        }`}
+                      ></i>
+                    )}
+                  </div>
+                </div>
               </li>
             </ul>
           </div>
-          <div className="job_descp">
-            <h3>{post.title}</h3>
-            <ul className="job-dt">
-              {post.examTags.map((tag, i) => {
-                return (
-                  <li key={i}>
-                    <a href="/" title="">
-                      {tag}
-                    </a>
-                  </li>
-                );
-              })}
-              {post.image && <img src={post.image} alt=""></img>}
-            </ul>
-            <p>
-              {post.description.length > 25 ? (
-                <>
-                  {post.description.split(" ").slice(0, 25).join(" ") + "..."}
+          <Link to={`/post/${post._id}`} target="_blank">
+            <div className="job_descp">
+              <h3>{post.title}</h3>
+              <ul className="job-dt">
+                {post.examTags.map((tag, i) => {
+                  return (
+                    <li key={i}>
+                      <div href="/" title="">
+                        {tag}
+                      </div>
+                    </li>
+                  );
+                })}
+                {post.image && <img src={post.image} alt=""></img>}
+              </ul>
+              <p>
+                {post.description.length > 25 ? (
+                  <>
+                    {post.description.split(" ").slice(0, 25).join(" ") + "..."}
+                    <Link to={`/post/${post._id}`} target="_blank">
+                      Read more
+                    </Link>
+                  </>
+                ) : (
+                  post.description
+                )}
+              </p>
+              <ul className="skill-tags">
+                <li>
                   <a href="/" title="">
-                    view more
+                    bank-po
                   </a>
-                </>
-              ) : (
-                post.description
-              )}
-            </p>
-            <ul className="skill-tags">
-              <li>
-                <a href="/" title="">
-                  bank-po
-                </a>
-              </li>
-              <li>
-                <a href="/" title="">
-                  clerk
-                </a>
-              </li>
-              <li>
-                <a href="/" title="">
-                  bank-clerk
-                </a>
-              </li>
-              <li>
-                <a href="/" title="">
-                  rrb-po
-                </a>
-              </li>
-              <li>
-                <a href="/" title="">
-                  rrb-clerk
-                </a>
-              </li>
-            </ul>
-          </div>
+                </li>
+                <li>
+                  <a href="/" title="">
+                    clerk
+                  </a>
+                </li>
+                <li>
+                  <a href="/" title="">
+                    bank-clerk
+                  </a>
+                </li>
+                <li>
+                  <a href="/" title="">
+                    rrb-po
+                  </a>
+                </li>
+                <li>
+                  <a href="/" title="">
+                    rrb-clerk
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </Link>
           <div className="job-status-bar">
             <ul className="like-com">
               <li>
                 <div
                   className={
-                    post.likers.filter((i) => i === userData._id).length >0 ? "isLiked":""
+                    post.likers.filter((i) => i === userData._id).length > 0
+                      ? "isLiked"
+                      : ""
                   }
                   onClick={handelToggleLike}
                 >
-                  {loadings.toggleLikeLoading?<Loader isSmall={true} />:<>
-                  <i className="fas fa-heart"></i> Like{" "}
-                  {post.likers ? post.likers.length : 0}</>}
+                  {likeLoading ? (
+                    <Loader isSmall={true} />
+                  ) : (
+                    <>
+                      <i className="fas fa-heart"></i> Like{" "}
+                      {post.likers ? post.likers.length : 0}
+                    </>
+                  )}
                 </div>
               </li>
               <li>
@@ -221,7 +277,7 @@ const Post = ({ post, userData }) => {
             </div>
           </div>
         </div>
-        
+
         <div className="comment-section">
           <div className="post-comment">
             <div className="cm_img">
@@ -241,7 +297,7 @@ const Post = ({ post, userData }) => {
                   placeholder="Post a comment"
                 />
                 <button onClick={handelAddComment} type="submit">
-                  {isComLoader?<Loader isSmall={true}/>:"Send"}
+                  {isComLoader ? <Loader isSmall={true} /> : "Send"}
                 </button>
               </form>
             </div>
@@ -261,7 +317,7 @@ const Post = ({ post, userData }) => {
                                 className="userProf"
                                 src={
                                   com.user.image
-                                    ? baseURL+"/file/"+ com.user.image
+                                    ? baseURL + "/file/" + com.user.image
                                     : "images/user40.png"
                                 }
                                 alt=""
@@ -273,9 +329,9 @@ const Post = ({ post, userData }) => {
                               </span>
                             </div>
                             <p>{com.comment}</p>
-                            <a href="/" title="">
+                            {/* <a href="/" title="">
                               <i className="fa fa-reply-all"></i>Reply
-                            </a>
+                            </a> */}
                           </div>
                         </div>
                         <ul>
@@ -320,8 +376,7 @@ const Post = ({ post, userData }) => {
           )}
         </div>
       </div>
-      </>
-    
+    </>
   );
 };
 

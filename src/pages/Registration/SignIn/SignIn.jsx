@@ -10,7 +10,7 @@ import { googleLoginUser, loginUser } from "../../../redux/ApiCalls";
 
 const SignIn = ({seturl}) => {
   const dispatch = useDispatch()
-  let  { isLoggedIn,userToken,loadings,error } = useSelector((state)=>state.user);
+  let  { isLoggedIn,userToken,loadings,error,notify } = useSelector((state)=>state.user);
   let navigate = useNavigate();
   const [formData, setFormData] = useState({email: "",password: ""});
 
@@ -23,6 +23,13 @@ const SignIn = ({seturl}) => {
     }
     // eslint-disable-next-line
   }, [isLoggedIn])
+
+  useEffect(() => {
+    if(notify.login){
+      toast.info(notify.login)
+    }
+  }, [notify.login])
+  
   
   const handelLogin = (e) => {
     e.preventDefault();

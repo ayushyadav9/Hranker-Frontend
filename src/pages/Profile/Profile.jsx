@@ -13,7 +13,7 @@ import Loader from "../../utils/Loader";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useSelector,useDispatch } from "react-redux";
-import Saved from "../../components/Profile/Tabs/Jobs";
+import Saved from "../../components/Profile/Tabs/Saved";
 import {getUser} from "../../redux/ApiCalls"
 
 const Profile = ({ setisPopupOpen }) => {
@@ -37,6 +37,7 @@ const Profile = ({ setisPopupOpen }) => {
     console.log(isLoader);
     const formData = new FormData();
     formData.append("file", e.target.files[0]);
+    console.log(formData)
     setisLoader(true);
     fetch(`${baseURL}/upload`, {
       method: "POST",
@@ -47,7 +48,6 @@ const Profile = ({ setisPopupOpen }) => {
     })
       .then((response) => response.json())
       .then((result) => {
-        // setdataReset((pre) => !pre);
         setisLoader(false);
         toast.success("Profile photo updated successfuly");
         console.log("Success:", result);
@@ -270,7 +270,7 @@ const Profile = ({ setisPopupOpen }) => {
                   </li>
                 </ul>
                 <p>
-                  <img src="images/copy-icon2.png" alt="" />
+                  <img src="images/copyright.svg" alt="" />
                   Copyright 2019
                 </p>
                 <img className="fl-rgt" src="images/logo.png" alt="" />

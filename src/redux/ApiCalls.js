@@ -47,6 +47,7 @@ export const registerUser = createAsyncThunk("users/register-local", async (form
     body: JSON.stringify(formData),
   });
   let res = await result.json();
+  console.log(res)
   return res;
 });
 
@@ -111,5 +112,19 @@ export const getNotifications = createAsyncThunk("users/getNotifications", async
     },
   });
   let res = await result.json();
+  return res;
+});
+
+export const addToSave = createAsyncThunk("users/addToSave", async (data) => {
+  let result = await fetch(`${baseURL}/auth/addToSave`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${data.token}`,
+    },
+    body: JSON.stringify({ postId: data.postId }),
+  });
+  let res = await result.json();
+  res._id = data.postId 
   return res;
 });

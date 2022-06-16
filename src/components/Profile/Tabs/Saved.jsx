@@ -135,9 +135,9 @@ const Saved = ({ activeTab }) => {
                       {blog.examTags.map((tag, i) => {
                         return (
                           <li key={i}>
-                            <a href="/" title="">
+                            <div href="/" title="">
                               {tag}
-                            </a>
+                            </div>
                           </li>
                         );
                       })}

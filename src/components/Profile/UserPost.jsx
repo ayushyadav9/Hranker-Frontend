@@ -7,9 +7,9 @@ const UserPost = ({ post }) => {
     <div className="post-bar">
       <div className="post_topbar">
         <div className="ed-opts">
-          <a href="/" title="" className="ed-opts-open">
+          <div href="/" title="" className="ed-opts-open">
             <i className="la la-ellipsis-v"></i>
-          </a>
+          </div>
           <ul className="ed-options">
             <li>
               <a href="/" title="">
@@ -45,9 +45,9 @@ const UserPost = ({ post }) => {
           {post.examTags.map((tag, i) => {
             return (
               <li>
-                <a href="/" title="">
+                <div href="/" title="">
                   {tag}
-                </a>
+                </div>
               </li>
             );
           })}
@@ -63,6 +63,7 @@ const UserPost = ({ post }) => {
           ) : (
             post.description
           )}
+          {post.image && <img src={post.image} alt=""></img>}
         </p>
         <ul className="skill-tags">
           <li>

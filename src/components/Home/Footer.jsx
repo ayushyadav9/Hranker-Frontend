@@ -53,7 +53,7 @@ const Footer = () => {
             </li>
           </ul>
           <p>
-            <img src="images/copy-icon2.png" alt="" />
+            <img src="images/copyright.svg" alt="" />
             Copyright 2019
           </p>
           <img className="fl-rgt" src="images/logo.png" alt="" />

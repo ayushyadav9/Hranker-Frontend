@@ -13,6 +13,8 @@ import { getUser } from "./redux/ApiCalls";
 import { setToken } from "./redux/reducers/userReducers";
 import Points from "./pages/Points/Points";
 import UserProfile from "./pages/UserProfile/UserProfile";
+import BlogPost from "./pages/Post/BlogPost";
+import Leaderboard from "./pages/Leaderboard/Leaderboard";
 
 function App() {
   const location = useLocation();
@@ -59,6 +61,14 @@ function App() {
 
           <Route element={<ProtectedRoute />}>
             <Route path="/notification" element={<Notification/>} />
+          </Route>
+
+          <Route element={<ProtectedRoute />}>
+            <Route path="/leaderboard" element={<Leaderboard/>} />
+          </Route>
+
+          <Route element={<ProtectedRoute />}>
+            <Route path="/post/:id" element={<BlogPost setisPopupOpen={setisPopupOpen}/>} />
           </Route>
 
           <Route element={<ProtectedRoute />}>

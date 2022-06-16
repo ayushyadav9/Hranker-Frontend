@@ -3,6 +3,7 @@ import { func } from "../../utils/timeCalculator";
 import Loader from "../../utils/Loader"
 import { useSelector,useDispatch } from "react-redux";
 import { getNotifications, markNotiAsRead } from "../../redux/ApiCalls";
+import Footer from "../../components/Home/Footer";
 
 const Notification = () => {
   let  { loadings,userToken,notifications,isLoggedIn } = useSelector((state)=>state.user);
@@ -48,6 +49,7 @@ const Notification = () => {
     {loadings.notiReadLoading&&<Loader/>}
       {!loadings.getNotiLoading ? (
         <>
+        <div style={{minHeight: "91.25vh"}}>
           <section className="forum-sec">
             <div className="container">
               <div className="forum-links">
@@ -200,87 +202,8 @@ const Notification = () => {
               </div>
             </div>
           </section>
-          <footer>
-            <div className="footy-sec mn no-margin">
-              <div className="container">
-                <ul>
-                  <li>
-                    <a href="/" title="">
-                      Help Center
-                    </a>
-                  </li>
-                  <li>
-                    <a href="about.html" title="">
-                      About
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/" title="">
-                      Privacy Policy
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/" title="">
-                      Community Guidelines
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/" title="">
-                      Cookies Policy
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/" title="">
-                      Career
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/" title="">
-                      Forum
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/" title="">
-                      Language
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/" title="">
-                      Copyright Policy
-                    </a>
-                  </li>
-                </ul>
-                <p>
-                  <img src="images/copy-icon2.png" alt="" />
-                  Copyright 2019
-                </p>
-                <img className="fl-rgt" src="images/logo.png" alt="" />
-              </div>
-            </div>
-          </footer>
-          <div className="overview-box" id="question-box">
-            <div className="overview-edit">
-              <h3>Ask a Question</h3>
-              <form>
-                <input
-                  type="text"
-                  name="question"
-                  placeholder="Type Question Here"
-                />
-                <input type="text" name="tags" placeholder="Tags" />
-                <textarea placeholder="Description"></textarea>
-                <button type="submit" className="save">
-                  Submit
-                </button>
-                <button type="submit" className="cancel">
-                  Cancel
-                </button>
-              </form>
-              <a href="/" title="" className="close-box">
-                <i className="la la-close"></i>
-              </a>
-            </div>
           </div>
+          <Footer/>
         </>
       ):<Loader/>}
     </>

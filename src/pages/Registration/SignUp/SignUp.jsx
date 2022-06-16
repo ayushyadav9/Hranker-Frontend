@@ -10,7 +10,7 @@ import { registerUser,googleLoginUser } from "../../../redux/ApiCalls";
 
 const SignUp = ({ seturl}) => {
   const dispatch = useDispatch()
-  let  { isLoggedIn,userToken,loadings,error } = useSelector((state)=>state.user);
+  let  { isLoggedIn,userToken,loadings,notify } = useSelector((state)=>state.user);
   let navigate = useNavigate();
   const [formData, setFormData] = useState({name: "", phone: "", username:"", email: "",password: "", rePassword: ""});
 
@@ -18,11 +18,18 @@ const SignUp = ({ seturl}) => {
     if(isLoggedIn===true && userToken){
       seturl(true)
       localStorage.setItem("userJWT", userToken);
-      if(error) toast.info(error);
+      // if(error) toast.info(error);
       navigate("/")
     }
     // eslint-disable-next-line
   }, [isLoggedIn])
+
+  useEffect(() => {
+    if(notify.register){
+      toast.info(notify.register)
+    }
+  }, [notify.register])
+  
 
   const handelRegister = (e) => {
     e.preventDefault();

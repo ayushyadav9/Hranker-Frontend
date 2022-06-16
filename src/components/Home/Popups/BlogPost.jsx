@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleBlogPopup } from "../../../redux/reducers/postReducers";
 import { getNewsFeed } from "../../../redux/ApiCalls";
 import { updatePoints } from "../../../redux/reducers/userReducers";
+import FileBase64 from 'react-file-base64';
 
 let defaultTags = [
   {
@@ -61,9 +62,9 @@ let defaultTags = [
 ];
 const BlogPost = () => {
   const [isLoader, setisLoader] = useState(false);
-  const {popups} = useSelector((state)=>state.post)
-  const {userToken} = useSelector((state)=>state.user)
-  const dispatch = useDispatch()
+  const { popups } = useSelector((state) => state.post);
+  const { userToken } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const [tags, setTags] = useState(defaultTags);
   const [formData, setformdata] = useState({
     title: "",
@@ -90,7 +91,7 @@ const BlogPost = () => {
 
   const handelClose = (e) => {
     e.preventDefault();
-    dispatch(toggleBlogPopup())
+    dispatch(toggleBlogPopup());
   };
 
   const handelPost = (e) => {
@@ -111,9 +112,9 @@ const BlogPost = () => {
         (result) => {
           setisLoader(false);
           if (result.success) {
-            dispatch(updatePoints(-25))
-            dispatch(toggleBlogPopup())
-            dispatch(getNewsFeed(userToken))
+            dispatch(updatePoints(-25));
+            dispatch(toggleBlogPopup());
+            dispatch(getNewsFeed(userToken));
             toast.success("Post added successfuly");
             resetData();
           } else {
@@ -127,7 +128,11 @@ const BlogPost = () => {
   };
 
   return (
-    <div className={`post-popup pst-pj ${popups.blogPopup===true ? "active" : ""}`}>
+    <div
+      className={`post-popup pst-pj ${
+        popups.blogPopup === true ? "active" : ""
+      }`}
+    >
       <div className="post-project">
         <h3>Post a Blog</h3>
         <div className="post-project-fields">
@@ -157,18 +162,6 @@ const BlogPost = () => {
                   </div>
                 );
               })}
-
-              {/* <div className="col-lg-12">
-                <div className="inp-field">
-                  <select>
-                    <option>Category</option>
-                    <option>Category 1</option>
-                    <option>Category 2</option>
-                    <option>Category 3</option>
-                  </select>
-                </div>
-              </div> */}
-
               <div className="col-lg-12">
                 <textarea
                   name="description"
@@ -178,6 +171,16 @@ const BlogPost = () => {
                     setformdata({ ...formData, description: e.target.value })
                   }
                 ></textarea>
+              </div>
+              <div className="col-lg-12">
+              <div class="">
+              <FileBase64
+                  class="custom-file-input"
+                  type="file"
+                  multiple={false}
+                  onDone={({ base64 }) => setformdata({ ...formData, image: base64 })}
+                />
+              </div>
               </div>
               <div className="col-lg-12">
                 <ul>
@@ -192,7 +195,7 @@ const BlogPost = () => {
                     </button>
                   </li>
                   <li>
-                    <button onClick={(e)=>handelClose(e)} title="">
+                    <button onClick={(e) => handelClose(e)} title="">
                       Cancel
                     </button>
                   </li>
