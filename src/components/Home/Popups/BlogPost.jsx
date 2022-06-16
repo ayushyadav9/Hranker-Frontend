@@ -173,9 +173,9 @@ const BlogPost = () => {
                 ></textarea>
               </div>
               <div className="col-lg-12">
-              <div class="">
+              <div className="">
               <FileBase64
-                  class="custom-file-input"
+                  className="custom-file-input"
                   type="file"
                   multiple={false}
                   onDone={({ base64 }) => setformdata({ ...formData, image: base64 })}

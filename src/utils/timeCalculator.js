@@ -40,3 +40,16 @@ export const func = (millis) => {
     if(diffHrs>0) return diffHrs + " hour ago"
     return diffMins + " mins ago"
   }
+
+
+  export const userRank = (id) => {
+    if (id === 1) {
+      return <img className="rank-img" src="/images/first.png" alt=""></img>;
+    } else if (id === 2) {
+      return <img className="rank-img" src="/images/second.png" alt=""></img>;
+    } else if (id === 3) {
+      return <img className="rank-img" src="/images/third.png" alt=""></img>;
+    } else {
+      return <div style={{ width: "20px", height: "20px" }}>{id}</div>;
+    }
+  };

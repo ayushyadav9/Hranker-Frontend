@@ -22,14 +22,14 @@ const Info = ({info,activeTab}) => {
         </h3>
         {info.experience.map((inf, i) => {
           return (
-            <>
+            <div key={i}>
               <h4>
                 {inf.title}
                 <div href="/" title="">
                 </div>
               </h4>
               <p>{inf.description}</p>
-            </>
+            </div>
           );
         })}
       </div>
@@ -41,13 +41,13 @@ const Info = ({info,activeTab}) => {
         </h3>
         {info.education.map((inf, i) => {
           return (
-            <>
+            <div key={i}>
               <h4>{inf.degree}</h4>
               <span>
                 {inf.from} - {inf.to}
               </span>
               <p>{inf.description}</p>
-            </>
+            </div>
           );
         })}
       </div>
@@ -69,7 +69,7 @@ const Info = ({info,activeTab}) => {
         <ul>
           {info.skills.map((skill, i) => {
             return (
-              <li>
+              <li key={i}>
                 <div href="/" title="">
                   {skill}
                 </div>

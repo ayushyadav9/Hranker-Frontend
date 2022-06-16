@@ -9,7 +9,7 @@ import SignUp from "./pages/Registration/SignUp/SignUp";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import {  useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser } from "./redux/ApiCalls";
+import { getLeaderboard, getUser } from "./redux/ApiCalls";
 import { setToken } from "./redux/reducers/userReducers";
 import Points from "./pages/Points/Points";
 import UserProfile from "./pages/UserProfile/UserProfile";
@@ -35,6 +35,7 @@ function App() {
     if(token){
       dispatch(setToken(token))
       dispatch(getUser(token))
+      dispatch(getLeaderboard(token))
     }
     // eslint-disable-next-line
   }, [])

@@ -9,13 +9,15 @@ import { Provider } from 'react-redux';
 import userReducer from './redux/reducers/userReducers';
 import postReducers from './redux/reducers/postReducers';
 import navReducer from './redux/reducers/navReducer';
+import LeaderboardReducers from './redux/reducers/LeaderboardReducers';
 
 
 const store = configureStore({
   reducer:{
     user:userReducer,
     post:postReducers,
-    nav:navReducer
+    nav:navReducer,
+    leaderBoard: LeaderboardReducers
   }
 })
 

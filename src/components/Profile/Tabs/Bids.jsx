@@ -2,7 +2,7 @@ import React from "react";
 
 const Bids = ({activeTab}) => {
   return (
-    <div className={`product-feed-tab ${activeTab===3&&"current"}`} id="my-bids">
+    <div className={`product-feed-tab ${activeTab===3? "current":""}`} id="my-bids">
       <ul className="nav nav-tabs bid-tab" id="myTab" role="tablist">
         <li className="nav-item">
           <a

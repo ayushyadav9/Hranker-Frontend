@@ -4,7 +4,7 @@ import UserPost from "../UserPost";
 const Feed = ({ userData, activeTab }) => {
   return (
     <div
-      className={`product-feed-tab ${activeTab === 0 && "current"}`}
+      className={`product-feed-tab ${activeTab === 0 ? "current":""}`}
       id="feed-dd"
     >
       <div className="posts-section">

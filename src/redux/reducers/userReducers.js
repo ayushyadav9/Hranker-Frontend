@@ -98,7 +98,6 @@ const userReducer = createSlice({
         state.loadings.loginLoading = false;
         state.error = true;
       })
-
       //Register User Local
       .addCase(registerUser.fulfilled, (state, action) => {
         state.loadings.loginLoading = false;
@@ -118,7 +117,6 @@ const userReducer = createSlice({
         state.loadings.loginLoading = false;
         state.error = true;
       })
-
       //Register User Local
       .addCase(getSavedPosts.fulfilled, (state, action) => {
         state.loadings.savedPostsLoading = false;
@@ -135,7 +133,6 @@ const userReducer = createSlice({
         state.loadings.savedPostsLoading = false;
         state.error = true;
       })
-
       //Mark notification as read
       .addCase(markNotiAsRead.fulfilled, (state, action) => {
         state.loadings.notiReadLoading = false;
@@ -157,7 +154,6 @@ const userReducer = createSlice({
         state.loadings.notiReadLoading = false;
         state.error = true;
       })
-
       //Get Notifications
       .addCase(getNotifications.fulfilled, (state, action) => {
         state.loadings.getNotiLoading = false;
@@ -174,7 +170,6 @@ const userReducer = createSlice({
         state.loadings.getNotiLoading = false;
         state.error = true;
       })
-
       //Add Post To Save
       .addCase(addToSave.fulfilled, (state, action) => {
         if (action.payload.success === true && action.payload.isRemoved === false) {

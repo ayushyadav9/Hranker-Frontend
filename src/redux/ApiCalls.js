@@ -128,3 +128,15 @@ export const addToSave = createAsyncThunk("users/addToSave", async (data) => {
   res._id = data.postId 
   return res;
 });
+
+export const getLeaderboard = createAsyncThunk("users/getLeaderboard", async (token) => {
+  let result = await fetch(`${baseURL}/getLeaderboard`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  let res = await result.json();
+  return res;
+});

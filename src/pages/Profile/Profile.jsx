@@ -27,6 +27,7 @@ const Profile = ({ setisPopupOpen }) => {
     setactivePopup(id);
     setisPopupOpen(true);
   };
+  
   const handelClosePopup = (e) => {
     e.preventDefault();
     setactivePopup(0);
@@ -105,7 +106,7 @@ const Profile = ({ setisPopupOpen }) => {
                       onChange={(e) => handelUploadDP(e)}
                       id="file"
                     />
-                    <label for="file">Change Image</label>
+                    <label htmlFor="file">Change Image</label>
                   </div>
                 </div>
               </div>
@@ -133,7 +134,7 @@ const Profile = ({ setisPopupOpen }) => {
                             <ul>
                               <li
                                 data-tab="feed-dd"
-                                className={activeTab === 0 && "active"}
+                                className={activeTab === 0 ? "active":""}
                               >
                                 <div title="" onClick={() => setactiveTab(0)}>
                                   <img src="images/ic1.png" alt="" />
@@ -142,7 +143,7 @@ const Profile = ({ setisPopupOpen }) => {
                               </li>
                               <li
                                 data-tab="info-dd"
-                                className={activeTab === 1 && "active"}
+                                className={activeTab === 1 ? "active":""}
                               >
                                 <div title="" onClick={() => setactiveTab(1)}>
                                   <img src="images/ic2.png" alt="" />
@@ -151,7 +152,7 @@ const Profile = ({ setisPopupOpen }) => {
                               </li>
                               <li
                                 data-tab="saved-jobs"
-                                className={activeTab === 2 && "active"}
+                                className={activeTab === 2 ? "active":""}
                               >
                                 <div title="" onClick={() => setactiveTab(2)}>
                                   <img src="images/ic4.png" alt="" />
@@ -160,7 +161,7 @@ const Profile = ({ setisPopupOpen }) => {
                               </li>
                               <li
                                 data-tab="my-bids"
-                                className={activeTab === 3 && "active"}
+                                className={activeTab === 3 ? "active":""}
                               >
                                 <div title="" onClick={() => setactiveTab(3)}>
                                   <img src="images/ic5.png" alt="" />
@@ -169,7 +170,7 @@ const Profile = ({ setisPopupOpen }) => {
                               </li>
                               <li
                                 data-tab="portfolio-dd"
-                                className={activeTab === 4 && "active"}
+                                className={activeTab === 4 ? "active":""}
                               >
                                 <div title="" onClick={() => setactiveTab(4)}>
                                   <img src="images/ic3.png" alt="" />
@@ -178,7 +179,7 @@ const Profile = ({ setisPopupOpen }) => {
                               </li>
                               <li
                                 data-tab="rewivewdata"
-                                className={activeTab === 5 && "active"}
+                                className={activeTab === 5 ? "active":""}
                               >
                                 <div title="" onClick={() => setactiveTab(5)}>
                                   <img src="images/review.png" alt="" />
@@ -187,7 +188,7 @@ const Profile = ({ setisPopupOpen }) => {
                               </li>
                               <li
                                 data-tab="payment-dd"
-                                className={activeTab === 6 && "active"}
+                                className={activeTab === 6 ? "active":""}
                               >
                                 <div title="" onClick={() => setactiveTab(6)}>
                                   <img src="images/ic6.png" alt="" />
@@ -498,7 +499,7 @@ const Profile = ({ setisPopupOpen }) => {
                 />
                 <div className="file-submit">
                   <input type="file" id="file" />
-                  <label for="file">Choose File</label>
+                  <label htmlFor="file">Choose File</label>
                 </div>
                 <div className="pf-img">
                   <img src="images/resources/np.png" alt="" />

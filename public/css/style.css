@@ -135,7 +135,23 @@ hr {
     margin-top: 1rem;
     margin-bottom: 1rem;
     border: 0;
-    border-top: 1px solid #e5e5e5 !important;
+    border-top: 1px solid #F2F2F2 !important;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+ 
+::-webkit-scrollbar-track {
+    background-color: #ebebeb;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: #b4b4b4; 
 }
 
 /* ================ CROSS BROWSER COMPATABILITY =============== */
@@ -704,6 +720,7 @@ nav > ul > li > a:hover {
 .user-info img {
 	width: 32px;
 	height: 32px;
+	object-fit: cover;
     margin-right: 5px;
 	-webkit-border-radius: 100px;
 	-moz-border-radius: 100px;
@@ -911,6 +928,8 @@ main {
 	padding: 15px 20px;
 }
 .suggestion-usd img {
+    width: 30px;
+	/* height: 30px; */
 	-webkit-border-radius: 100px;
 	-moz-border-radius: 100px;
 	-ms-border-radius: 100px;
@@ -925,17 +944,21 @@ main {
 	color: #000000;
 	font-size: 14px;
 	font-weight: 600;
-	margin-bottom: 4px;
+	margin-bottom: -2px;
+}
+.suggestion-usd>span>img{
+	width: 19px;
+    margin: -3px 5px;
 }
 .sgt-text span {
 	color: #686868;
 	font-size: 14px;
 }
 .suggestion-usd > span {
-	color: #686868;
-	font-size: 16px;
-	float: right;
-	margin-top: 10px;
+	color: grey;
+    font-size: 15px;
+    float: right;
+    margin-top: 5px;
 }
 .suggestion-usd > span i {
 	color: #b2b2b2;
@@ -1142,6 +1165,32 @@ main {
 .usy-dt {
 	float: left;
 }
+.usy-dt-leader {
+	float: left;
+}
+.usy-dt-leader > .ranking-no{
+	float: left;
+    text-align: center;
+    font-weight: 400;
+    font-size: small;
+    margin: 11px;
+    margin-right: 18px;
+}
+.ranking-no .rank-img{
+	width: 20px;
+    margin-top: -4px;
+    height: 20px;
+}
+.usy-dt-leader img {
+	-webkit-border-radius: 100px;
+	-moz-border-radius: 100px;
+	-ms-border-radius: 100px;
+	-o-border-radius: 100px;
+	width: 30px;
+	height: 30px;
+	border-radius: 100px;
+	margin-top: 2px;
+}
 .usy-dt img {
 	-webkit-border-radius: 100px;
 	-moz-border-radius: 100px;
@@ -1209,7 +1258,7 @@ main {
 .ed-options li:last-child {
 	margin-bottom: 0;
 }
-.ed-options li a {
+.ed-options li div {
 	color: #686868;
 	font-size: 14px;
 	font-weight: 600;
@@ -1221,12 +1270,24 @@ main {
 	float: left;
 	margin-left: 15px;
 }
+.usy-name-leader {
+	float: left;
+	margin-left: 15px;
+}
 .usy-name h3 {
 	color: #000000;
 	font-size: 18px;
 	text-transform: capitalize;
 	font-weight: 600;
 	margin-bottom: 5px;
+	margin-top: 5px;
+}
+.usy-name-leader h3 {
+	color: #000000;
+	font-size: 18px;
+	text-transform: capitalize;
+	font-weight: 600;
+	margin-bottom: -2px;
 	margin-top: 5px;
 }
 .usy-name h2 {
@@ -1240,6 +1301,10 @@ main {
 .usy-name span {
 	color: #b2b2b2;
 	font-size: 14px;
+}
+.usy-name-leader span {
+	color: #b2b2b2;
+	font-size: 11px;
 }
 .usy-name img {
 	margin-top: 3px;
@@ -1391,7 +1456,7 @@ main {
 	line-height: 24px;
 	margin-bottom: 20px;
 }
-.job_descp > p a {
+.job_descp > p span {
 	color: #e44d3a;
 	font-weight: 600;
 	display: block;
@@ -1410,7 +1475,7 @@ main {
 	margin-right: 6px;
 	margin-bottom: 10px;
 }
-.skill-tags li a {
+.skill-tags li div {
 	display: inline-block;
 	color: #b2b2b2;
 	font-size: 14px;
@@ -2004,6 +2069,7 @@ main {
 .widget-about {
 	border-radius: 7px;
 	text-align: center;
+	padding: 6px;
 }
 .widget-about img {
 	float: none;
@@ -2948,6 +3014,7 @@ footer {
 	width: 181px;
     height: 181px;
 	/* padding: 15px; */
+	object-fit: cover;
 	-webkit-border-radius: 100px;
 	-moz-border-radius: 100px;
 	-ms-border-radius: 100px;
@@ -5780,9 +5847,36 @@ a:hover {
     background-color: #FBFBFA;
     margin: 18px 36px;
 	border-radius: 5px;
+	cursor: pointer;
 	/* width: 51%; */
 	box-shadow: 0 5px 15px 0 rgb(0 0 0 / 8%);
 }
+	.points-list span:hover {
+		transition: all 0.2s ease-out;
+		box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
+		top: -4px;
+		background-color: white;
+	  }
+	
+	  .points-list span:before {
+		content: "";
+		position: absolute;
+		z-index: -1;
+		top: -16px;
+		right: -16px;
+		background: #00838d;
+		height: 32px;
+		width: 32px;
+		border-radius: 32px;
+		transform: scale(2);
+		transform-origin: 50% 50%;
+		transition: transform 0.15s ease-out;
+	  }
+	
+	  .points-list span:hover:before {
+		transform: scale(2.15);
+	  }
+
 .points-list-item .points-details{
 	display: flex;
 	flex-direction: row;
@@ -6747,20 +6841,30 @@ a:hover {
 	padding-right: 10px;
 }
 .freelancerbiding{
-	margin-top: 70px;
-	border-radius: 7px;
-	background-color: #fff;
-	padding-top: 20px;
+	width: 87%;
+    border-radius: 7px;
+    background-color: #fff;
+    padding-top: 20px;
+    margin: auto;
 }
 .freelancerbiding h3{
-	font-size: 18px;
+	font-size: 14px;
 	font-weight: 400;
+}
+.freelancerbiding hr{
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
 }
 .repcent{
 	text-align: left;
 }
 .bidrit{
+    margin-right: 21px;
 	float: right;
+}
+.bidrit .leader-points{
+	margin-top: 10px;
+    margin-right: 24px;
 }
 .repcent i{
 	padding-left: 5px;
@@ -6775,7 +6879,38 @@ a:hover {
 .repcent span{
 	color: #51a5fb;
 }
+.repcent .center{
+	text-align: center;
+	font-size: 15px;
+    font-weight: 600;
+}
+.my-rank{
+	border-radius: 10px;
+    box-shadow: rgb(100 100 111 / 20%) 0px 7px 29px 0px;
+    padding-bottom: 5.5px;
+    padding-top: 9.5px;
+    margin-top: 9px;
+    margin-bottom: 9px;
+}
+.my-rank hr{
+	border:transparent;
+}
+.freelancerbiding .topTable1{
+	margin-left: 63px;
+	font-size: 15px;
+    font-weight: 600;
+}
+/* .freelancerbiding .topTable2{
+	margin-left: 13px;
+} */
+.freelancerbiding .topTable3{
+	margin-right: 18px;
+	font-size: 15px;
+    font-weight: 600;
+}
 .repcent p{
+	margin-top: 8px;
+	text-align: center;
 	padding-left: 7px;
 }
 .noreview ul li i{

@@ -10,21 +10,21 @@ const LeftSide = ({ userData }) => {
             src={
               userData.image
                 ? baseURL + "/file/" + userData.image
-                : "https://assets.leetcode.com/users/avatars/avatar_1654408436.png"
+                : "/images/luser.jpg"
             }
             alt=""
           />
         </div>
         <div className="user_pro_status">
           <div>{userData.points} Points</div>
-          <ul class="flw-hr">
+          <ul className="flw-hr">
             <li>
-              <a href="/" title="" class="flww">
-                <i class="la la-plus"></i> Follow
+              <a href="/" title="" className="flww">
+                <i className="la la-plus"></i> Follow
               </a>
             </li>
             <li>
-              <a href="/" title="" class="hre">
+              <a href="/" title="" className="hre">
                 Message
               </a>
             </li>

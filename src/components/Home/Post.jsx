@@ -125,31 +125,31 @@ const Post = ({ post, userData }) => {
               >
                 <i className="la la-ellipsis-v"></i>
               </div>
-              <ul className={`ed-options ${isOptionsOpen && "active"}`}>
+              <ul className={`ed-options ${isOptionsOpen ? "active":""}`}>
                 <li>
-                  <a href="/" title="">
+                  <div title="">
                     Edit Post
-                  </a>
+                  </div>
                 </li>
                 <li>
-                  <a href="/" title="">
+                  <div title="">
                     Unsaved
-                  </a>
+                  </div>
                 </li>
                 <li>
-                  <a href="/" title="">
+                  <div title="">
                     Unbid
-                  </a>
+                  </div>
                 </li>
                 <li>
-                  <a href="/" title="">
+                  <div title="">
                     Close
-                  </a>
+                  </div>
                 </li>
                 <li>
-                  <a href="/" title="">
+                  <div title="">
                     Hide
-                  </a>
+                  </div>
                 </li>
               </ul>
             </div>
@@ -167,7 +167,7 @@ const Post = ({ post, userData }) => {
             </ul>
             <ul className="bk-links">
               <li>
-                <div onClick={handelSavePost} href="/" title="">
+                <div onClick={handelSavePost} title="">
                   <div className="save">
                     {saveLoader ? (
                       <Loader isSmall={true} />
@@ -192,7 +192,7 @@ const Post = ({ post, userData }) => {
                 {post.examTags.map((tag, i) => {
                   return (
                     <li key={i}>
-                      <div href="/" title="">
+                      <div title="">
                         {tag}
                       </div>
                     </li>
@@ -204,9 +204,7 @@ const Post = ({ post, userData }) => {
                 {post.description.length > 25 ? (
                   <>
                     {post.description.split(" ").slice(0, 25).join(" ") + "..."}
-                    <Link to={`/post/${post._id}`} target="_blank">
-                      Read more
-                    </Link>
+                      <span>Read more</span>
                   </>
                 ) : (
                   post.description
@@ -214,29 +212,29 @@ const Post = ({ post, userData }) => {
               </p>
               <ul className="skill-tags">
                 <li>
-                  <a href="/" title="">
+                  <div title="">
                     bank-po
-                  </a>
+                  </div>
                 </li>
                 <li>
-                  <a href="/" title="">
+                  <div title="">
                     clerk
-                  </a>
+                  </div>
                 </li>
                 <li>
-                  <a href="/" title="">
+                  <div title="">
                     bank-clerk
-                  </a>
+                  </div>
                 </li>
                 <li>
-                  <a href="/" title="">
+                  <div title="">
                     rrb-po
-                  </a>
+                  </div>
                 </li>
                 <li>
-                  <a href="/" title="">
+                  <div title="">
                     rrb-clerk
-                  </a>
+                  </div>
                 </li>
               </ul>
             </div>
@@ -256,7 +254,7 @@ const Post = ({ post, userData }) => {
                     <Loader isSmall={true} />
                   ) : (
                     <>
-                      <i className="fas fa-heart"></i> Like{" "}
+                      <i className="fas fa-heart"></i> {" "}
                       {post.likers ? post.likers.length : 0}
                     </>
                   )}
@@ -267,13 +265,13 @@ const Post = ({ post, userData }) => {
                   className="com active"
                   onClick={() => setShowCommentSection((prev) => !prev)}
                 >
-                  <i className="fas fa-comment-alt "></i>
-                  Comment {post.comments.length}
+                  <i className="fas fa-comment-alt "></i>{" "}
+                   {post.comments.length}
                 </div>
               </li>
             </ul>
-            <div href="/">
-              <i className="fas fa-eye"></i>Views 50
+            <div >
+              <i className="fas fa-eye"></i>Views {post.viewers ? post.viewers.length : 0}
             </div>
           </div>
         </div>
@@ -358,9 +356,9 @@ const Post = ({ post, userData }) => {
                                       </span>
                                     </div>
                                     <p>{rep.reply}</p>
-                                    <a href="/" title="">
+                                    {/* <a href="/" title="">
                                       <i className="fa fa-reply-all"></i>Reply
-                                    </a>
+                                    </a> */}
                                   </div>
                                 </div>
                               </li>

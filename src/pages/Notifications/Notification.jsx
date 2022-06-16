@@ -54,17 +54,17 @@ const Notification = () => {
             <div className="container">
               <div className="forum-links">
                 <ul>
-                  <li className={activeTab === 0 && "active"}>
+                  <li className={activeTab === 0 ? "active":""}>
                     <div onClick={() => changeTab(0)} title="">
                       All Notifications
                     </div>
                   </li>
-                  <li className={activeTab === 1 && "active"}>
+                  <li className={activeTab === 1 ? "active":""}>
                     <div onClick={() => changeTab(1)} title="">
                       Unread
                     </div>
                   </li>
-                  <li className={activeTab === 2 && "active"}>
+                  <li className={activeTab === 2 ? "active":""}>
                     <div onClick={() => changeTab(2)} title="">
                       Read
                     </div>
@@ -92,7 +92,7 @@ const Notification = () => {
                               <div
                                 key={i}
                                 className={`usr-question ${
-                                  noti.isRead && "isRead"
+                                  noti.isRead ? "isRead":""
                                 }`}
                               >
                                 <div className="usr_img">
@@ -126,7 +126,6 @@ const Notification = () => {
                             );
                           })}
                     </div>
-                    
                   </div>
                   <div className="col-lg-4">
                     <div className="widget widget-user">

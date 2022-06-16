@@ -12,29 +12,29 @@ const UserPost = ({ post }) => {
           </div>
           <ul className="ed-options">
             <li>
-              <a href="/" title="">
+              <div href="/" title="">
                 Edit Post
-              </a>
+              </div>
             </li>
             <li>
-              <a href="/" title="">
+              <div href="/" title="">
                 Unsaved
-              </a>
+              </div>
             </li>
             <li>
-              <a href="/" title="">
+              <div href="/" title="">
                 Unbid
-              </a>
+              </div>
             </li>
             <li>
-              <a href="/" title="">
+              <div href="/" title="">
                 Close
-              </a>
+              </div>
             </li>
             <li>
-              <a href="/" title="">
+              <div href="/" title="">
                 Hide
-              </a>
+              </div>
             </li>
           </ul>
         </div>
@@ -44,7 +44,7 @@ const UserPost = ({ post }) => {
         <ul className="job-dt">
           {post.examTags.map((tag, i) => {
             return (
-              <li>
+              <li key={i}>
                 <div href="/" title="">
                   {tag}
                 </div>
@@ -52,44 +52,45 @@ const UserPost = ({ post }) => {
             );
           })}
         </ul>
+        {post.image && <img src={post.image} alt=""></img>}
         <p>
           {post.description && post.description.length > 25 ? (
             <>
               {post.description.split(" ").slice(0, 25).join(" ") + "..."}
-              <a href="/" title="">
+              <span href="/" title="">
                 view more
-              </a>
+              </span>
             </>
           ) : (
             post.description
           )}
-          {post.image && <img src={post.image} alt=""></img>}
+          
         </p>
         <ul className="skill-tags">
           <li>
-            <a href="/" title="">
+            <div href="/" title="">
               HTML
-            </a>
+            </div>
           </li>
           <li>
-            <a href="/" title="">
+            <div href="/" title="">
               PHP
-            </a>
+            </div>
           </li>
           <li>
-            <a href="/" title="">
+            <div href="/" title="">
               CSS
-            </a>
+            </div>
           </li>
           <li>
-            <a href="/" title="">
+            <div href="/" title="">
               Javascript
-            </a>
+            </div>
           </li>
           <li>
-            <a href="/" title="">
+            <div href="/" title="">
               Wordpress
-            </a>
+            </div>
           </li>
         </ul>
       </div>
@@ -98,8 +99,8 @@ const UserPost = ({ post }) => {
           <li>
             <div
               className={
-                post.likers.filter((i) => i._id === userData._id).length > 0 &&
-                "isLiked"
+                post.likers.filter((i) => i._id === userData._id).length > 0 ?
+                "isLiked":""
               }
             >
               <i className="fas fa-heart"></i> Like{" "}

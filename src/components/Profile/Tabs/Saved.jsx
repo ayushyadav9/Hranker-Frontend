@@ -19,7 +19,7 @@ const Saved = ({ activeTab }) => {
 
   return (
     <div
-      className={`product-feed-tab ${activeTab === 2 && "current"}`}
+      className={`product-feed-tab ${activeTab === 2 ? "current":""}`}
       id="saved-jobs"
     >
       <ul className="nav nav-tabs" id="myTab" role="tablist">
@@ -50,7 +50,7 @@ const Saved = ({ activeTab }) => {
           {savedPosts &&
             savedPosts.blogPosts.map((blog, i) => {
               return (
-                <div className="post-bar no-margin">
+                <div key={i} className="post-bar no-margin">
                   <div className="post_topbar">
                     <div className="usy-dt">
                       {blog.user.image ? (

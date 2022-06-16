@@ -9,7 +9,7 @@ const RightSidebar = () => {
       <div className="right-sidebar">
         <div className="widget widget-about">
           <img src="images/logonav.png" alt="" />
-          <h3>Track Time on HRanker</h3>
+          <h3>When community comes unity</h3>
           <span>Be a part of High Ranker Community</span>
           <div className="sign_link">
             <h3>
@@ -22,16 +22,16 @@ const RightSidebar = () => {
             </Link>
           </div>
         </div>
-        <div class="widget filter-secs">
-          <div class="filter-heading">
+        <div className="widget filter-secs">
+          <div className="filter-heading">
             <h3>Filters</h3>
             <a href="/" title="">
               Clear all filters
             </a>
           </div>
-          <div class="paddy">
-            <div class="filter-dd">
-              <div class="filter-ttl">
+          <div className="paddy">
+            <div className="filter-dd">
+              <div className="filter-ttl">
                 <h3>Skills</h3>
                 <a href="/" title="">
                   Clear
@@ -45,78 +45,78 @@ const RightSidebar = () => {
                 />
               </form>
             </div>
-            <div class="filter-dd">
-              <div class="filter-ttl">
+            <div className="filter-dd">
+              <div className="filter-ttl">
                 <h3>Post Type</h3>
                 <a href="/" title="">
                   Clear
                 </a>
               </div>
-              <ul class="avail-checks">
+              <ul className="avail-checks">
                 <li>
                   <input type="radio" name="cc" id="c1" />
-                  <label for="c1">
+                  <label htmlFor="c1">
                     <span></span>
                   </label>
                   <small>Blog</small>
                 </li>
                 <li>
                   <input type="radio" name="cc" id="c2" />
-                  <label for="c2">
+                  <label htmlFor="c2">
                     <span></span>
                   </label>
                   <small>Questions</small>
                 </li>
               </ul>
             </div>
-            <div class="filter-dd">
-              <div class="filter-ttl">
+            <div className="filter-dd">
+              <div className="filter-ttl">
                 <h3>Field</h3>
                 <a href="/" title="">
                   Clear
                 </a>
               </div>
-              <form class="job-tp">
+              <form className="job-tp">
                 <select>
                   <option>SSC</option>
                   <option>Railways</option>
                   <option>Dehli Police</option>
                 </select>
-                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
               </form>
             </div>
-            <div class="filter-dd">
-              <div class="filter-ttl">
+            <div className="filter-dd">
+              <div className="filter-ttl">
                 <h3>Experience Level</h3>
                 <a href="/" title="">
                   Clear
                 </a>
               </div>
-              <form class="job-tp">
+              <form className="job-tp">
                 <select>
                   <option>Select a experience level</option>
                   <option>All</option>
                   <option>Intermediate</option>
                   <option>Advanced</option>
                 </select>
-                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
               </form>
             </div>
-            <div class="filter-dd">
-              <div class="filter-ttl">
+            <div className="filter-dd">
+              <div className="filter-ttl">
                 <h3>Countries</h3>
                 <a href="/" title="">
                   Clear
                 </a>
               </div>
-              <form class="job-tp">
+              <form className="job-tp">
                 <select>
                   <option>Select a country</option>
                   <option>United Kingdom</option>
                   <option>United States</option>
                   <option>Russia</option>
                 </select>
-                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
               </form>
             </div>
           </div>

@@ -9,7 +9,7 @@ const LeftSide = ({userData}) => {
           <img src={userData.image?baseURL+"/file/"+ userData.image:"https://assets.leetcode.com/users/avatars/avatar_1654408436.png"} alt="" />
           <div className="add-dp" id="OpenImgUpload">
             <input type="file" id="file" />
-            <label for="file">
+            <label htmlFor="file">
               <i className="fas fa-camera"></i>
             </label>
           </div>
@@ -36,66 +36,18 @@ const LeftSide = ({userData}) => {
           <i className="la la-ellipsis-v"></i>
         </div>
         <div className="suggestions-list">
-          <div className="suggestion-usd">
-            <img src="images/resources/s1.png" alt="" />
+          {userData.viewers && userData.viewers.map((user,i)=>{
+            return(<div className="suggestion-usd">
+            <img src={user.image?baseURL+"/file/"+ user.image :"/images/luser.jpg"} alt="" />
             <div className="sgt-text">
-              <h4>Jessica William</h4>
-              <span>Graphic Designer</span>
+              <h4>{user.name}</h4>
+              <span>{user.username}</span>
             </div>
             <span>
               <i className="la la-plus"></i>
             </span>
-          </div>
-          <div className="suggestion-usd">
-            <img src="images/resources/s2.png" alt="" />
-            <div className="sgt-text">
-              <h4>John Doe</h4>
-              <span>PHP Developer</span>
-            </div>
-            <span>
-              <i className="la la-plus"></i>
-            </span>
-          </div>
-          <div className="suggestion-usd">
-            <img src="images/resources/s3.png" alt="" />
-            <div className="sgt-text">
-              <h4>Poonam</h4>
-              <span>Wordpress Developer</span>
-            </div>
-            <span>
-              <i className="la la-plus"></i>
-            </span>
-          </div>
-          <div className="suggestion-usd">
-            <img src="images/resources/s4.png" alt="" />
-            <div className="sgt-text">
-              <h4>Bill Gates</h4>
-              <span>C &amp; C++ Developer</span>
-            </div>
-            <span>
-              <i className="la la-plus"></i>
-            </span>
-          </div>
-          <div className="suggestion-usd">
-            <img src="images/resources/s5.png" alt="" />
-            <div className="sgt-text">
-              <h4>Jessica William</h4>
-              <span>Graphic Designer</span>
-            </div>
-            <span>
-              <i className="la la-plus"></i>
-            </span>
-          </div>
-          <div className="suggestion-usd">
-            <img src="images/resources/s6.png" alt="" />
-            <div className="sgt-text">
-              <h4>John Doe</h4>
-              <span>PHP Developer</span>
-            </div>
-            <span>
-              <i className="la la-plus"></i>
-            </span>
-          </div>
+          </div>)
+          })}
           <div className="view-more">
             <a href="/" title="">
               View More

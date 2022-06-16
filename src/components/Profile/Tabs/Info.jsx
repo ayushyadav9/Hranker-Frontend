@@ -3,7 +3,7 @@ import React from "react";
 const Info = ({ info, activeTab, handelActivePopup }) => {
   return (
     <div
-      className={`product-feed-tab ${activeTab === 1 && "current"}`}
+      className={`product-feed-tab ${activeTab === 1 ? "current":""}`}
       id="info-dd"
     >
       <div className="user-profile-ov">
@@ -36,7 +36,7 @@ const Info = ({ info, activeTab, handelActivePopup }) => {
         </h3>
         {info.experience.map((inf, i) => {
           return (
-            <>
+            <div key={i}>
               <h4>
                 {inf.title}
                 <div href="/" title="">
@@ -44,7 +44,7 @@ const Info = ({ info, activeTab, handelActivePopup }) => {
                 </div>
               </h4>
               <p>{inf.description}</p>
-            </>
+            </div>
           );
         })}
       </div>
@@ -63,13 +63,13 @@ const Info = ({ info, activeTab, handelActivePopup }) => {
         </h3>
         {info.education.map((inf, i) => {
           return (
-            <>
+            <div key={i}>
               <h4>{inf.degree}</h4>
               <span>
                 {inf.from} - {inf.to}
               </span>
               <p>{inf.description}</p>
-            </>
+            </div>
           );
         })}
       </div>
@@ -108,7 +108,7 @@ const Info = ({ info, activeTab, handelActivePopup }) => {
         <ul>
           {info.skills.map((skill, i) => {
             return (
-              <li>
+              <li key={i}>
                 <div href="/" title="">
                   {skill}
                 </div>

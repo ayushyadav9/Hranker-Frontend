@@ -24,34 +24,34 @@ const RighSide = ({ postData }) => {
     setcopyText("Copied!");
   };
   return (
-    <div class="col-xl-3 col-lg-3 col-md-12">
-      <div class="right-sidebar">
-      <div class="widget widget-feat">
+    <div className="col-xl-3 col-lg-3 col-md-12">
+      <div className="right-sidebar">
+      <div className="widget widget-feat">
           <ul>
             <li>
-              <i class="fa fa-heart"></i>
+              <i className="fa fa-heart"></i>
               <span>{postData.likers.length}</span>
             </li>
             <li>
-              <i class="fa fa-comment"></i>
+              <i className="fa fa-comment"></i>
               <span>{postData.comments.length}</span>
             </li>
             <li>
-              <i class="fa fa-share-alt"></i>
+              <i className="fa fa-share-alt"></i>
               <span>0</span>
             </li>
             <li>
-              <i class="fa fa-eye"></i>
-              <span>50</span>
+              <i className="fa fa-eye"></i>
+              <span>{postData.viewers?postData.viewers.length:0}</span>
             </li>
           </ul>
         </div>
-        <div class="widget widget-jobs">
-          <div class="sd-title">
+        <div className="widget widget-jobs">
+          <div className="sd-title">
             <h3>Share</h3>
           </div>
           
-          <div class="sd-title copylink">
+          <div className="sd-title copylink">
             <ul>
               <FacebookShareButton url={window.location.href}>
                 <FacebookIcon
@@ -108,60 +108,60 @@ const RighSide = ({ postData }) => {
         </div>
         
 
-        <div class="widget widget-projectid">
+        <div className="widget widget-projectid">
           <h3>ID : {postData._id}</h3>
           <p>Report Post</p>
         </div>
 
-        <div class="widget widget-jobs">
-          <div class="sd-title">
+        <div className="widget widget-jobs">
+          <div className="sd-title">
             <h3>About Post Creator</h3>
-            <i class="la la-ellipsis-v"></i>
+            <i className="la la-ellipsis-v"></i>
           </div>
-          <div class="sd-title paymethd">
+          <div className="sd-title paymethd">
             <h4>{postData.user.name}</h4>
             <p>Verified</p>
-            <ul class="star">
+            <ul className="star">
               <li>
-                <i class="fa fa-star"></i>
+                <i className="fa fa-star"></i>
               </li>
               <li>
-                <i class="fa fa-star"></i>
+                <i className="fa fa-star"></i>
               </li>
               <li>
-                <i class="fa fa-star"></i>
+                <i className="fa fa-star"></i>
               </li>
               <li>
-                <i class="fa fa-star"></i>
+                <i className="fa fa-star"></i>
               </li>
               <li>
-                <i class="fa fa-star-half-o"></i>
+                <i className="fa fa-star-half-o"></i>
               </li>
               <li>
                 <a href="/">5.00 of 5 Reviews</a>
               </li>
             </ul>
           </div>
-          <div class="sd-title">
+          <div className="sd-title">
             <h4>India</h4>
             <p>SKS Nagar, Ludhiana 1 AM</p>
           </div>
-          <div class="sd-title">
+          <div className="sd-title">
             <h4>{postData.user.posts.blogPosts.length} Blog Posted</h4>
             {/* <p>85% Hire Rate, 15% Open Jobs</p> */}
           </div>
-          <div class="sd-title">
+          <div className="sd-title">
             <h4>Member Since</h4>
             <p>{func(postData.user.createdAt)}</p>
           </div>
         </div>
 
-        <div class="widget widget-jobs">
-          <div class="sd-title">
+        <div className="widget widget-jobs">
+          <div className="sd-title">
             <h3>Post Link</h3>
-            <i class="la la-ellipsis-v"></i>
+            <i className="la la-ellipsis-v"></i>
           </div>
-          <div class="sd-title copylink">
+          <div className="sd-title copylink">
             <p>{window.location.href.slice(0, 27) + "..."}</p>
             <span>
               <div onClick={() => copy(window.location.href)}>{copyText}</div>

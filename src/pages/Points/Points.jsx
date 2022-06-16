@@ -17,20 +17,20 @@ const Points = () => {
   return (
     <>
       <div style={{ minHeight: "78vh" }}>
-        <div class="points-heading">Your Point Activity</div>
-        <div class="total-points">{points} Points</div>
-        <hr class="hr dotted" />
-        <div class="points-container">
+        <div className="points-heading">Your Point Activity</div>
+        <div className="total-points">{points} Points</div>
+        <hr className="hr dotted" />
+        <div className="points-container">
           {userData ? (
-            <ul class="points-list">
+            <ul className="points-list">
               {userData &&
                 userData.pointsHistory
                   .slice()
                   .sort((a, b) => b.createdAt - a.createdAt)
                   .map((item, i) => {
                     return (
-                      <span>
-                        <li class="points-list-item">
+                      <span key={i}>
+                        <li className="points-list-item">
                           <div className="points-details">
                             <div
                               className={`${
@@ -43,7 +43,7 @@ const Points = () => {
                             </div>
                             <div className="points-desc">{item.desc}</div>
                           </div>
-                          <div class="date">
+                          <div className="date">
                             {getDateAndTime(item.createdAt)}
                           </div>
                         </li>

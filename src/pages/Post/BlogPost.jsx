@@ -32,7 +32,7 @@ const BlogPost = ({ setisPopupOpen }) => {
               setpostData(result.data);
             } else {
             }
-            console.log(result);
+            // console.log(result);
           },
           (error) => {
             console.log(error);
@@ -72,22 +72,22 @@ const BlogPost = ({ setisPopupOpen }) => {
       {postData && userData ? (
         <div>
           <main>
-            <div class="main-section">
-              <div class="container">
-                <div class="main-section-data">
-                  <div class="row">
-                    <div class="col-xl-9 col-lg-9 col-md-12">
-                      <div class="main-ws-sec">
-                        <div class="posts-section">
-                          <div class="post-bar">
-                            <div class="post_topbar">
-                              <div class="usy-dt">
+            <div className="main-section">
+              <div className="container">
+                <div className="main-section-data">
+                  <div className="row">
+                    <div className="col-xl-9 col-lg-9 col-md-12">
+                      <div className="main-ws-sec">
+                        <div className="posts-section">
+                          <div className="post-bar">
+                            <div className="post_topbar">
+                              <div className="usy-dt">
                                 {postData.user.image ? (
                                   <img className="postUserDP" src={ baseURL + "/file/" + postData.user.image} alt=""/>
                                 ) : (
                                   <img src="/images/user40.png" alt="" />
                                 )}
-                                <div class="usy-name">
+                                <div className="usy-name">
                                   <h3>{postData.user.name}</h3>
                                   <span>
                                     <img src="/images/clock.svg" alt="" />
@@ -95,11 +95,11 @@ const BlogPost = ({ setisPopupOpen }) => {
                                   </span>
                                 </div>
                               </div>
-                              <div class="ed-opts">
-                                <div href="/" title="" class="ed-opts-open">
-                                  <i class="la la-ellipsis-v"></i>
+                              <div className="ed-opts">
+                                <div href="/" title="" className="ed-opts-open">
+                                  <i className="la la-ellipsis-v"></i>
                                 </div>
-                                <ul class="ed-options">
+                                <ul className="ed-options">
                                   <li>
                                     <a href="/" title="">
                                       Edit Post
@@ -128,8 +128,8 @@ const BlogPost = ({ setisPopupOpen }) => {
                                 </ul>
                               </div>
                             </div>
-                            <div class="epi-sec">
-                              <ul class="descp">
+                            <div className="epi-sec">
+                              <ul className="descp">
                                 <li>
                                   <img src="/images/icon8.png" alt="" />
                                   <span>SSC Student</span>
@@ -139,7 +139,7 @@ const BlogPost = ({ setisPopupOpen }) => {
                                   <span>India</span>
                                 </li>
                               </ul>
-                              <ul class="bk-links">
+                              <ul className="bk-links">
                                 <li>
                                   <div onClick={handelSavePost} title="">
                                     <div className="save">
@@ -161,9 +161,9 @@ const BlogPost = ({ setisPopupOpen }) => {
                                 </li>
                               </ul>
                             </div>
-                            <div class="job_descp accountnone">
+                            <div className="job_descp accountnone">
                               <h3>{postData.title}</h3>
-                              <ul class="job-dt">
+                              <ul className="job-dt">
                                 {postData.examTags.map((tag, i) => {
                                   return (
                                     <li key={i}>
@@ -180,34 +180,34 @@ const BlogPost = ({ setisPopupOpen }) => {
                               <p>{postData.description}</p>
                               <ul className="skill-tags">
                                 <li>
-                                  <a href="/" title="">
+                                  <div href="/" title="">
                                     bank-po
-                                  </a>
+                                  </div>
                                 </li>
                                 <li>
-                                  <a href="/" title="">
+                                  <div href="/" title="">
                                     clerk
-                                  </a>
+                                  </div>
                                 </li>
                                 <li>
-                                  <a href="/" title="">
+                                  <div href="/" title="">
                                     bank-clerk
-                                  </a>
+                                  </div>
                                 </li>
                                 <li>
-                                  <a href="/" title="">
+                                  <div href="/" title="">
                                     rrb-po
-                                  </a>
+                                  </div>
                                 </li>
                                 <li>
-                                  <a href="/" title="">
+                                  <div href="/" title="">
                                     rrb-clerk
-                                  </a>
+                                  </div>
                                 </li>
                               </ul>
                             </div>
-                            <div class="job-status-bar btm-line">
-                              <ul class="like-com">
+                            <div className="job-status-bar btm-line">
+                              <ul className="like-com">
                                 <li>
                                   <div
                                     className={
@@ -228,14 +228,14 @@ const BlogPost = ({ setisPopupOpen }) => {
                                   </div>
                                 </li>
                                 <li>
-                                  <div href="/" class="com">
-                                    <i class="fas fa-comment-alt"></i> Comments{" "}
+                                  <div href="/" className="com">
+                                    <i className="fas fa-comment-alt"></i> Comments{" "}
                                     {postData.comments.length}
                                   </div>
                                 </li>
                               </ul>
                               <div href="/">
-                                <i class="fas fa-eye"></i>Views 50
+                                <i className="fas fa-eye"></i>Views {postData.comments.length}
                               </div>
                             </div>
 
@@ -267,11 +267,11 @@ const BlogPost = ({ setisPopupOpen }) => {
                             </div>
                             {postData.comments.map((com, i) => {
                               return (
-                                <div className="comment-sec-blog">
-                                  <div class="post_topbar">
-                                    <div class="usy-dt">
+                                <div key={i} className="comment-sec-blog">
+                                  <div className="post_topbar">
+                                    <div className="usy-dt">
                                       <img src="/images/user40.png" alt="" />
-                                      <div class="usy-name">
+                                      <div className="usy-name">
                                         <h2>{com.user.name}</h2>
                                         <span>
                                           {" "}
@@ -284,16 +284,16 @@ const BlogPost = ({ setisPopupOpen }) => {
                                       </div>
                                     </div>
                                   </div>
-                                  <div class="reply-area">
+                                  <div className="reply-area">
                                     <p>{com.comment}</p>
                                     {/* <span>
-                                        <i class="la la-mail-reply"></i>Reply
+                                        <i className="la la-mail-reply"></i>Reply
                                       </span> */}
                                     {com.replies.map((rep, i) => {
                                       return (
-                                        <div class="comment-area reply-rply1">
-                                          <div class="post_topbar">
-                                            <div class="usy-dt">
+                                        <div key={i} className="comment-area reply-rply1">
+                                          <div className="post_topbar">
+                                            <div className="usy-dt">
                                               <img
                                                 src={
                                                   rep.user.image
@@ -302,7 +302,7 @@ const BlogPost = ({ setisPopupOpen }) => {
                                                 }
                                                 alt=""
                                               />
-                                              <div class="usy-name">
+                                              <div className="usy-name">
                                                 <h3>{rep.user.name}</h3>
                                                 <span>
                                                   <img
@@ -316,10 +316,10 @@ const BlogPost = ({ setisPopupOpen }) => {
                                               </div>
                                             </div>
                                           </div>
-                                          <div class="reply-area">
+                                          <div className="reply-area">
                                             <p>{rep.reply}</p>
                                             <span>
-                                              <i class="la la-mail-reply"></i>
+                                              <i className="la la-mail-reply"></i>
                                               Reply
                                             </span>
                                           </div>

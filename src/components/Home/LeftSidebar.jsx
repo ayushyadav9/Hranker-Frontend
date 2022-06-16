@@ -2,9 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { baseURL } from "../../api";
 import { useSelector } from "react-redux";
+import { userRank } from "../../utils/timeCalculator";
 
 const LeftSidebar = () => {
   let { userData, points } = useSelector((state) => state.user);
+  let { data } = useSelector((state) => state.leaderBoard);
+
   return (
     <div className="col-lg-3 col-md-4 pd-left-none no-pd">
       <div className="main-left-sidebar no-margin">
@@ -59,39 +62,33 @@ const LeftSidebar = () => {
             <i className="la la-ellipsis-v"></i>
           </div>
           <div className="suggestions-list">
-            <div className="suggestion-usd">
-              <img src="/images/resources/s3.png" alt="" />
-              <div className="sgt-text">
-                <h4>Poonam</h4>
-                <span>Wordpress Developer</span>
-              </div>
-              <span>
-                <img src="/images/price1.png" alt="/" />
-                1185
-              </span>
-            </div>
-            <div className="suggestion-usd">
-              <img src="images/resources/s2.png" alt="" />
-              <div className="sgt-text">
-                <h4>John Doe</h4>
-                <span>PHP Developer</span>
-              </div>
-              <span>
-                <img src="/images/price2.png" alt="" />
-                1165
-              </span>
-            </div>
-            <div className="suggestion-usd">
-              <img src="images/resources/s1.png" alt="" />
-              <div className="sgt-text">
-                <h4>Jessica William</h4>
-                <span>Graphic Designer</span>
-              </div>
-              <span>
-                <img src="/images/price3.png" alt="" />
-                1120
-              </span>
-            </div>
+            {data &&
+              data.slice(0, Math.min(3, data.length)).map((item, i) => {
+                return (
+                  <div key={i} className="suggestion-usd">
+                    <img
+                      src={`${
+                        item.image
+                          ? baseURL + "/file/" + item.image
+                          : "/images/luser.jpg"
+                      }`}
+                      alt=""
+                    />
+                    <div className="sgt-text">
+                      <>
+                        <h4>{item.name}</h4>
+                      </>
+                      <span>({item.username})</span>
+                    </div>
+                    <span>
+                      {userRank(i + 1)}
+                      {/* <img src="/images/first.png" alt="/" /> */}
+                      {item.points}
+                    </span>
+                  </div>
+                );
+              })}
+
             <div className="view-more">
               <Link to="/leaderboard" title="">
                 View Leaderboard

@@ -2,7 +2,7 @@ import React from "react";
 
 const Review = ({activeTab}) => {
   return (
-    <div className={`product-feed-tab ${activeTab===5&&"current"}`} id="rewivewdata">
+    <div className={`product-feed-tab ${activeTab===5?"current":""}`} id="rewivewdata">
       <section></section>
       <div className="posts-section">
         <div className="post-bar reviewtitle">
