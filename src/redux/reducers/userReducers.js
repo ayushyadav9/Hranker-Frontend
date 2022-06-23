@@ -12,7 +12,7 @@ const initialState = {
     getNotiLoading: false
   },
   userData: null,
-  points:null,
+  points: null,
   notifications:null,
   savedPosts: null,
   notify:{
@@ -66,6 +66,7 @@ const userReducer = createSlice({
         state.loadings.loginLoading = false;
         if (action.payload.success === true) {
           state.userData = action.payload.data.user;
+          state.points = action.payload.data.user.points
           state.isLoggedIn = true;
           state.userToken = action.payload.data.token;
         } else {
@@ -85,6 +86,7 @@ const userReducer = createSlice({
         state.loadings.loginLoading = false;
         if (action.payload.success === true) {
           state.userData = action.payload.data.user;
+          state.points = action.payload.data.user.points
           state.isLoggedIn = true;
           state.userToken = action.payload.data.token;
         } else {
@@ -103,6 +105,7 @@ const userReducer = createSlice({
         state.loadings.loginLoading = false;
         if (action.payload.success === true) {
           state.userData = action.payload.data.user;
+          state.points = action.payload.data.user.points
           state.isLoggedIn = true;
           state.userToken = action.payload.data.token;
         } else {
@@ -117,7 +120,7 @@ const userReducer = createSlice({
         state.loadings.loginLoading = false;
         state.error = true;
       })
-      //Register User Local
+      //Get Saved Posts
       .addCase(getSavedPosts.fulfilled, (state, action) => {
         state.loadings.savedPostsLoading = false;
         if (action.payload.success === true) {
@@ -173,10 +176,19 @@ const userReducer = createSlice({
       //Add Post To Save
       .addCase(addToSave.fulfilled, (state, action) => {
         if (action.payload.success === true && action.payload.isRemoved === false) {
-          state.userData.saved.blogPosts.push(action.payload._id)
+          if(action.payload.type===1){
+            state.userData.saved.blogPosts.push(action.payload._id)
+          }else{
+            state.userData.saved.quesPosts.push(action.payload._id)
+          }
         } else if(action.payload.success === true && action.payload.isRemoved === true) {
-          const index = state.userData.saved.blogPosts.indexOf(action.payload._id);
-          state.userData.saved.blogPosts.splice(index, 1);
+          if(action.payload.type===1){
+            const index = state.userData.saved.blogPosts.indexOf(action.payload._id);
+            state.userData.saved.blogPosts.splice(index, 1);
+          }else{
+            const index = state.userData.saved.quesPosts.indexOf(action.payload._id);
+            state.userData.saved.quesPosts.splice(index, 1);
+          }
         } else{
           state.error = action.payload.message;
         }

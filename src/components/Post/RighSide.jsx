@@ -45,6 +45,7 @@ const RighSide = ({ postData }) => {
               <span>{postData.viewers?postData.viewers.length:0}</span>
             </li>
           </ul>
+          <p>Report Post</p>
         </div>
         <div className="widget widget-jobs">
           <div className="sd-title">
@@ -105,14 +106,13 @@ const RighSide = ({ postData }) => {
               </TelegramShareButton>
             </ul>
           </div>
+          <div className="sd-title copylink">
+            <p>{window.location.href.slice(0, 27) + "..."}</p>
+            <span>
+              <div onClick={() => copy(window.location.href)}>{copyText}</div>
+            </span>
+          </div>
         </div>
-        
-
-        <div className="widget widget-projectid">
-          <h3>ID : {postData._id}</h3>
-          <p>Report Post</p>
-        </div>
-
         <div className="widget widget-jobs">
           <div className="sd-title">
             <h3>About Post Creator</h3>
@@ -121,26 +121,6 @@ const RighSide = ({ postData }) => {
           <div className="sd-title paymethd">
             <h4>{postData.user.name}</h4>
             <p>Verified</p>
-            <ul className="star">
-              <li>
-                <i className="fa fa-star"></i>
-              </li>
-              <li>
-                <i className="fa fa-star"></i>
-              </li>
-              <li>
-                <i className="fa fa-star"></i>
-              </li>
-              <li>
-                <i className="fa fa-star"></i>
-              </li>
-              <li>
-                <i className="fa fa-star-half-o"></i>
-              </li>
-              <li>
-                <a href="/">5.00 of 5 Reviews</a>
-              </li>
-            </ul>
           </div>
           <div className="sd-title">
             <h4>India</h4>
@@ -148,6 +128,7 @@ const RighSide = ({ postData }) => {
           </div>
           <div className="sd-title">
             <h4>{postData.user.posts.blogPosts.length} Blog Posted</h4>
+            <h4>{postData.user.posts.quesPosts.length} Questions Posted</h4>
             {/* <p>85% Hire Rate, 15% Open Jobs</p> */}
           </div>
           <div className="sd-title">
@@ -156,18 +137,6 @@ const RighSide = ({ postData }) => {
           </div>
         </div>
 
-        <div className="widget widget-jobs">
-          <div className="sd-title">
-            <h3>Post Link</h3>
-            <i className="la la-ellipsis-v"></i>
-          </div>
-          <div className="sd-title copylink">
-            <p>{window.location.href.slice(0, 27) + "..."}</p>
-            <span>
-              <div onClick={() => copy(window.location.href)}>{copyText}</div>
-            </span>
-          </div>
-        </div>
       </div>
     </div>
   );

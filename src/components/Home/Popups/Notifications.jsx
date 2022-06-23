@@ -72,7 +72,7 @@ const Notifications = () => {
                   </div>
                   <div className="notification-info">
                     <h3>
-                      <div href="/" title="">
+                      <div title="">
                         {n.content.split(" ")[0]}
                       </div>{" "}
                       {n.content.slice()

@@ -143,6 +143,9 @@
 	.header-data{padding: 4px;}
 	.logo img {float: none;}
 	.search-bar { display: none;}
+	.user-data {display: none;}
+	.suggestions {display: none;}
+	.tags-sec{display: none;}
 	/* .user-account {float: left;} */
 	.cm_img {display: none;}
 	.cm_img img {float: none;width: 40px;}
@@ -164,7 +167,7 @@
 	main {padding: 20px 0 40px 0}
 	.bk-links {margin-bottom: 10px;}
 	.star-descp {margin-bottom: 25px;}
-	.like-com li {float: left;width: 100%;margin-bottom: 15px;}
+	.like-com li {float: left;margin-bottom: 15px;}
 	.job-status-bar > a {float: left;width: 100%;margin-top: -5px;}
 	.lt-sec h4 {font-size: 14px;}
 	.cc-head ul {float: left;width: 100%;margin-top: 10px;}

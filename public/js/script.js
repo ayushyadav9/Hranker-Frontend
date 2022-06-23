@@ -261,3 +261,12 @@ $(".user-info").on("click", function(){$("#users").hide();
 });
 
 
+var textarea = document.querySelector('textarea');
+textarea.addEventListener('keydown', ()=>{
+    var el = this;
+    console.log(el)
+    setTimeout(function(){
+    el.style.cssText = 'height:auto; padding:0';
+    el.style.cssText = 'height:' + el.scrollHeight + 'px';
+    },0);
+});

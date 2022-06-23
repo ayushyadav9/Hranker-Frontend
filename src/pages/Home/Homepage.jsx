@@ -9,8 +9,10 @@ import { useSelector } from "react-redux";
 
 const Homepage = () => {
   let  { userData} = useSelector((state)=>state.user);
+  const { loadings } = useSelector((state)=>state.post)
   return (
     <>
+    {loadings.voteLoading && <Loader/>}
       {userData? (
         <div>
         <main>

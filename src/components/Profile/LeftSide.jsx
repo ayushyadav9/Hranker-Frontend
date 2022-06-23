@@ -6,7 +6,7 @@ const LeftSide = ({userData}) => {
     <div className="main-left-sidebar">
       <div className="user_profile">
         <div className="user-pro-img">
-          <img src={userData.image?baseURL+"/file/"+ userData.image:"https://assets.leetcode.com/users/avatars/avatar_1654408436.png"} alt="" />
+          <img src={userData.image?baseURL+"/file/"+ userData.image:"/images/luser.jpg"} alt="" />
           <div className="add-dp" id="OpenImgUpload">
             <input type="file" id="file" />
             <label htmlFor="file">

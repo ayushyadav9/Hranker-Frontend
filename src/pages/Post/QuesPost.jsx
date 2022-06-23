@@ -4,21 +4,23 @@ import { useParams } from "react-router-dom";
 import { baseURL } from "../../api";
 import Footer from "../../components/Home/Footer";
 import RighSide from "../../components/Post/RighSide";
-import { addComment, addToSave, toggleLike } from "../../redux/ApiCalls";
+import { addComment, addToSave, handelVote, toggleLike } from "../../redux/ApiCalls";
 import Loader from "../../utils/Loader";
 import { getDateAndTime } from "../../utils/timeCalculator";
 
-const BlogPost = () => {
+const QuesPost = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { userData, userToken } = useSelector((state) => state.user);
   const [postData, setpostData] = useState(null);
-  const [commentValue, setCommentValue] = useState("");
   const [saveLoader, setsaveLoader] = useState(false);
+  const [isAnswered, setisAnswered] = useState(false);
+  const [optionAnswered, setoptionAnswered] = useState(null);
+  const [commentValue, setCommentValue] = useState("");
 
   useEffect(() => {
     if (id) {
-      fetch(`${baseURL}/post/getBlogPost`, {
+      fetch(`${baseURL}/post/getQuesPost`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -42,6 +44,26 @@ const BlogPost = () => {
     }
   }, [id]);
 
+  useEffect(() => {
+    if (postData && userData) {
+      if (postData.options.length > 0) {
+        let t = postData.answeredBy.filter((id) => id === userData._id);
+        for (let i = 0; i < postData.options.length; i++) {
+          let tmp = postData.options[i].votes.filter(
+            (it) => it === userData._id
+          );
+          if (tmp.length > 0) {
+            setoptionAnswered(postData.options[i]);
+            break;
+          }
+        }
+        if (t.length > 0) {
+          setisAnswered(true);
+        }
+      }
+    }
+  }, [postData, userData]);
+
   const handelToggleLike = () => {
     let t = { ...postData };
     if (postData.likers.filter((i) => i === userData._id).length > 0) {
@@ -54,9 +76,32 @@ const BlogPost = () => {
     let data = {
       token: userToken,
       postId: postData._id,
-      postType: 1
+      postType: 2,
     };
     dispatch(toggleLike(data));
+  };
+
+  const handelSavePost = async () => {
+    let data = {
+      token: localStorage.getItem("userJWT"),
+      postId: postData._id,
+      postType: 2,
+    };
+    setsaveLoader(true);
+    await dispatch(addToSave(data));
+    setsaveLoader(false);
+  };
+
+  const calcPercentage = (id) => {
+    if (postData) {
+      if (postData.answeredBy.length > 0) {
+        let votecnts = postData.options[id - 1].votes.length;
+        let pcnt = (votecnts / postData.answeredBy.length) * 100.0;
+        return parseFloat(pcnt.toFixed(2));
+      } else {
+        return 0;
+      }
+    }
   };
 
   const handelAddComment = (e) => {
@@ -78,20 +123,27 @@ const BlogPost = () => {
       token: userToken,
       postId: postData._id,
       commentValue: commentValue,
-      postType: 1
+      postType: 2
     }
     dispatch(addComment(data))
   };
 
-  const handelSavePost = async () => {
+  const handleVote = (id) => {
+    let t= {...postData}
+    t.answeredBy.push(userData._id)
+    t.options.map((n) => {
+      if (n.id === id) {
+        n.votes.push(userData._id)
+      }
+      return n;
+    });
+    setpostData(t);
     let data = {
-      token: localStorage.getItem("userJWT"),
       postId: postData._id,
-      postType: 1
-    };
-    setsaveLoader(true);
-    await dispatch(addToSave(data));
-    setsaveLoader(false);
+      optionId: id,
+      token: userToken,
+    }
+    dispatch(handelVote(data));
   };
 
   return (
@@ -138,26 +190,6 @@ const BlogPost = () => {
                                       Edit Post
                                     </a>
                                   </li>
-                                  <li>
-                                    <a href="/" title="">
-                                      Unsaved
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a href="/" title="">
-                                      Unbid
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a href="/" title="">
-                                      Close
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a href="/" title="">
-                                      Hide
-                                    </a>
-                                  </li>
                                 </ul>
                               </div>
                             </div>
@@ -181,7 +213,7 @@ const BlogPost = () => {
                                       ) : (
                                         <i
                                           className={`${
-                                            userData.saved.blogPosts.filter(
+                                            userData.saved.quesPosts.filter(
                                               (i) => i === postData._id
                                             ).length > 0
                                               ? "la la-check"
@@ -212,6 +244,28 @@ const BlogPost = () => {
                               </ul>
                               <p>{postData.description}</p>
                             </div>
+                            <div className="options-list">
+                              <div className="answers">
+                                {postData.options.length > 0 && isAnswered
+                                  ? postData.options.map((opt, i) => {
+                                      return (
+                                        <div class={`answer ${opt.id===optionAnswered.id?"selected":""}`}>
+                                        <span class="option-value">{String.fromCharCode(opt.id + 96) + ") "}{opt.value}</span>
+                                        <span class="percentage-bar" style={{width:calcPercentage(opt.id)+"%"}}></span>
+                                        <span class="percentage-value">{calcPercentage(opt.id)+"%"}</span>
+                                      </div>
+                                      );
+                                    })
+                                  : postData.options.map((opt, i) => {
+                                      return (
+                                        <div class={`answer`} onClick={()=>handleVote(opt.id)}>
+                                          <span class="option-value">{String.fromCharCode(opt.id + 96) + ") "}{opt.value}</span>
+                                      </div>
+                                      );
+                                    })}
+                              </div>
+                            </div>
+
                             <div className="job-status-bar btm-line">
                               <ul className="like-com">
                                 <li>
@@ -226,7 +280,7 @@ const BlogPost = () => {
                                     onClick={handelToggleLike}
                                   >
                                     <>
-                                      <i className="fas fa-heart"></i> Like{" "}
+                                      <i className="fas fa-heart"></i>{" "}
                                       {postData.likers
                                         ? postData.likers.length
                                         : 0}
@@ -236,7 +290,7 @@ const BlogPost = () => {
                                 <li>
                                   <div href="/" className="com">
                                     <i className="fas fa-comment-alt"></i>{" "}
-                                    Comments {postData.comments.length}
+                                    {postData.comments.length}
                                   </div>
                                 </li>
                               </ul>
@@ -244,16 +298,21 @@ const BlogPost = () => {
                                 <i className="fas fa-eye"></i>Views{" "}
                                 {postData.viewers.length}
                               </div>
+                              {postData.options.length > 0 && (
+                                <div>
+                                  <i class="far fa-calendar-check"></i>Votes{" "}
+                                  {postData.answeredBy
+                                    ? postData.answeredBy.length
+                                    : 0}
+                                </div>
+                              )}
                             </div>
 
                             <div className="comment-section-post">
                               <div className="post-comment-blog">
                                 <div className="cm_img-blog">
                                   {userData.image ? (
-                                    <img
-                                      src={baseURL + "/file/" + userData.image}
-                                      alt=""
-                                    />
+                                    <img src={baseURL + "/file/" + userData.image} alt=""/>
                                   ) : (
                                     <div className="cm_dummy-blog">
                                       {userData.name.charAt(0)}
@@ -263,7 +322,7 @@ const BlogPost = () => {
 
                                 <div className="comment_box-blog">
                                   <form>
-                                    <input
+                                    <textarea
                                       type="text"
                                       placeholder="Post a comment"
                                       value={commentValue}
@@ -271,84 +330,79 @@ const BlogPost = () => {
                                         setCommentValue(e.target.value)
                                       }
                                     />
-                                    <button onClick={handelAddComment} type="submit">
-                                        Send
-                                    </button>
+                                    <button onClick={handelAddComment} type="submit">Send</button>
                                   </form>
                                 </div>
                               </div>
                             </div>
-                            {postData.comments
-                              .slice()
-                              .sort((a, b) => b.createdAt - a.createdAt)
-                              .map((com, i) => {
-                                return (
-                                  <div key={i} className="comment-sec-blog">
-                                    <div className="post_topbar">
-                                      <div className="usy-dt">
-                                        <img src="/images/user40.png" alt="" />
-                                        <div className="usy-name">
-                                          <h2>{com.user.name}</h2>
-                                          <span>
-                                            {" "}
-                                            <img
-                                              src="/images/clock.svg"
-                                              alt=""
-                                            />{" "}
-                                            {getDateAndTime(com.createdAt)}
-                                          </span>
-                                        </div>
+                            {postData.comments.map((com, i) => {
+                              return (
+                                <div key={i} className="comment-sec-blog">
+                                  <div className="post_topbar">
+                                    <div className="usy-dt">
+                                      <img src="/images/user40.png" alt="" />
+                                      <div className="usy-name">
+                                        <h2>{com.user.name}</h2>
+                                        <span>
+                                          {" "}
+                                          <img
+                                            src="/images/clock.svg"
+                                            alt=""
+                                          />{" "}
+                                          {getDateAndTime(com.createdAt)}
+                                        </span>
                                       </div>
                                     </div>
-                                    <div className="reply-area">
-                                      <p>{com.comment}</p>
-                                      {/* <span>
+                                  </div>
+                                  <div className="reply-area">
+                                    <p>{com.comment}</p>
+                                    {/* <span>
                                         <i className="la la-mail-reply"></i>Reply
                                       </span> */}
-                                      {com.replies.map((rep, i) => {
-                                        return (
-                                          <div
-                                            key={i}
-                                            className="comment-area reply-rply1"
-                                          >
-                                            <div className="post_topbar">
-                                              <div className="usy-dt">
-                                                <img
-                                                  src={
-                                                    rep.user.image
-                                                      ? rep.user.image
-                                                      : "images/user40.png"
-                                                  }
-                                                  alt=""
-                                                />
-                                                <div className="usy-name">
-                                                  <h3>{rep.user.name}</h3>
-                                                  <span>
-                                                    <img
-                                                      src="/images/clock.svg"
-                                                      alt=""
-                                                    />
-                                                    {getDateAndTime(
-                                                      rep.createdAt
-                                                    )}
-                                                  </span>
-                                                </div>
+                                    {com.replies.map((rep, i) => {
+                                      return (
+                                        <div
+                                          key={i}
+                                          className="comment-area reply-rply1"
+                                        >
+                                          <div className="post_topbar">
+                                            <div className="usy-dt">
+                                              <img
+                                                src={
+                                                  rep.user.image
+                                                    ? rep.user.image
+                                                    : "images/user40.png"
+                                                }
+                                                alt=""
+                                              />
+                                              <div className="usy-name">
+                                                <h3>{rep.user.name}</h3>
+                                                <span>
+                                                  <img
+                                                    src="/images/clock.svg"
+                                                    alt=""
+                                                  />
+                                                  {getDateAndTime(
+                                                    rep.createdAt
+                                                  )}
+                                                </span>
                                               </div>
                                             </div>
-                                            <div className="reply-area">
-                                              <p>{rep.reply}</p>
-                                              <span>
-                                                <i className="la la-mail-reply"></i>
-                                                Reply
-                                              </span>
-                                            </div>
                                           </div>
-                                        );
-                                      })}
-                                    </div>
+                                          <div className="reply-area">
+                                            <p>{rep.reply}</p>
+                                            <span>
+                                              <i className="la la-mail-reply"></i>
+                                              Reply
+                                            </span>
+                                          </div>
+                                        </div>
+                                      );
+                                    })}
                                   </div>
-                                );
-                              })}
+                                </div>
+                              );
+                            })}
                           </div>
                         </div>
                       </div>
@@ -368,4 +422,4 @@ const BlogPost = () => {
   );
 };
 
-export default BlogPost;
+export default QuesPost;

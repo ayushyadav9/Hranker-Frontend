@@ -73,7 +73,7 @@ const UserProfile = () => {
                             <ul>
                               <li
                                 data-tab="feed-dd"
-                                className={activeTab === 0 && "active"}
+                                className={activeTab === 0 ? "active":""}
                               >
                                 <div title="" onClick={() => setactiveTab(0)}>
                                   <img src="/images/ic1.png" alt="" />
@@ -82,7 +82,7 @@ const UserProfile = () => {
                               </li>
                               <li
                                 data-tab="info-dd"
-                                className={activeTab === 1 && "active"}
+                                className={activeTab === 1 ? "active":""}
                               >
                                 <div title="" onClick={() => setactiveTab(1)}>
                                   <img src="/images/ic2.png" alt="" />

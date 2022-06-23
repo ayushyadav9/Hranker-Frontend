@@ -94,7 +94,7 @@ const Profile = ({ setisPopupOpen }) => {
         <div>
           <section className="cover-sec">
             <img
-              src="https://atiinc.org/wp-content/themes/ati-2016/images/homepage-banner-bg.jpg"
+              src="/images/banner.jpg"
               alt=""
             />
             <div className="add-pic-box">
@@ -159,7 +159,7 @@ const Profile = ({ setisPopupOpen }) => {
                                   <span>Saved</span>
                                 </div>
                               </li>
-                              <li
+                              {/* <li
                                 data-tab="my-bids"
                                 className={activeTab === 3 ? "active":""}
                               >
@@ -194,7 +194,7 @@ const Profile = ({ setisPopupOpen }) => {
                                   <img src="images/ic6.png" alt="" />
                                   <span>Payment</span>
                                 </div>
-                              </li>
+                              </li> */}
                             </ul>
                           </div>
                         </div>

@@ -9,15 +9,20 @@ const Notification = () => {
   let  { loadings,userToken,notifications,isLoggedIn } = useSelector((state)=>state.user);
   const dispatch = useDispatch();
   const [activeTab, setactiveTab] = useState(0);
-  const [notiData, setnotiData] = useState(null);
+  const [tmpNotifications, settmpNotifications] = useState([])
   
   useEffect(() => {
     if(isLoggedIn){
       dispatch(getNotifications(userToken))
-      setnotiData(notifications)
     }
     // eslint-disable-next-line
   }, [isLoggedIn])
+
+  useEffect(() => {
+    if(notifications){
+      settmpNotifications(notifications)
+    }
+  }, [notifications])
   
 
   const changeTab = (id) => {
@@ -29,8 +34,9 @@ const Notification = () => {
     } else if (id === 2) {
       data = notifications.filter((i) => i.isRead);
     }
-    setnotiData(data);
-    console.log(notiData)
+    settmpNotifications(data)
+    // setnotiData(data);
+    // console.log(notiData)
     setactiveTab(id);
   };
 
@@ -84,8 +90,8 @@ const Notification = () => {
                 <div className="row">
                   <div className="col-lg-8">
                     <div className="forum-questions">
-                      {notifications &&
-                        notifications.slice()
+                      {tmpNotifications &&
+                        tmpNotifications.slice()
                           .sort((a, b) => b.createdAt - a.createdAt)
                           .map((noti, i) => {
                             return (
@@ -193,9 +199,6 @@ const Notification = () => {
                         </li>
                       </ul>
                     </div>
-                    {/* <div className="widget widget-adver">
-                                <img src="images/resources/adver-img.png" alt=""/>
-                            </div> */}
                   </div>
                 </div>
               </div>

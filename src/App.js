@@ -15,6 +15,7 @@ import Points from "./pages/Points/Points";
 import UserProfile from "./pages/UserProfile/UserProfile";
 import BlogPost from "./pages/Post/BlogPost";
 import Leaderboard from "./pages/Leaderboard/Leaderboard";
+import QuesPost from "./pages/Post/QuesPost";
 
 function App() {
   const location = useLocation();
@@ -69,7 +70,11 @@ function App() {
           </Route>
 
           <Route element={<ProtectedRoute />}>
-            <Route path="/post/:id" element={<BlogPost setisPopupOpen={setisPopupOpen}/>} />
+            <Route path="/post/:id" element={<BlogPost/>} />
+          </Route>
+
+          <Route element={<ProtectedRoute />}>
+            <Route path="/quesPost/:id" element={<QuesPost/>} />
           </Route>
 
           <Route element={<ProtectedRoute />}>

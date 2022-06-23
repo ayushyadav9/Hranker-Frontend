@@ -19,7 +19,7 @@ const LeftSidebar = () => {
                   src={
                     userData.image
                       ? baseURL + "/file/" + userData.image
-                      : "https://assets.leetcode.com/users/avatars/avatar_1654408436.png"
+                      : "/images/luser.jpg"
                   }
                   alt=""
                 />

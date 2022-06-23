@@ -96,10 +96,24 @@ export const toggleLike = createAsyncThunk("users/toggleLike", async (data) => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${data.token}`,
     },
-    body: JSON.stringify({ postId: data.postId }),
+    body: JSON.stringify({ postId: data.postId, postType: data.postType }),
   });
   let res = await result.json();
   res.postId = data.postId 
+  return res;
+});
+
+export const addComment = createAsyncThunk("post/addComment", async (data) => {
+  let result = await fetch(`${baseURL}/post/addComment`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${data.token}`,
+    },
+    body: JSON.stringify({ postId: data.postId, comment: data.commentValue, postType: data.postType }),
+  });
+  let res = await result.json();
+  res.clientData = data 
   return res;
 });
 
@@ -122,9 +136,10 @@ export const addToSave = createAsyncThunk("users/addToSave", async (data) => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${data.token}`,
     },
-    body: JSON.stringify({ postId: data.postId }),
+    body: JSON.stringify({ postId: data.postId, postType: data.postType }),
   });
   let res = await result.json();
+  res.type = data.postType
   res._id = data.postId 
   return res;
 });
@@ -138,5 +153,21 @@ export const getLeaderboard = createAsyncThunk("users/getLeaderboard", async (to
     },
   });
   let res = await result.json();
+  return res;
+});
+
+export const handelVote = createAsyncThunk("post/voteAnswer", async (data) => {
+  let result = await fetch(`${baseURL}/post/voteAnswer`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${data.token}`,
+    },
+    body: JSON.stringify({ qId: data.postId, optionId: data.optionId }),
+  });
+  let res = await result.json();
+  
+  res.postId = data.postId 
+  res.optionId = data.optionId
   return res;
 });

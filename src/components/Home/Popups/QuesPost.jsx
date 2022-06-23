@@ -1,69 +1,149 @@
 import React, { useState } from "react";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { baseURL } from "../../../api";
+// import { getNewsFeed } from "../../../redux/ApiCalls";
+import { toast } from "react-toastify";
 import { toggleQuesPopup } from "../../../redux/reducers/postReducers";
+// import { updatePoints } from "../../../redux/reducers/userReducers";
+import { defaultTags } from "../../../utils/defaultTags";
+import Page1 from "./QuesPost/Page1";
+import Page2 from "./QuesPost/Page2";
 
 const QuesPost = () => {
-  const {popups} = useSelector((state)=>state.post)
-  const [question, setQuestion] = useState({
-    title:"",
-    description:"",
-    options:[
+  const { popups } = useSelector((state) => state.post);
+  // const { userToken } = useSelector((state) => state.user);
+  const [tags, setTags] = useState(defaultTags);
+  const [question, setQuestion] = useState({ title: "", description: "" });
+  const [options, setoptions] = useState([]);
+  const [dontKnow, setdontKnow] = useState(false);
+  const [active, setactive] = useState(0);
+  const [isLoader, setisLoader] = useState(false)
+
+  const handelTagging = (id) => {
+    let t = [...tags];
+    t[id].isActive = !t[id].isActive;
+    setTags(t);
+  };
+  const handelAddOptions = (e) => {
+    e.preventDefault();
+    setoptions([
+      ...options,
       {
-        placeholder:"Option 1",
-        value:"",
-        isCorrect: false
+        id: (options.length + 1),
+        value: "",
+        isCorrect: false,
       },
-      {
-        placeholder:"Option 2",
-        value:"",
-        isCorrect: false
-      },
-    ]
-  })
-  const dispatch = useDispatch()
-  const handelClose = (e)=>{
-    e.preventDefault()
-    dispatch(toggleQuesPopup())
+    ]);
+  };
+  const handelDeleteOption = (id) => {
+    console.log(id);
+    let t = options.filter((item) => {
+      return item.id !== id;
+    });
+    for(let i=id-1;i<t.length;i++){
+      t[i].id--;
+    }
+    setoptions(t);
+  };
+  const handelUpdateOption = (e, id) => {
+    let t = options.map((item, i) => {
+      if (item.id === id) {
+        item.value = e.target.value;
+      }
+      return item;
+    });
+    setoptions(t);
+  };
+  const resetData = ()=>{
+    setQuestion({
+      title: "",
+      description: ""
+    });
+    setTags([...defaultTags]);
+    setoptions([])
   }
+
+  const handelPost = ()=>{
+    let t = question;
+    t.options = options;
+    t.dontKnow = dontKnow
+    let selectedtags = tags.filter((i) => i.isActive).map((key) => key.name);
+    t.examTags = selectedtags;
+
+    setisLoader(true);
+    fetch(`${baseURL}/post/addQues`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("userJWT")}`,
+      },
+      body: JSON.stringify({formData: t}),
+    })
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          setisLoader(false);
+          if (result.success) {
+            resetData();
+            // dispatch(getNewsFeed(userToken));
+            // dispatch(updatePoints(-25));
+            // dispatch(toggleQuesPopup());
+            toast.success("Post added successfuly");
+            window.location.reload()
+          } else {
+          }
+          console.log(result);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    console.log(t)
+  }
+
+  const dispatch = useDispatch();
+  const handelClose = (e) => {
+    e.preventDefault();
+    dispatch(toggleQuesPopup());
+  };
   return (
-    <div className={`post-popup pst-pj ${popups.quesPopup===true?"active":""}`}>
+    <div
+      className={`post-popup pst-pj ${
+        popups.quesPopup === true ? "active" : ""
+      }`}
+    >
       <div className="post-project">
         <h3>Post a Question</h3>
         <div className="post-project-fields">
-          <form>
-            <div className="row">
-              <div className="col-lg-12">
-                <input type="text" name="title" value={question.title} onChange={(e)=>setQuestion({...question, title:e.target.value})} placeholder="Title" />
-              </div>
-              <div className="col-lg-12">
-                <textarea
-                  name="description"
-                  placeholder="Description"
-                ></textarea>
-              </div>
-              {question.options.map((op,i)=>{
-                return (
-                  <div className="col-lg-12" key={i}>
-                    <input type="text" name="title" placeholder={op.placeholder} />
-                  </div>
-                )
-              })}
-              <div className="col-lg-12">
-                <ul>
-                  <li>
-                    <button className="active" type="submit" value="post">
-                      Post
-                    </button>
-                  </li>
-                  <li>
-                    <button onClick={handelClose} title="">
-                      Cancel
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </form>
+          {active === 0 && (
+            <Page1
+              handelUpdateOption={handelUpdateOption}
+              handelDeleteOption={handelDeleteOption}
+              handelAddOptions={handelAddOptions}
+              handelTagging={handelTagging}
+              question={question}
+              setQuestion={setQuestion}
+              options={options}
+              setoptions = {setoptions}
+              tags={tags}
+              isLoader={isLoader}
+              handelClose={handelClose}
+              setactive={setactive}
+              handelPost={handelPost}
+            />
+          )}
+          {active === 1 && (
+            <Page2 
+              options={options} 
+              handelClose={handelClose}
+              setactive={setactive}
+              setoptions={setoptions}
+              handelPost={handelPost}
+              dontKnow={dontKnow} 
+              isLoader={isLoader}
+              setdontKnow={setdontKnow}
+            />
+          )}
         </div>
 
         <span className="close" onClick={handelClose} title="">

@@ -1,16 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { baseURL } from "../../api";
-import { toast } from "react-toastify";
 import { getDateAndTime } from "../../utils/timeCalculator";
 import Loader from "../../utils/Loader";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addToSave,
-  getNewsFeed,
-  getNotifications,
-  toggleLike,
-} from "../../redux/ApiCalls";
+import {addComment, addToSave, getNotifications, toggleLike,} from "../../redux/ApiCalls";
+
 import { Link } from "react-router-dom";
+
+
 
 const Post = ({ post, userData }) => {
   const dispatch = useDispatch();
@@ -31,38 +28,18 @@ const Post = ({ post, userData }) => {
     })
   }, [])
   
-  const handelAddComment = (e) => {
+  const handelAddComment = async (e) => {
     e.preventDefault();
     setisComLoader(true);
-
-    fetch(`${baseURL}/post/addComment`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("userJWT")}`,
-      },
-      body: JSON.stringify({ postId: post._id, comment: commentValue }),
-    })
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setisComLoader(false);
-          setCommentValue("");
-          if (result.success) {
-            setShowCommentSection(true);
-            toast.success("Comment added successfully");
-          } else {
-            toast.info(result.message);
-          }
-          dispatch(getNewsFeed(userToken));
-          console.log(result);
-        },
-        (error) => {
-          toast.info(error.message);
-          console.log(error);
-        }
-      );
-    console.log(post._id);
+    let data = {
+      token: userToken,
+      postId: post._id,
+      commentValue: commentValue,
+      postType: 1
+    }
+    await dispatch(addComment(data))
+    setisComLoader(false);
+    setCommentValue("");
   };
 
   const handelToggleLike = async (e) => {
@@ -70,6 +47,7 @@ const Post = ({ post, userData }) => {
     let data = {
       token: localStorage.getItem("userJWT"),
       postId: post._id,
+      postType: 1
     };
     setlikeLoading(true);
     await dispatch(toggleLike(data));
@@ -81,6 +59,7 @@ const Post = ({ post, userData }) => {
     let data = {
       token: localStorage.getItem("userJWT"),
       postId: post._id,
+      postType: 1
     };
     setsaveLoader(true);
     await dispatch(addToSave(data));
@@ -94,20 +73,13 @@ const Post = ({ post, userData }) => {
           <div className="post_topbar">
             <div className="usy-dt">
               {post.user.image ? (
-                <img
-                  className="postUserDP"
-                  src={baseURL + "/file/" + post.user.image}
-                  alt=""
-                />
+                <img className="postUserDP" src={baseURL + "/file/" + post.user.image} alt=""/>
               ) : (
                 <div className="user-dummy">{post.user.name.charAt(0)}</div>
               )}
               {/*  */}
               <div className="usy-name">
-                <Link
-                  to={`/user-profile/${post.user.username}`}
-                  target="_blank"
-                >
+                <Link to={`/user-profile/${post.user.username}`} target="_blank">
                   <h3>{post.user.name}</h3>
                 </Link>
                 <span>
@@ -125,31 +97,21 @@ const Post = ({ post, userData }) => {
               >
                 <i className="la la-ellipsis-v"></i>
               </div>
-              <ul className={`ed-options ${isOptionsOpen ? "active":""}`}>
+              <ul className={`ed-options ${isOptionsOpen ? "active" : ""}`}>
                 <li>
-                  <div title="">
-                    Edit Post
-                  </div>
+                  <div title="">Edit Post</div>
                 </li>
                 <li>
-                  <div title="">
-                    Unsaved
-                  </div>
+                  <div title="">Unsaved</div>
                 </li>
                 <li>
-                  <div title="">
-                    Unbid
-                  </div>
+                  <div title="">Unbid</div>
                 </li>
                 <li>
-                  <div title="">
-                    Close
-                  </div>
+                  <div title="">Close</div>
                 </li>
                 <li>
-                  <div title="">
-                    Hide
-                  </div>
+                  <div title="">Hide</div>
                 </li>
               </ul>
             </div>
@@ -167,6 +129,13 @@ const Post = ({ post, userData }) => {
             </ul>
             <ul className="bk-links">
               <li>
+                <Link to={`/post/${post._id}`} target="_blank">
+                  <div className="open-newtab">
+                    <img src="/images/open.svg" alt=""></img>
+                  </div>
+                </Link>
+              </li>
+              <li>
                 <div onClick={handelSavePost} title="">
                   <div className="save">
                     {saveLoader ? (
@@ -174,7 +143,8 @@ const Post = ({ post, userData }) => {
                     ) : (
                       <i
                         className={`${
-                          userData.saved.blogPosts.filter((i) => i === post._id).length > 0
+                          userData.saved.blogPosts.filter((i) => i === post._id)
+                            .length > 0
                             ? "la la-check"
                             : "la la-bookmark"
                         }`}
@@ -185,32 +155,30 @@ const Post = ({ post, userData }) => {
               </li>
             </ul>
           </div>
-          <Link to={`/post/${post._id}`} target="_blank">
-            <div className="job_descp">
-              <h3>{post.title}</h3>
-              <ul className="job-dt">
-                {post.examTags.map((tag, i) => {
-                  return (
-                    <li key={i}>
-                      <div title="">
-                        {tag}
-                      </div>
-                    </li>
-                  );
-                })}
-                {post.image && <img src={post.image} alt=""></img>}
-              </ul>
-              <p>
-                {post.description.length > 25 ? (
-                  <>
-                    {post.description.split(" ").slice(0, 25).join(" ") + "..."}
-                      <span>Read more</span>
-                  </>
-                ) : (
-                  post.description
-                )}
-              </p>
-              <ul className="skill-tags">
+          <div className="job_descp">
+            <h3>{post.title}</h3>
+            <ul className="job-dt">
+              {post.examTags.map((tag, i) => {
+                return (
+                  <li key={i}>
+                    <div title="">{tag}</div>
+                  </li>
+                );
+              })}
+              {post.image && <img src={post.image} alt=""></img>}
+            </ul>
+            <p>
+              {post.description.length > 25 ? (
+                <>
+                  {post.description.split(" ").slice(0, 25).join(" ") + "..."}
+                  <span>Read more</span>
+                </>
+              ) : (
+                post.description
+              )}
+            </p>
+
+            {/* <ul className="skill-tags">
                 <li>
                   <div title="">
                     bank-po
@@ -236,9 +204,9 @@ const Post = ({ post, userData }) => {
                     rrb-clerk
                   </div>
                 </li>
-              </ul>
-            </div>
-          </Link>
+              </ul> */}
+          </div>
+
           <div className="job-status-bar">
             <ul className="like-com">
               <li>
@@ -254,7 +222,7 @@ const Post = ({ post, userData }) => {
                     <Loader isSmall={true} />
                   ) : (
                     <>
-                      <i className="fas fa-heart"></i> {" "}
+                      <i className="fas fa-heart"></i>{" "}
                       {post.likers ? post.likers.length : 0}
                     </>
                   )}
@@ -265,13 +233,13 @@ const Post = ({ post, userData }) => {
                   className="com active"
                   onClick={() => setShowCommentSection((prev) => !prev)}
                 >
-                  <i className="fas fa-comment-alt "></i>{" "}
-                   {post.comments.length}
+                  <i className="fas fa-comment-alt "></i> {post.comments.length}
                 </div>
               </li>
             </ul>
-            <div >
-              <i className="fas fa-eye"></i>Views {post.viewers ? post.viewers.length : 0}
+            <div>
+              <i className="fas fa-eye"></i>Views{" "}
+              {post.viewers ? post.viewers.length : 0}
             </div>
           </div>
         </div>
@@ -282,7 +250,7 @@ const Post = ({ post, userData }) => {
               {userData.image ? (
                 <img src={baseURL + "/file/" + userData.image} alt="" />
               ) : (
-                <div className="cm_dummy">{userData.name.charAt(0)}</div>
+                <img src="/images/luser.jpg" alt=""></img>
               )}
             </div>
 
@@ -304,70 +272,73 @@ const Post = ({ post, userData }) => {
             <>
               <div className="comment-sec">
                 <ul>
-                  {post.comments.map((com, i) => {
-                    return (
-                      <li className="main-comment" key={i}>
-                        <div className="comment-list ">
-                          <div className="bg-img"></div>
-                          <div className="comment">
-                            <div style={{ display: "flex" }}>
-                              <img
-                                className="userProf"
-                                src={
-                                  com.user.image
-                                    ? baseURL + "/file/" + com.user.image
-                                    : "images/user40.png"
-                                }
-                                alt=""
-                              />
-                              <h3>{com.user.name}</h3>
-                              <span>
-                                <img src="images/clock.svg" alt="" />{" "}
-                                {getDateAndTime(com.createdAt)}
-                              </span>
-                            </div>
-                            <p>{com.comment}</p>
-                            {/* <a href="/" title="">
+                  {post.comments
+                    .slice()
+                    .sort((a, b) => b.createdAt - a.createdAt)
+                    .map((com, i) => {
+                      return (
+                        <li className="main-comment" key={i}>
+                          <div className="comment-list ">
+                            <div className="bg-img"></div>
+                            <div className="comment">
+                              <div style={{ display: "flex" }}>
+                                <img
+                                  className="userProf"
+                                  src={
+                                    com.user.image
+                                      ? baseURL + "/file/" + com.user.image
+                                      : "images/user40.png"
+                                  }
+                                  alt=""
+                                />
+                                <h3>{com.user.name}</h3>
+                                <span>
+                                  <img src="images/clock.svg" alt="" />{" "}
+                                  {getDateAndTime(com.createdAt)}
+                                </span>
+                              </div>
+                              <p>{com.comment}</p>
+                              {/* <a href="/" title="">
                               <i className="fa fa-reply-all"></i>Reply
                             </a> */}
+                            </div>
                           </div>
-                        </div>
-                        <ul>
-                          {com.replies.map((rep, i) => {
-                            return (
-                              <li key={i}>
-                                <div className="comment-list ">
-                                  <div className="bg-img"></div>
-                                  <div className="comment">
-                                    <div style={{ display: "flex" }}>
-                                      <img
-                                        className="reply"
-                                        src={
-                                          rep.user.image
-                                            ? rep.user.image
-                                            : "images/user40.png"
-                                        }
-                                        alt=""
-                                      />
-                                      <h3>{rep.user.name}</h3>
-                                      <span>
-                                        <img src="images/clock.svg" alt="" />{" "}
-                                        {getDateAndTime(rep.createdAt)}
-                                      </span>
-                                    </div>
-                                    <p>{rep.reply}</p>
-                                    {/* <a href="/" title="">
+                          <ul>
+                            {com.replies.map((rep, i) => {
+                              return (
+                                <li key={i}>
+                                  <div className="comment-list ">
+                                    <div className="bg-img"></div>
+                                    <div className="comment">
+                                      <div style={{ display: "flex" }}>
+                                        <img
+                                          className="reply"
+                                          src={
+                                            rep.user.image
+                                              ? rep.user.image
+                                              : "images/user40.png"
+                                          }
+                                          alt=""
+                                        />
+                                        <h3>{rep.user.name}</h3>
+                                        <span>
+                                          <img src="images/clock.svg" alt="" />{" "}
+                                          {getDateAndTime(rep.createdAt)}
+                                        </span>
+                                      </div>
+                                      <p>{rep.reply}</p>
+                                      {/* <a href="/" title="">
                                       <i className="fa fa-reply-all"></i>Reply
                                     </a> */}
+                                    </div>
                                   </div>
-                                </div>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </li>
-                    );
-                  })}
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </li>
+                      );
+                    })}
                 </ul>
               </div>
             </>

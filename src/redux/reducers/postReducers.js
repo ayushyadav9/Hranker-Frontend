@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getNewsFeed, toggleLike } from "../ApiCalls";
+import { addComment, getNewsFeed, handelVote, toggleLike } from "../ApiCalls";
 
 const initialState = {
   loadings: {
     newsFeedLoading: false,
     getUserLoading: false,
-    toggleLikeLoading: false
+    toggleLikeLoading: false,
+    voteLoading: false,
+    addCommentLoading: false
   },
   popups:{
     blogPopup:false,
@@ -80,7 +82,57 @@ const postReducer = createSlice({
         state.loadings.toggleLikeLoading = false;
         state.error = true;
       })
-      
+      //Add Comment
+      .addCase(addComment.fulfilled, (state, action) => {
+        state.loadings.addCommentLoading = false;
+        if (action.payload.success === true) {
+            let t = state.postsData.map((n, i) => {
+              if (n._id === action.payload.clientData.postId) {
+                n.comments.push(action.payload.data);
+              }
+              return n;
+            });
+            state.postsData = t
+        } else {
+          state.error = action.payload.message;
+        }
+      })
+      .addCase(addComment.pending, (state, action) => {
+        state.loadings.addCommentLoading = true;
+      })
+      .addCase(addComment.rejected, (state, action) => {
+        state.loadings.addCommentLoading = false;
+        state.error = true;
+      })
+      //Handel Add Vote
+      .addCase(handelVote.fulfilled, (state, action) => {
+        state.loadings.voteLoading = false;
+        if (action.payload.success === true) {
+            let t = state.postsData.map((n) => {
+              if (n._id === action.payload.postId) {
+                n.answeredBy.push(action.payload.userId);
+                n.options.map((opt)=>{
+                  if(opt.id===action.payload.optionId){
+                    console.log(opt)
+                    opt.votes.push(action.payload.userId)
+                  }
+                  return opt
+                })
+              }
+              return n;
+            });
+            state.postsData = t
+        } else {
+          state.error = action.payload.message;
+        }
+      })
+      .addCase(handelVote.pending, (state, action) => {
+        state.loadings.voteLoading = true;
+      })
+      .addCase(handelVote.rejected, (state, action) => {
+        state.loadings.voteLoading = false;
+        state.error = true;
+      })
   },
 });
 
