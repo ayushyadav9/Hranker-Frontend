@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useRef } from "react";
 import Loader from "../../../../utils/Loader";
 import FileBase64 from 'react-file-base64';
 import { useState } from "react";
-import { defaultTags } from "../../../../utils/defaultTags";
+import { subjects } from "../../../../utils/defaultTags";
+import { useEffect } from "react";
 
 
 const Page1 = ({
@@ -13,8 +14,10 @@ const Page1 = ({
   setQuestion,
   options,
   setoptions,
-  selectedTags,
-  setselectedTags,
+  examTags,
+  handelTagging,
+  subjectTags, 
+  setsubjectTags,
   handelClose,
   setactive,
   handelPost,
@@ -22,6 +25,15 @@ const Page1 = ({
 }) => {
   const [examTagText, setExamTagText] = useState("")
   const [filteredTags, setFilteredTags] = useState([])
+  const tagRef = useRef()
+  useEffect(() => {
+    document.body.addEventListener('click',(e)=>{
+      if(!tagRef.current.contains(e.target)){
+        setFilteredTags([])
+      }
+    })
+    // eslint-disable-next-line
+  }, [])
 
   const handelSave = (e) => {
     e.preventDefault();
@@ -37,7 +49,7 @@ const Page1 = ({
   const handleFilter = (event) => {
     const searchWord = event.target.value;
     setExamTagText(searchWord);
-    const newFilter = defaultTags.filter((value) => {
+    const newFilter = subjects.filter((value) => {
       return value.name.toLowerCase().includes(searchWord.toLowerCase());
     });
     if (searchWord === "") {
@@ -48,16 +60,18 @@ const Page1 = ({
   };
 
   const handelTagSelection = (tag) =>{
-    if(selectedTags.indexOf(tag) === -1) {
-      setselectedTags([...selectedTags,tag]);
+    if(subjectTags.indexOf(tag) === -1) {
+      setsubjectTags([...subjectTags,tag]);
     }
+    setFilteredTags([])
+    setExamTagText("")
   }
 
   const handelTagRemove = (tag) =>{
-    let t = [...selectedTags]
+    let t = [...subjectTags]
     const index = t.indexOf(tag)
     t.splice(index, 1);
-    setselectedTags(t);
+    setsubjectTags(t);
   }
 
   return (
@@ -74,9 +88,23 @@ const Page1 = ({
             placeholder="Title"
           />
         </div>
-        <div className="col-lg-12">
+        {examTags.map((tag, i) => {
+                return (
+                  <div
+                    key={i}
+                    onClick={() => {
+                      handelTagging(tag.id);
+                    }}
+                    className={`tags ${tag.isActive ? "active" : ""}`}
+                  >
+                    {tag.name}
+                  </div>
+                );
+              })}
+        <div ref={tagRef} className="col-lg-12">
+        {subjectTags.length>0 &&
           <ul>
-            {selectedTags.map((val,i)=>{
+            {subjectTags.map((val,i)=>{
               return(
                 <li>
                   <div title="" className="skl-name">
@@ -86,18 +114,17 @@ const Page1 = ({
                 </li>
               )
             })}
-            
-          </ul>
+          </ul>}
           <form>
             <input
               type="text"
               onChange={handleFilter}
               value={examTagText}
-              placeholder="ExamTags"
+              placeholder="Search for Subjects"
             />
             {filteredTags.length !== 0 && (
               <div className="dataResult">
-                {filteredTags.slice(0, 5).map((value, key) => {
+                {filteredTags.map((value, key) => {
                   return (
                     <div onClick={()=>handelTagSelection(value.name)} className="dataItem">
                       <p>{value.name} </p>
@@ -112,6 +139,7 @@ const Page1 = ({
           <FileBase64
             className="custom-file-input"
             type="file"
+            placeholder="nsd"
             multiple={false}
             onDone={({ base64 }) => setQuestion({ ...question, image: base64 })}
           />
@@ -119,7 +147,7 @@ const Page1 = ({
 
         <div className="col-lg-12">
           <textarea
-            style={{ height: "64%" }}
+            style={{ height: "80px" }}
             name="description"
             placeholder="Question"
             value={question.description}

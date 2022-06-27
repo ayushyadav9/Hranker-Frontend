@@ -481,10 +481,10 @@ header {
 }
 
 nav {
-  float: left;
-  width: 60%;
+  float: right;
+  /* width: 60%; */
   text-align: right;
-  padding-right: 13px;
+  /* padding-right: 13px; */
 }
 nav ul li {
   display: inline-block;
@@ -641,7 +641,7 @@ nav > ul > li > a:hover {
 
 .user-account {
   float: right;
-  width: 110px;
+  /* width: 110px; */
   box-sizing: border-box;
   position: relative;
 }
@@ -818,7 +818,7 @@ nav > ul > li > a:hover {
 .user-info > i {
   position: absolute;
   top: 51%;
-  right: 10px;
+  right: -3px;
   color: black;
   font-size: 12px;
   -webkit-transform: translateY(-50%);
@@ -2399,7 +2399,7 @@ main {
   width: 100%;
 }
 .post-project-fields form input {
-  padding: 0 15px;
+  padding: 10px;
   height: 40px;
 }
 .post-project-fields form textarea {
@@ -2434,11 +2434,11 @@ main {
   position: absolute;
   border-radius: 7px;
   z-index: 5;
-  height: auto;
+  /* height: auto; */
+  max-height: 140px;
   background-color: white;
   box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
-  overflow: hidden;
-  overflow-y: auto;
+  overflow: scroll;
 }
 
 .dataResult::-webkit-scrollbar {
@@ -3926,6 +3926,9 @@ footer {
   text-transform: uppercase;
   padding: 10px 10px 10px 10px;
   position: relative;
+}
+.skl-name:hover {
+  color: #000;
 }
 .skl-name i {
   cursor: pointer;

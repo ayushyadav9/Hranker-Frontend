@@ -6,21 +6,26 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleBlogPopup } from "../../../redux/reducers/postReducers";
 import { getNewsFeed } from "../../../redux/ApiCalls";
 import { updatePoints } from "../../../redux/reducers/userReducers";
-import FileBase64 from 'react-file-base64';
-import { defaultTags } from "../../../utils/defaultTags";
-
+import FileBase64 from "react-file-base64";
+import { defaultTags, subjects } from "../../../utils/defaultTags";
+import { useRef } from "react";
 
 const BlogPost = () => {
   const [isLoader, setisLoader] = useState(false);
   const { popups } = useSelector((state) => state.post);
   const { userToken } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const tagRef = useRef();
   const [tags, setTags] = useState(defaultTags);
+  const [subjectTags, setsubjectTags] = useState([]);
+  const [filteredTags, setFilteredTags] = useState([]);
+  const [subSearchText, setsubSearchText] = useState("");
   const [formData, setformdata] = useState({
     title: "",
     description: "",
     image: null,
     examTags: [],
+    subjectTags: [],
   });
 
   const resetData = () => {
@@ -46,35 +51,68 @@ const BlogPost = () => {
 
   const handelPost = (e) => {
     e.preventDefault();
-    let selectedtags = tags.filter((i) => i.isActive).map((key) => key.name);
-    formData.examTags = selectedtags;
-    setisLoader(true);
-    fetch(`${baseURL}/post/addBlog`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("userJWT")}`,
-      },
-      body: JSON.stringify(formData),
-    })
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setisLoader(false);
-          if (result.success) {
-            dispatch(updatePoints(-25));
-            dispatch(toggleBlogPopup());
-            dispatch(getNewsFeed(userToken));
-            toast.success("Post added successfuly");
-            resetData();
-          } else {
-          }
-          console.log(result);
+    if (formData.title.length > 0 && formData.description.length > 0) {
+      let selectedtags = tags.filter((i) => i.isActive).map((key) => key.name);
+      formData.examTags = selectedtags;
+      formData.subjectTags = subjectTags;
+      setisLoader(true);
+      fetch(`${baseURL}/post/addBlog`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("userJWT")}`,
         },
-        (error) => {
-          console.log(error);
-        }
-      );
+        body: JSON.stringify(formData),
+      })
+        .then((res) => res.json())
+        .then(
+          (result) => {
+            setisLoader(false);
+            if (result.success) {
+              dispatch(updatePoints(-25));
+              dispatch(toggleBlogPopup());
+              dispatch(getNewsFeed(userToken));
+              toast.success("Post added successfuly");
+              resetData();
+            } else {
+            }
+            console.log(result);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    } else {
+      toast.info("Please add title and description");
+    }
+  };
+
+  const handleFilter = (event) => {
+    const searchWord = event.target.value;
+    setsubSearchText(searchWord);
+    const newFilter = subjects.filter((value) => {
+      return value.name.toLowerCase().includes(searchWord.toLowerCase());
+    });
+    if (searchWord === "") {
+      setFilteredTags([]);
+    } else {
+      setFilteredTags(newFilter);
+    }
+  };
+
+  const handelTagSelection = (tag) => {
+    if (subjectTags.indexOf(tag) === -1) {
+      setsubjectTags([...subjectTags, tag]);
+    }
+    setFilteredTags([]);
+    setsubSearchText("");
+  };
+
+  const handelTagRemove = (tag) => {
+    let t = [...subjectTags];
+    const index = t.indexOf(tag);
+    t.splice(index, 1);
+    setsubjectTags(t);
   };
 
   return (
@@ -112,6 +150,50 @@ const BlogPost = () => {
                   </div>
                 );
               })}
+
+              <div ref={tagRef} className="col-lg-12">
+                {subjectTags.length > 0 && (
+                  <ul>
+                    {subjectTags.map((val, i) => {
+                      return (
+                        <li>
+                          <div title="" className="skl-name">
+                            {val}
+                            <i
+                              onClick={() => {
+                                handelTagRemove(val);
+                              }}
+                              className="la la-close"
+                            ></i>
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+                <form>
+                  <input
+                    type="text"
+                    onChange={handleFilter}
+                    value={subSearchText}
+                    placeholder="Search for Subjects"
+                  />
+                  {filteredTags.length !== 0 && (
+                    <div className="dataResult">
+                      {filteredTags.map((value, key) => {
+                        return (
+                          <div
+                            onClick={() => handelTagSelection(value.name)}
+                            className="dataItem"
+                          >
+                            <p>{value.name} </p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </form>
+              </div>
               <div className="col-lg-12">
                 <textarea
                   name="description"
@@ -123,14 +205,16 @@ const BlogPost = () => {
                 ></textarea>
               </div>
               <div className="col-lg-12">
-              <div className="">
-              <FileBase64
-                  className="custom-file-input"
-                  type="file"
-                  multiple={false}
-                  onDone={({ base64 }) => setformdata({ ...formData, image: base64 })}
-                />
-              </div>
+                <div className="">
+                  <FileBase64
+                    className="custom-file-input"
+                    type="file"
+                    multiple={false}
+                    onDone={({ base64 }) =>
+                      setformdata({ ...formData, image: base64 })
+                    }
+                  />
+                </div>
               </div>
               <div className="col-lg-12">
                 <ul>
