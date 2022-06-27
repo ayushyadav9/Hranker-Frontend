@@ -1937,7 +1937,7 @@ main {
   padding-top: 0px;
   border-bottom-left-radius: 7px;
   border-bottom-right-radius: 7px;
-  box-shadow: 0px 3px #e4e4e4;
+  /* box-shadow: 0px 3px #e4e4e4; */
 }
 .plus-ic {
   float: left;
@@ -2422,9 +2422,45 @@ main {
 }
 .post-project-fields form ul {
   float: left;
-  margin-top: 10px;
+  /* margin-top: 10px; */
+  margin-bottom: 10px;
   width: 100%;
 }
+
+.dataResult {
+  width: 94.7%;
+  margin: -1px;
+  margin-top: -20px;
+  position: absolute;
+  border-radius: 7px;
+  z-index: 5;
+  height: auto;
+  background-color: white;
+  box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+.dataResult::-webkit-scrollbar {
+  display: none;
+}
+
+.dataResult .dataItem {
+  cursor: pointer;
+  width: 100%;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  color: black;
+}
+.dataResult .dataItem:hover {
+  background-color: #c4c1c15e;
+}
+
+.dataItem p {
+  margin-left: 10px;
+}
+
 .post-project-fields form ul li {
   display: inline-block;
   margin-right: 15px;
@@ -3888,8 +3924,12 @@ footer {
   -o-border-radius: 30px;
   border-radius: 30px;
   text-transform: uppercase;
-  padding: 10px 30px 10px 12px;
+  padding: 10px 10px 10px 10px;
   position: relative;
+}
+.skl-name i {
+  cursor: pointer;
+  margin-left: 5px;
 }
 .close-skl {
   position: absolute;

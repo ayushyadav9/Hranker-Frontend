@@ -15,7 +15,7 @@ const QuesPost = () => {
   const { popups } = useSelector((state) => state.post);
   const { userToken } = useSelector((state) => state.user);
   const [tags, setTags] = useState(defaultTags);
-  const [question, setQuestion] = useState({ title: "", description: "" });
+  const [question, setQuestion] = useState({ title: "", description: "",image:null });
   const [options, setoptions] = useState([]);
   const [dontKnow, setdontKnow] = useState(false);
   const [active, setactive] = useState(0);

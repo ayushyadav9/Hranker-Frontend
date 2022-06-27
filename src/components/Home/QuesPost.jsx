@@ -17,6 +17,7 @@ const QuesPost = ({ post, userData }) => {
   
   const optionRef = useRef();
   const [likeLoading, setlikeLoading] = useState(false);
+  const [showCommentSection, setshowCommentSection] = useState(false)
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
   const [saveLoader, setsaveLoader] = useState(false);
   const [isAnswered, setisAnswered] = useState(false);
@@ -40,6 +41,8 @@ const QuesPost = ({ post, userData }) => {
           break;
         }
       }
+    }else{
+      setisAnswered(false)
     }
    // eslint-disable-next-line
   }, [post.answeredBy]);
@@ -273,7 +276,7 @@ const QuesPost = ({ post, userData }) => {
                 </div>
               </li>
               <li>
-                <div className="com active">
+                <div className="com active" onClick={() => setshowCommentSection((prev) => !prev)}>
                   <i className="fas fa-comment-alt "></i> {post.comments.length}
                 </div>
               </li>
@@ -289,6 +292,86 @@ const QuesPost = ({ post, userData }) => {
                 {post.answeredBy ? post.answeredBy.length : 0}
               </div>
             )}
+          </div>
+          <div className="comment-section">
+          <div className="post-comment">
+          {showCommentSection && (
+            <>
+              <div className="comment-sec">
+                <ul>
+                  {post.comments
+                    .slice()
+                    .sort((a, b) => b.createdAt - a.createdAt)
+                    .map((com, i) => {
+                      return (
+                        <li className="main-comment" key={i}>
+                          <div className="comment-list ">
+                            <div className="bg-img"></div>
+                            <div className="comment">
+                              <div style={{ display: "flex" }}>
+                                <img
+                                  className="userProf"
+                                  src={
+                                    com.user.image
+                                      ? baseURL + "/file/" + com.user.image
+                                      : "images/user40.png"
+                                  }
+                                  alt=""
+                                />
+                                <h3>{com.user.name}</h3>
+                                <span>
+                                  <img src="images/clock.svg" alt="" />{" "}
+                                  {getDateAndTime(com.createdAt)}
+                                </span>
+                              </div>
+                              <p>{com.comment}</p>
+                              {/* <a href="/" title="">
+                              <i className="fa fa-reply-all"></i>Reply
+                            </a> */}
+                            </div>
+                          </div>
+                          <ul>
+                            {com.replies.map((rep, i) => {
+                              return (
+                                <li key={i}>
+                                  <div className="comment-list ">
+                                    <div className="bg-img"></div>
+                                    <div className="comment">
+                                      <div style={{ display: "flex" }}>
+                                        <img
+                                          className="reply"
+                                          src={
+                                            rep.user.image
+                                              ? rep.user.image
+                                              : "images/user40.png"
+                                          }
+                                          alt=""
+                                        />
+                                        <h3>{rep.user.name}</h3>
+                                        <span>
+                                          <img src="images/clock.svg" alt="" />{" "}
+                                          {getDateAndTime(rep.createdAt)}
+                                        </span>
+                                      </div>
+                                      <p>{rep.reply}</p>
+                                      {/* <a href="/" title="">
+                                      <i className="fa fa-reply-all"></i>Reply
+                                    </a> */}
+                                    </div>
+                                  </div>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </li>
+                      );
+                    })}
+
+                </ul>
+              </div>
+            </>
+          )}
+          </div>
           </div>
         </div>
       </div>
