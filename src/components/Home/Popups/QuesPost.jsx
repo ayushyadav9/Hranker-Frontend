@@ -5,32 +5,30 @@ import { getNewsFeed } from "../../../redux/ApiCalls";
 import { toast } from "react-toastify";
 import { toggleQuesPopup } from "../../../redux/reducers/postReducers";
 import { updatePoints } from "../../../redux/reducers/userReducers";
-import { defaultTags } from "../../../utils/defaultTags";
 import Page1 from "./QuesPost/Page1";
 import Page2 from "./QuesPost/Page2";
-import { useEffect } from "react";
 
 const QuesPost = () => {
   const dispatch = useDispatch();
   const { popups } = useSelector((state) => state.post);
   const { userToken } = useSelector((state) => state.user);
-  const [tags, setTags] = useState(defaultTags);
+  const [selectedTags, setselectedTags] = useState([])
   const [question, setQuestion] = useState({ title: "", description: "",image:null });
   const [options, setoptions] = useState([]);
   const [dontKnow, setdontKnow] = useState(false);
   const [active, setactive] = useState(0);
   const [isLoader, setisLoader] = useState(false)
 
-  useEffect(() => {
-    setTags(defaultTags)
-  }, [])
+  // useEffect(() => {
+  //   setTags(defaultTags)
+  // }, [])
   
 
-  const handelTagging = (id) => {
-    let t = [...tags];
-    t[id].isActive = !t[id].isActive;
-    setTags(t);
-  };
+  // const handelTagging = (id) => {
+  //   let t = [...tags];
+  //   t[id].isActive = !t[id].isActive;
+  //   setTags(t);
+  // };
   const handelAddOptions = (e) => {
     e.preventDefault();
     setoptions([
@@ -66,7 +64,7 @@ const QuesPost = () => {
       title: "",
       description: ""
     });
-    setTags(defaultTags);
+    setselectedTags([]);
     setactive(0)
     setoptions([])
   }
@@ -75,8 +73,7 @@ const QuesPost = () => {
     let t = question;
     t.options = options;
     t.dontKnow = dontKnow
-    let selectedtags = tags.filter((i) => i.isActive).map((key) => key.name);
-    t.examTags = selectedtags;
+    t.examTags = selectedTags;
 
     setisLoader(true);
     fetch(`${baseURL}/post/addQues`, {
@@ -90,7 +87,6 @@ const QuesPost = () => {
       .then((res) => res.json())
       .then(
         async (result) => {
-          
           if (result.success) {
             resetData();
             dispatch(getNewsFeed(userToken));
@@ -131,12 +127,12 @@ const QuesPost = () => {
               handelUpdateOption={handelUpdateOption}
               handelDeleteOption={handelDeleteOption}
               handelAddOptions={handelAddOptions}
-              handelTagging={handelTagging}
               question={question}
               setQuestion={setQuestion}
               options={options}
               setoptions = {setoptions}
-              tags={tags}
+              selectedTags={selectedTags}
+              setselectedTags={setselectedTags}
               isLoader={isLoader}
               handelClose={handelClose}
               setactive={setactive}

@@ -2,27 +2,26 @@ import React from "react";
 import Loader from "../../../../utils/Loader";
 import FileBase64 from 'react-file-base64';
 import { useState } from "react";
+import { defaultTags } from "../../../../utils/defaultTags";
 
 
 const Page1 = ({
   handelUpdateOption,
   handelDeleteOption,
   handelAddOptions,
-  handelTagging,
   question,
   setQuestion,
   options,
   setoptions,
-  tags,
+  selectedTags,
+  setselectedTags,
   handelClose,
   setactive,
   handelPost,
   isLoader
 }) => {
   const [examTagText, setExamTagText] = useState("")
-  const [selectedTags, setselectedTags] = useState([])
   const [filteredTags, setFilteredTags] = useState([])
-
 
   const handelSave = (e) => {
     e.preventDefault();
@@ -38,7 +37,7 @@ const Page1 = ({
   const handleFilter = (event) => {
     const searchWord = event.target.value;
     setExamTagText(searchWord);
-    const newFilter = tags.filter((value) => {
+    const newFilter = defaultTags.filter((value) => {
       return value.name.toLowerCase().includes(searchWord.toLowerCase());
     });
     if (searchWord === "") {
