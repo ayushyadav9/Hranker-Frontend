@@ -1,42 +1,74 @@
-import React from "react";
+import React, { useState } from "react";
 import { baseURL } from "../../api";
+import { useDispatch, useSelector } from "react-redux";
+import { followUser, unfollowUser } from "../../redux/ApiCalls";
+import { useEffect } from "react";
 
-const LeftSide = ({ userData }) => {
+
+const LeftSide = ({ searchedUserData }) => {
+  let { userToken,userData } = useSelector((state)=>state.user)
+
+  let dispatch = useDispatch()
+  const [isFollowed, setisFollowed] = useState(false)
+
+  useEffect(() => {
+    if(userData){
+      if(userData.following.filter((item)=>item===searchedUserData._id).length>0){
+        setisFollowed(true)
+      }else{
+        setisFollowed(false)
+      }
+    }
+  }, [searchedUserData,userData])
+  
+
+  const handelFollow = ()=>{
+    let data = {
+      token: userToken,
+      username: searchedUserData.username
+    }
+    if(isFollowed){
+      dispatch(unfollowUser(data))
+    }else{
+      dispatch(followUser(data))
+    }
+  }
+
   return (
     <div className="main-left-sidebar">
       <div className="user_profile">
         <div className="user-pro-img">
           <img
             src={
-              userData.image
-                ? baseURL + "/file/" + userData.image
+              searchedUserData.image
+                ? baseURL + "/file/" + searchedUserData.image
                 : "/images/luser.jpg"
             }
             alt=""
           />
         </div>
         <div className="user_pro_status">
-          <div>{userData.points} Points</div>
+          <div>{searchedUserData.points} Points</div>
           <ul className="flw-hr">
             <li>
-              <a href="/" title="" className="flww">
-                <i className="la la-plus"></i> Follow
-              </a>
+              <div onClick = {handelFollow}  title="" className="flww">
+                <i className={`la la-${isFollowed?"check":"plus"}`}></i> {isFollowed?"UnFollow":"Follow"}
+              </div>
             </li>
             <li>
-              <a href="/" title="" className="hre">
+              <div title="" className="hre">
                 Message
-              </a>
+              </div>
             </li>
           </ul>
           <ul className="flw-status">
             <li>
               <span>Following</span>
-              <b>{userData.following ? userData.following.length : 0}</b>
+              <b>{searchedUserData.following ? searchedUserData.following.length : 0}</b>
             </li>
             <li>
               <span>Followers</span>
-              <b>{userData.followers ? userData.followers.length : 0}</b>
+              <b>{searchedUserData.followers ? searchedUserData.followers.length : 0}</b>
             </li>
           </ul>
         </div>

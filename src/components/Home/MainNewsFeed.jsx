@@ -5,6 +5,7 @@ import Post from "./Post";
 import { useDispatch, useSelector } from "react-redux";
 import { getNewsFeed } from "../../redux/ApiCalls";
 import {
+  clearFeed,
   toggleBlogPopup,
   toggleQuesPopup,
 } from "../../redux/reducers/postReducers";
@@ -24,8 +25,12 @@ const MainNewsFeed = () => {
     if (token) {
       dispatch(getNewsFeed(token));
     }
+    return () => {
+      dispatch(clearFeed())
+    }
     // eslint-disable-next-line
   }, []);
+
 
   useEffect(() => {
     if (postsData) {
@@ -84,16 +89,39 @@ const MainNewsFeed = () => {
           <div className="posts-section">
             <div className="post-nav">
               <ul className="nav nav-tabs">
-                <li onClick={() => {handelChangeTab(0)}} className="nav-item">
-                  <div className={`nav-link ${activeTab === 0 ? "active" : ""}`}>All Posts</div>
+                <li
+                  onClick={() => {
+                    handelChangeTab(0);
+                  }}
+                  className="nav-item"
+                >
+                  <div
+                    className={`nav-link ${activeTab === 0 ? "active" : ""}`}
+                  >
+                    All Posts
+                  </div>
                 </li>
-                <li onClick={() => { handelChangeTab(1) }} className="nav-item">
-                  <div className={`nav-link ${activeTab === 1 ? "active" : ""}`}>
+                <li
+                  onClick={() => {
+                    handelChangeTab(1);
+                  }}
+                  className="nav-item"
+                >
+                  <div
+                    className={`nav-link ${activeTab === 1 ? "active" : ""}`}
+                  >
                     Blog Posts
                   </div>
                 </li>
-                <li onClick={() => {handelChangeTab(2);}} className="nav-item" >
-                  <div className={`nav-link ${activeTab === 2 ? "active" : ""}`}>
+                <li
+                  onClick={() => {
+                    handelChangeTab(2);
+                  }}
+                  className="nav-item"
+                >
+                  <div
+                    className={`nav-link ${activeTab === 2 ? "active" : ""}`}
+                  >
                     Question Posts
                   </div>
                 </li>
@@ -103,17 +131,16 @@ const MainNewsFeed = () => {
               <Loader isSmall={true} />
             ) : (
               temPostData &&
-              temPostData.map((post, i) => {
-                return post.type === 1 ? (
-                  <Post key={i} post={post} userData={userData} />
-                ) : (
-                  <QuesPost
-                    key={i}
-                    post={post}
-                    userData={userData}
-                  />
-                );
-              })
+              temPostData
+                .slice()
+                .sort((a, b) => b.createdAt - a.createdAt)
+                .map((post, i) => {
+                  return post.type === 1 ? (
+                    <Post key={i} post={post} userData={userData} />
+                  ) : (
+                    <QuesPost key={i} post={post} userData={userData} />
+                  );
+                })
             )}
           </div>
         </div>

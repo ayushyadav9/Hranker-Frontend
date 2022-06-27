@@ -9,7 +9,7 @@ import Loader from "../../utils/Loader";
 
 const UserProfile = () => {
   const [activeTab, setactiveTab] = useState(0);
-  const [userData, setuserData] = useState(null);
+  const [searchedUserData, setsearchedUserData] = useState(null);
   const [isLoading, setisLoading] = useState(false);
   const { username } = useParams();
   useEffect(() => {
@@ -28,7 +28,7 @@ const UserProfile = () => {
             setisLoading(false);
             console.log(result);
             if (result.success) {
-              setuserData(result.user);
+              setsearchedUserData(result.user);
             } else {
             }
           },
@@ -40,10 +40,12 @@ const UserProfile = () => {
     }
   }, [username]);
 
+  
+
   return (
     <>
       {isLoading && <Loader />}
-      {userData ? (
+      {searchedUserData ? (
         <div>
           <section className="cover-sec">
             <img
@@ -57,16 +59,16 @@ const UserProfile = () => {
                 <div className="main-section-data">
                   <div className="row">
                     <div className="col-lg-3">
-                      <LeftSide userData={userData} />
+                      <LeftSide searchedUserData={searchedUserData} />
                     </div>
                     <div className="col-lg-6">
                       <div className="main-ws-sec">
                         <div className="user-tab-sec rewivew">
-                          <h3>{userData.name}</h3>
-                          <h2>({userData.username})</h2>
+                          <h3>{searchedUserData.name}</h3>
+                          <h2>({searchedUserData.username})</h2>
                           <div className="star-descp">
                             <span>
-                              {userData.about ? userData.about : "No bio yet"}
+                              {searchedUserData.about ? searchedUserData.about : "No bio yet"}
                             </span>
                           </div>
                           <div className="tab-feed st2 settingjb">
@@ -92,9 +94,9 @@ const UserProfile = () => {
                             </ul>
                           </div>
                         </div>
-                        <Feed userData={userData} activeTab={activeTab} />
+                        <Feed userData={searchedUserData} activeTab={activeTab} />
                         <Info
-                          info={userData.info}
+                          info={searchedUserData.info}
                           activeTab={activeTab}
                         />
                       </div>

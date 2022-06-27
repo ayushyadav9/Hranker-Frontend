@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginUser, getUser, googleLoginUser, registerUser, getSavedPosts, markNotiAsRead, getNotifications, addToSave } from "../ApiCalls";
+import { loginUser, getUser, googleLoginUser, registerUser, getSavedPosts, markNotiAsRead, getNotifications, addToSave, followUser, unfollowUser } from "../ApiCalls";
 
 const initialState = {
   isLoggedIn: false,
@@ -9,7 +9,8 @@ const initialState = {
     getUserLoading: false,
     savedPostsLoading: false,
     notiReadLoading: false,
-    getNotiLoading: false
+    getNotiLoading: false,
+    followLoading: false
   },
   userData: null,
   points: null,
@@ -198,6 +199,37 @@ const userReducer = createSlice({
       })
       .addCase(addToSave.rejected, (state, action) => {
         // state.loadings.getNotiLoading = false;
+        state.error = true;
+      })
+      //Follow User
+      .addCase(followUser.fulfilled, (state, action) => {
+        if (action.payload.success === true){
+          state.userData.following.push(action.payload.userId)
+        } else{
+          state.error = action.payload.message;
+        }
+      })
+      .addCase(followUser.pending, (state, action) => {
+        state.loadings.followLoading = true;
+      })
+      .addCase(followUser.rejected, (state, action) => {
+        state.loadings.followLoading = false;
+        state.error = true;
+      })
+      //Unfollow User
+      .addCase(unfollowUser.fulfilled, (state, action) => {
+        if (action.payload.success === true){
+          const index = state.userData.following.indexOf(action.payload.userId);
+          state.userData.following.splice(index, 1);
+        } else{
+          state.error = action.payload.message;
+        }
+      })
+      .addCase(unfollowUser.pending, (state, action) => {
+        state.loadings.followLoading = true;
+      })
+      .addCase(unfollowUser.rejected, (state, action) => {
+        state.loadings.followLoading = false;
         state.error = true;
       })
   },

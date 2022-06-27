@@ -298,7 +298,7 @@ nav ul li:hover > ul,
 .sign_in_sec form button,
 .signup-tab,
 .login-resources ul li a,
-.flw-hr li a,
+.flw-hr li div,
 .message-btn a,
 .user-profile-ov,
 .portfolio-gallery-sec,
@@ -1469,7 +1469,7 @@ main {
 .options-list .answers .answer span.percentage-value {
   position: absolute;
   top: 50%;
-  right: 0px;
+  right: 11px;
   width: 40px;
   transform: translateY(-50%);
   color: #111;
@@ -3260,14 +3260,15 @@ footer {
 .flw-hr li:last-child {
   margin-right: 0;
 }
-.flw-hr li a {
+.flw-hr li div {
+  cursor: pointer;
   display: inline-block;
   color: #ffffff;
   font-size: 16px;
   font-weight: 600;
   padding: 11px 15px;
 }
-.flw-hr li a i {
+.flw-hr li div i {
   padding-right: 5px;
 }
 .flww {

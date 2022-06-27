@@ -24,8 +24,13 @@ const QuesPost = ({ post, userData }) => {
   const [correctOption, setcorrectOption] = useState(null)
 
   useEffect(() => {
-    if (post && post.options.length > 0) {
+    if (post.options.length > 0) {
       let t = post.answeredBy.filter((id) => id === userData._id);
+      console.log(t)
+      if(t.length===0) setisAnswered(false);
+      if (t.length > 0) {
+        setisAnswered(true);
+      }
       let copt = post.options.filter((it) => it.isCorrect);
       setcorrectOption(copt)
       for (let i = 0; i < post.options.length; i++) {
@@ -35,12 +40,9 @@ const QuesPost = ({ post, userData }) => {
           break;
         }
       }
-      if (t.length > 0) {
-        setisAnswered(true);
-      }
     }
-    // setpollOptions(post.options);
-  }, [post, userData]);
+   // eslint-disable-next-line
+  }, [post.answeredBy]);
 
   useEffect(() => {
     document.body.addEventListener("click", (e) => {

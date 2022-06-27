@@ -4,10 +4,10 @@ const RightSide = () => {
   return (
     <div className="right-sidebar">
     <div className="message-btn">
-      <a href="profile-account-setting.html" title="">
+      {/* <a href="profile-account-setting.html" title="">
         <i className="fas fa-cog"></i>
         Message
-      </a>
+      </a> */}
     </div>
     <div className="widget widget-portfolio">
       <div className="wd-heady">

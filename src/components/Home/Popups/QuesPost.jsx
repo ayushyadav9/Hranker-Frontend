@@ -1,23 +1,30 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { baseURL } from "../../../api";
-// import { getNewsFeed } from "../../../redux/ApiCalls";
+import { getNewsFeed } from "../../../redux/ApiCalls";
 import { toast } from "react-toastify";
 import { toggleQuesPopup } from "../../../redux/reducers/postReducers";
-// import { updatePoints } from "../../../redux/reducers/userReducers";
+import { updatePoints } from "../../../redux/reducers/userReducers";
 import { defaultTags } from "../../../utils/defaultTags";
 import Page1 from "./QuesPost/Page1";
 import Page2 from "./QuesPost/Page2";
+import { useEffect } from "react";
 
 const QuesPost = () => {
+  const dispatch = useDispatch();
   const { popups } = useSelector((state) => state.post);
-  // const { userToken } = useSelector((state) => state.user);
+  const { userToken } = useSelector((state) => state.user);
   const [tags, setTags] = useState(defaultTags);
   const [question, setQuestion] = useState({ title: "", description: "" });
   const [options, setoptions] = useState([]);
   const [dontKnow, setdontKnow] = useState(false);
   const [active, setactive] = useState(0);
   const [isLoader, setisLoader] = useState(false)
+
+  useEffect(() => {
+    setTags(defaultTags)
+  }, [])
+  
 
   const handelTagging = (id) => {
     let t = [...tags];
@@ -59,7 +66,8 @@ const QuesPost = () => {
       title: "",
       description: ""
     });
-    setTags([...defaultTags]);
+    setTags(defaultTags);
+    setactive(0)
     setoptions([])
   }
 
@@ -81,31 +89,34 @@ const QuesPost = () => {
     })
       .then((res) => res.json())
       .then(
-        (result) => {
-          setisLoader(false);
+        async (result) => {
+          
           if (result.success) {
             resetData();
-            // dispatch(getNewsFeed(userToken));
-            // dispatch(updatePoints(-25));
-            // dispatch(toggleQuesPopup());
+            dispatch(getNewsFeed(userToken));
+            dispatch(updatePoints(-25));
+            
             toast.success("Post added successfuly");
-            window.location.reload()
+            // window.location.reload()
           } else {
           }
           console.log(result);
+          dispatch(toggleQuesPopup());
+          setisLoader(false);
         },
         (error) => {
           console.log(error);
         }
       );
+      
     console.log(t)
   }
-
-  const dispatch = useDispatch();
+  
   const handelClose = (e) => {
     e.preventDefault();
     dispatch(toggleQuesPopup());
   };
+  
   return (
     <div
       className={`post-popup pst-pj ${

@@ -171,3 +171,29 @@ export const handelVote = createAsyncThunk("post/voteAnswer", async (data) => {
   res.optionId = data.optionId
   return res;
 });
+
+export const followUser = createAsyncThunk("auth/follow", async (data) => {
+  let result = await fetch(`${baseURL}/auth/follow`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${data.token}`,
+    },
+    body: JSON.stringify({ username: data.username }),
+  });
+  let res = await result.json();
+  return res;
+});
+
+export const unfollowUser = createAsyncThunk("auth/unfollow", async (data) => {
+  let result = await fetch(`${baseURL}/auth/unfollow`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${data.token}`,
+    },
+    body: JSON.stringify({ username: data.username }),
+  });
+  let res = await result.json();
+  return res;
+});

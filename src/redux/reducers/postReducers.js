@@ -30,6 +30,9 @@ const postReducer = createSlice({
     toggleQuesPopup(state){
       state.popups.quesPopup = !state.popups.quesPopup
     },
+    clearFeed(state){
+      state.postsData = null
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -136,5 +139,5 @@ const postReducer = createSlice({
   },
 });
 
-export const { setToken, toggleBlogPopup, toggleQuesPopup } = postReducer.actions;
+export const { setToken, toggleBlogPopup, toggleQuesPopup, clearFeed } = postReducer.actions;
 export default postReducer.reducer;
