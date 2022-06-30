@@ -79,6 +79,7 @@ const Chat = () => {
 
   const handelChatData = async (con) => {
     setactiveChat(con);
+    setmessages([])
     fetch(`${baseURL}/chat/getMessages`, {
       method: "POST",
       headers: {
@@ -109,7 +110,15 @@ const Chat = () => {
       receiverId: activeChat._id,
       text: messageText,
     });
-
+    setmessages([
+      ...messages,
+      {
+        conversationId: activeChat.convId,
+        senderId: userData._id,
+        createdAt: new Date().getTime(),
+        text: messageText,
+      },
+    ]);
     if(messageText.length>0){
       fetch(`${baseURL}/chat/addMessage`, {
         method: "POST",
@@ -124,7 +133,7 @@ const Chat = () => {
           (result) => {
             setmessageText("")
             if (result.success) {
-              setmessages([...messages,result.data])
+              // setmessages([...messages,result.data])
             } 
             console.log(result);
           },
