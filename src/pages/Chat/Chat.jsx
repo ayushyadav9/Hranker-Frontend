@@ -5,20 +5,22 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { baseURL } from "../../api";
 import { getConversations } from "../../redux/ApiCalls";
-import { getDateAndTime } from "../../utils/timeCalculator";
+import { chatTime } from "../../utils/timeCalculator";
 import { io } from "socket.io-client";
+import Loader from "../../utils/Loader";
 
 const Chat = () => {
   const dispatch = useDispatch();
   const { userToken, userData } = useSelector((state) => state.user);
-  const { conversations } = useSelector((state) => state.chat);
+  const { conversations, loadings } = useSelector((state) => state.chat);
   const [convoData, setconvoData] = useState(null);
   const [activeChat, setactiveChat] = useState(null);
   const [messages, setmessages] = useState(null);
-  const [messageText, setmessageText] = useState("")
-  const [onlineUsers, setonlineUsers] = useState([])
+  const [messageText, setmessageText] = useState("");
+  const [onlineUsers, setonlineUsers] = useState([]);
   const [arrivalMessage, setArrivalMessage] = useState(null);
-  const scrollRef = useRef()
+  const [messageLoader, setmessageLoader] = useState(false)
+  const scrollRef = useRef();
   const socket = useRef();
 
   useEffect(() => {
@@ -40,21 +42,22 @@ const Chat = () => {
   }, []);
 
   useEffect(() => {
-    console.log(arrivalMessage)
+    console.log(arrivalMessage);
     arrivalMessage &&
-    (activeChat._id === arrivalMessage.senderId  || userData._id === arrivalMessage.senderId) &&
+      (activeChat._id === arrivalMessage.senderId ||
+        userData._id === arrivalMessage.senderId) &&
       setmessages((prev) => [...prev, arrivalMessage]);
   }, [arrivalMessage, activeChat, userData]);
 
   useEffect(() => {
-    if(userData){
+    if (userData) {
       socket.current.emit("addUser", userData._id);
       socket.current.on("getUsers", (users) => {
-        console.log(users)
-        let t = users.map(item=>{
-          return item.userId
-        })
-        setonlineUsers(t)
+        console.log(users);
+        let t = users.map((item) => {
+          return item.userId;
+        });
+        setonlineUsers(t);
       });
     }
   }, [userData]);
@@ -73,14 +76,15 @@ const Chat = () => {
           : "";
         t.push(tmems);
       }
-      console.log(t)
+      console.log(t);
       setconvoData(t);
     }
   }, [conversations, userData]);
 
   const handelChatData = async (con) => {
+    setmessages([]);
     setactiveChat(con);
-    setmessages([])
+    setmessageLoader(true)
     fetch(`${baseURL}/chat/getMessages`, {
       method: "POST",
       headers: {
@@ -92,9 +96,10 @@ const Chat = () => {
       .then((res) => res.json())
       .then(
         (result) => {
+          setmessageLoader(false)
           if (result.success) {
             setmessages(result.data);
-          } 
+          }
           console.log(result);
         },
         (error) => {
@@ -103,24 +108,24 @@ const Chat = () => {
       );
   };
 
-  const handelSendMessage = (e)=>{
-    e.preventDefault()
-
-    socket.current.emit("sendMessage", {
-      senderId: userData._id,
-      receiverId: activeChat._id,
-      text: messageText,
-    });
-    setmessages([
-      ...messages,
-      {
-        conversationId: activeChat.convId,
+  const handelSendMessage = (e) => {
+    e.preventDefault();
+    if (messageText.length > 0) {
+      socket.current.emit("sendMessage", {
         senderId: userData._id,
-        createdAt: new Date().getTime(),
+        receiverId: activeChat._id,
         text: messageText,
-      },
-    ]);
-    if(messageText.length>0){
+      });
+      setmessageText("");
+      setmessages([
+        ...messages,
+        {
+          conversationId: activeChat.convId,
+          senderId: userData._id,
+          createdAt: new Date().getTime(),
+          text: messageText,
+        },
+      ]);
       fetch(`${baseURL}/chat/addMessage`, {
         method: "POST",
         headers: {
@@ -132,10 +137,6 @@ const Chat = () => {
         .then((res) => res.json())
         .then(
           (result) => {
-            setmessageText("")
-            if (result.success) {
-              // setmessages([...messages,result.data])
-            } 
             console.log(result);
           },
           (error) => {
@@ -143,7 +144,8 @@ const Chat = () => {
           }
         );
     }
-  }
+  };
+
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, activeChat]);
@@ -172,47 +174,76 @@ const Chat = () => {
                     </ul>
                   </div>
                   <div class="messages-list">
+                    {loadings.getCovoLoading?<Loader isSmall={true}/>:
                     <ul>
                       {convoData?.map((con, i) => {
                         return (
                           <li
                             onClick={() => handelChatData(con)}
                             key={i}
-                            class={activeChat && activeChat._id === con._id ? "active" : ""}
+                            class={
+                              activeChat && activeChat._id === con._id
+                                ? "active"
+                                : ""
+                            }
                           >
                             <div class="usr-msg-details">
                               <div class="usr-ms-img">
-                                <img src={con.image?baseURL + "/file/" + con.image:"/images/luser.jpg"} alt="" />
-                                {onlineUsers.includes(con._id) && <span class="msg-status"></span>}
+                                <img
+                                  src={
+                                    con.image
+                                      ? baseURL + "/file/" + con.image
+                                      : "/images/luser.jpg"
+                                  }
+                                  alt=""
+                                />
+                                {onlineUsers.includes(con._id) && (
+                                  <span class="msg-status"></span>
+                                )}
                               </div>
                               <div class="usr-mg-info">
                                 <h3>{con.name}</h3>
                                 <p>{con.lastMessage?.text} </p>
                               </div>
-                              <span class="posted_time">{con.lastMessage? getDateAndTime(con.lastMessage.createdAt): ""}</span>
+                              <span class="posted_time">
+                                {con.lastMessage
+                                  ? chatTime(con.lastMessage.createdAt)
+                                  : ""}
+                              </span>
                               {/* <span class="msg-notifc">1</span> */}
                             </div>
                           </li>
                         );
                       })}
-                    </ul>
+                    </ul>}
                   </div>
                 </div>
               </div>
               <div class="col-lg-8 col-md-12 pd-right-none pd-left-none">
-                <div class="main-conversation-box">
+                { activeChat? <div class="main-conversation-box">
                   <div class="message-bar-head">
                     <div class="usr-msg-details">
                       <div class="usr-ms-img">
-                        <img src={activeChat?.image? baseURL + "/file/" + activeChat.image:"/images/luser.jpg"} alt="" />
+                        <img
+                          src={
+                            activeChat?.image
+                              ? baseURL + "/file/" + activeChat.image
+                              : "/images/luser.jpg"
+                          }
+                          alt=""
+                        />
                       </div>
                       <div class="usr-mg-info">
-                        {onlineUsers.includes(activeChat?._id)? 
-                          <><h3>{activeChat? activeChat.name:""}</h3>
-                          <p>Online</p></>:
-                          <h3 className="isOnline">{activeChat? activeChat.name:""}</h3>
-                        }
-                        
+                        {onlineUsers.includes(activeChat?._id) ? (
+                          <>
+                            <h3>{activeChat ? activeChat.name : ""}</h3>
+                            <p>Online</p>
+                          </>
+                        ) : (
+                          <h3 className="isOnline">
+                            {activeChat ? activeChat.name : ""}
+                          </h3>
+                        )}
                       </div>
                     </div>
                     <a href="/" title="">
@@ -220,36 +251,52 @@ const Chat = () => {
                     </a>
                   </div>
                   <div class="messages-line">
-                    
-                    {userData && messages?.map((mes, i) => {
-                      return mes.senderId === userData._id ? (
-                        <div ref={scrollRef} class="main-message-box ta-right">
-                          <div class="message-dt">
-                            <div class="message-inner-dt">
-                              <p>{mes.text}</p>
+                  {messageLoader?<Loader isSmall={true}/>:<>
+                    {userData &&
+                      messages?.map((mes, i) => {
+                        return mes.senderId === userData._id ? (
+                          <div
+                            ref={scrollRef}
+                            class="main-message-box ta-right"
+                          >
+                            <div class="message-dt">
+                              <div class="message-inner-dt">
+                                <p>{mes.text}</p>
+                              </div>
+                              <span>{chatTime(mes.createdAt)}</span>
                             </div>
-                            <span>{getDateAndTime(mes.createdAt)}</span>
-                          </div>
-                          <div class="messg-usr-img">
-                            <img src={userData?.image?baseURL + "/file/" + userData.image:"/images/luser.jpg"} alt="" />
-                          </div>
-                        </div>
-                      ) : (
-                        <div ref={scrollRef} class="main-message-box st3">
-                          <div class="message-dt st3">
-                            <div class="message-inner-dt">
-                              <p>
-                                {mes.text}
-                              </p>
+                            <div class="messg-usr-img">
+                              <img
+                                src={
+                                  userData?.image
+                                    ? baseURL + "/file/" + userData.image
+                                    : "/images/luser.jpg"
+                                }
+                                alt=""
+                              />
                             </div>
-                            <span>{getDateAndTime(mes.createdAt)}</span>
                           </div>
-                          <div class="messg-usr-img">
-                            <img src={activeChat.image?baseURL + "/file/" + activeChat.image:"/images/luser.jpg"} alt="" />
+                        ) : (
+                          <div ref={scrollRef} class="main-message-box st3">
+                            <div class="message-dt st3">
+                              <div class="message-inner-dt">
+                                <p>{mes.text}</p>
+                              </div>
+                              <span>{chatTime(mes.createdAt)}</span>
+                            </div>
+                            <div class="messg-usr-img">
+                              <img
+                                src={
+                                  activeChat.image
+                                    ? baseURL + "/file/" + activeChat.image
+                                    : "/images/luser.jpg"
+                                }
+                                alt=""
+                              />
+                            </div>
                           </div>
-                        </div>
-                      )
-                    })}
+                        );
+                      })}</>}
                   </div>
                   <div class="message-send-area">
                     <form>
@@ -258,14 +305,25 @@ const Chat = () => {
                           type="text"
                           name="message"
                           value={messageText}
-                          onChange={(e)=>setmessageText(e.target.value)}
+                          onChange={(e) => setmessageText(e.target.value)}
                           placeholder="Type a message here"
                         />
-                        <button type="submit" onClick={handelSendMessage}>Send</button>
+                        <button type="submit" onClick={handelSendMessage}>
+                        <svg viewBox="0 0 24 24" width="24" height="24" class=""><path fill="currentColor" d="M1.101 21.757 23.8 12.028 1.101 2.3l.011 7.912 13.623 1.816-13.623 1.817-.011 7.912z"></path></svg>
+                        </button>
                       </div>
                     </form>
                   </div>
+                </div>:
+                <div class="no-chat">
+                  <div>
+                  <img src="/images/conv.png" alt=""></img>
+                  </div>
+                  <div>
+                    <h1>Select a chat to start conversation</h1>
+                  </div>
                 </div>
+                }
               </div>
             </div>
           </div>

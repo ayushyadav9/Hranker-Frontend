@@ -5604,7 +5604,7 @@ a:hover {
   float: left;
   overflow: auto;
   width: 100%;
-  height: 503px;
+  height: 519px;
 }
 messages-list::-webkit-scrollbar {
   width: 0px;
@@ -5715,6 +5715,26 @@ messages-list::-webkit-scrollbar {
 }
 
 /* =============== main-message-box ============= */
+
+.no-chat{
+  background-color: #fff;
+  height: 100%;
+}
+.no-chat>div{
+  margin: auto;
+  display: flex;
+  justify-content: center;
+}
+.no-chat img{
+  width: 44%;
+  padding: 70px;
+  margin-top: 50px;
+}
+.no-chat h1{
+  font-weight: 600;
+  color: #a3a7a8;
+  font-size: 31px;
+}
 
 .main-conversation-box {
   float: left;
@@ -7912,6 +7932,7 @@ ul#myTab {
 
 .smallLoader-container {
   width: 100%;
+  height: 100%;
   /* background-color: rgba(0,0,0,0.75); */
   display: flex;
   align-items: center;
