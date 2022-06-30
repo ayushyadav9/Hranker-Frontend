@@ -14,13 +14,18 @@ const Chat = () => {
   const { userToken, userData } = useSelector((state) => state.user);
   const { conversations, loadings } = useSelector((state) => state.chat);
   const [convoData, setconvoData] = useState(null);
+  const [searchUserText, setsearchUserText] = useState("");
   const [activeChat, setactiveChat] = useState(null);
-  const [messages, setmessages] = useState(null);
+  const [messages, setmessages] = useState([]);
   const [messageText, setmessageText] = useState("");
   const [onlineUsers, setonlineUsers] = useState([]);
   const [arrivalMessage, setArrivalMessage] = useState(null);
-  const [messageLoader, setmessageLoader] = useState(false)
+  const [messageLoader, setmessageLoader] = useState(false);
+  const [searchBar, setsearchBar] = useState(false);
+  const [filteredUsers, setfilteredUsers] = useState(null);
+  const [filterLoading, setfilterLoading] = useState(false);
   const scrollRef = useRef();
+  const userDrop = useRef();
   const socket = useRef();
 
   useEffect(() => {
@@ -43,10 +48,11 @@ const Chat = () => {
 
   useEffect(() => {
     console.log(arrivalMessage);
-    let t= [activeChat?._id, userData?._id]
-    console.log(t)
+    let t = [activeChat?._id, userData?._id];
+    console.log(t);
     arrivalMessage &&
-    [activeChat?._id, userData?._id].includes(arrivalMessage.senderId) && setmessages((prev) => [...prev, arrivalMessage]);
+      [activeChat?._id, userData?._id].includes(arrivalMessage.senderId) &&
+      setmessages((prev) => [...prev, arrivalMessage]);
   }, [arrivalMessage, activeChat, userData]);
 
   useEffect(() => {
@@ -71,19 +77,32 @@ const Chat = () => {
         })[0];
         let tmems = JSON.parse(JSON.stringify(mems));
         tmems.convId = conversations[i]._id;
+        tmems.createdAt = conversations[i].createdAt;
         tmems.lastMessage = conversations[i].lastMessage
           ? conversations[i].lastMessage
           : "";
         t.push(tmems);
       }
+      console.log(t)
       setconvoData(t);
     }
   }, [conversations, userData]);
 
+  useEffect(() => {
+    document.body.addEventListener("click", (e) => {
+      if (
+        !userDrop.current.contains(e.target) 
+      ) {
+        setfilteredUsers(null)
+        setfilterLoading(false)
+      }
+    });
+    // eslint-disable-next-line
+  }, []);
   const handelChatData = async (con) => {
     setmessages([]);
     setactiveChat(con);
-    setmessageLoader(true)
+    setmessageLoader(true);
     fetch(`${baseURL}/chat/getMessages`, {
       method: "POST",
       headers: {
@@ -95,7 +114,7 @@ const Chat = () => {
       .then((res) => res.json())
       .then(
         (result) => {
-          setmessageLoader(false)
+          setmessageLoader(false);
           if (result.success) {
             setmessages(result.data);
           }
@@ -144,11 +163,74 @@ const Chat = () => {
     }
   };
 
+  const handelChangeSearchUser = (e) => {
+    setsearchUserText(e.target.value);
+    setfilteredUsers(null);
+    if (e.target.value.length > 0) {
+      setfilterLoading(true);
+      fetch(`${baseURL}/user/getUserFromSearch/${e.target.value}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("userJWT")}`,
+        },
+      })
+        .then((res) => res.json())
+        .then(
+          (result) => {
+            setfilterLoading(false);
+            if (result.success) {
+              setfilteredUsers(result.data);
+            }
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    }else{
+
+    }
+  };
+
+  const handelStartConvo = (id) =>{
+    setfilteredUsers(null)
+    let t = convoData.filter((item)=>{
+      return item._id===id
+    })
+    if(t.length>0){
+      handelChatData(t[0]);
+      return;
+    }
+    fetch(`${baseURL}/chat/addConversation`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("userJWT")}`,
+      },
+      body: JSON.stringify({ senderId: userData?._id, receiverId: id})
+    })
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          setfilterLoading(false);
+          if (result.success) {
+            setmessages([])
+            setconvoData([...convoData, result.data]);
+            setactiveChat(result.data)
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }
+
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, activeChat]);
 
   return (
+
     <>
       <section class="messages-page">
         <div class="container">
@@ -156,178 +238,243 @@ const Chat = () => {
             <div class="row">
               <div class="col-lg-4 col-md-12 no-pdd">
                 <div class="msgs-list">
+                  {(filterLoading || filteredUsers?.length > 0) && (
+                    <div class="search-user-list" ref={userDrop}>
+                      <ul>
+                        {filterLoading ? (
+                          <Loader isSmall={true} />
+                        ) : (
+                          filteredUsers?.map((item, i) => {
+                            return (
+                              <li onClick={()=>handelStartConvo(item._id)}>
+                                <div>
+                                  <img src={item.image ? baseURL + "/file/" + item.image: "/images/luser.jpg"} alt=""></img>
+                                </div>
+                                <div className="user-d">
+                                  <span>{item.name}</span>
+                                  <span className="username">({item.username})</span>
+                                </div>
+                              </li>
+                            );
+                          })
+                        )}
+                      </ul>
+                    </div>
+                  )}
                   <div class="msg-title">
                     <h3>Messages</h3>
                     <ul>
                       <li>
-                        <a href="/" title="">
-                          <i class="fa fa-cog"></i>
-                        </a>
+                        <div ref={userDrop}>
+                          <input
+                            placeholder="Search User..."
+                            className={searchBar ? "show" : ""}
+                            value={searchUserText}
+                            onChange={handelChangeSearchUser}
+                          />
+                        </div>
                       </li>
                       <li>
-                        <a href="/" title="">
+                        <div
+                          onClick={() => setsearchBar((prev) => !prev)}
+                          title=""
+                        >
+                          <img src="/images/ser.svg" alt=""></img>
+                        </div>
+                      </li>
+                      <li>
+                        <div title="">
                           <i class="fa fa-ellipsis-v"></i>
-                        </a>
+                        </div>
                       </li>
                     </ul>
                   </div>
                   <div class="messages-list">
-                    {loadings.getCovoLoading?<Loader isSmall={true}/>:
-                    <ul>
-                      {convoData?.map((con, i) => {
-                        return (
-                          <li
-                            onClick={() => handelChatData(con)}
-                            key={i}
-                            class={
-                              activeChat && activeChat._id === con._id
-                                ? "active"
-                                : ""
-                            }
-                          >
-                            <div class="usr-msg-details">
-                              <div class="usr-ms-img">
-                                <img
-                                  src={
-                                    con.image
-                                      ? baseURL + "/file/" + con.image
-                                      : "/images/luser.jpg"
-                                  }
-                                  alt=""
-                                />
-                                {onlineUsers.includes(con._id) && (
-                                  <span class="msg-status"></span>
-                                )}
+                    {loadings.getCovoLoading ? (
+                      <Loader isSmall={true} />
+                    ) : (
+                      <ul>
+                        {convoData && convoData.slice().sort((a, b) => b.createdAt - a.createdAt).map((con, i) => {
+                          return (
+                            <li
+                              onClick={() => handelChatData(con)}
+                              key={i}
+                              class={
+                                activeChat && activeChat._id === con._id
+                                  ? "active"
+                                  : ""
+                              }
+                            >
+                              <div class="usr-msg-details">
+                                <div class="usr-ms-img">
+                                  <img
+                                    src={
+                                      con.image
+                                        ? baseURL + "/file/" + con.image
+                                        : "/images/luser.jpg"
+                                    }
+                                    alt=""
+                                  />
+                                  {onlineUsers.includes(con._id) && (
+                                    <span class="msg-status"></span>
+                                  )}
+                                </div>
+                                <div class="usr-mg-info">
+                                  <h3>{con.name}</h3>
+                                  {con.lastMessage &&<p>
+                                    {con.lastMessage.text.length > 27
+                                      ? con.lastMessage.text.slice(0, 27) +
+                                        "..."
+                                      : con.lastMessage.text}
+                                  </p>}
+                                </div>
+                                <span class="posted_time">
+                                  {con.lastMessage
+                                    ? chatTime(con.lastMessage.createdAt)
+                                    : ""}
+                                </span>
+                                {/* <span class="msg-notifc">1</span> */}
                               </div>
-                              <div class="usr-mg-info">
-                                <h3>{con.name}</h3>
-                                <p>{con.lastMessage?.text.slice(0, 27) + "..."} </p>
-                              </div>
-                              <span class="posted_time">
-                                {con.lastMessage
-                                  ? chatTime(con.lastMessage.createdAt)
-                                  : ""}
-                              </span>
-                              {/* <span class="msg-notifc">1</span> */}
-                            </div>
-                          </li>
-                        );
-                      })}
-                    </ul>}
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    )}
                   </div>
                 </div>
               </div>
               <div class="col-lg-8 col-md-12 pd-right-none pd-left-none">
-                { activeChat? <div class="main-conversation-box">
-                  <div class="message-bar-head">
-                    <div class="usr-msg-details">
-                      <div class="usr-ms-img">
-                        <img
-                          src={
-                            activeChat?.image
-                              ? baseURL + "/file/" + activeChat.image
-                              : "/images/luser.jpg"
-                          }
-                          alt=""
-                        />
+                {activeChat ? (
+                  <div class="main-conversation-box">
+                    <div class="message-bar-head">
+                      <div class="usr-msg-details">
+                        <div class="usr-ms-img">
+                          <img
+                            src={
+                              activeChat?.image
+                                ? baseURL + "/file/" + activeChat.image
+                                : "/images/luser.jpg"
+                            }
+                            alt=""
+                          />
+                        </div>
+                        <div class="usr-mg-info">
+                          {onlineUsers.includes(activeChat?._id) ? (
+                            <>
+                              <h3>{activeChat ? activeChat.name : ""}</h3>
+                              <p style={{ color: "#07d007" }}>Online</p>
+                            </>
+                          ) : (
+                            <h3 className="isOnline">
+                              {activeChat ? activeChat.name : ""}
+                            </h3>
+                          )}
+                        </div>
                       </div>
-                      <div class="usr-mg-info">
-                        {onlineUsers.includes(activeChat?._id) ? (
-                          <>
-                            <h3>{activeChat ? activeChat.name : ""}</h3>
-                            <p>Online</p>
-                          </>
-                        ) : (
-                          <h3 className="isOnline">
-                            {activeChat ? activeChat.name : ""}
-                          </h3>
-                        )}
-                      </div>
+                      <a href="/" title="">
+                        <i class="fa fa-ellipsis-v"></i>
+                      </a>
                     </div>
-                    <a href="/" title="">
-                      <i class="fa fa-ellipsis-v"></i>
-                    </a>
+                    <div class="messages-line">
+                      {messageLoader ? (
+                        <Loader isSmall={true} />
+                      ) : (
+                        <>
+                          {userData &&
+                            messages?.map((mes, i) => {
+                              return mes.senderId === userData._id ? (
+                                <div
+                                  ref={scrollRef}
+                                  class="main-message-box ta-right"
+                                >
+                                  <div class="message-dt">
+                                    <div class="message-inner-dt">
+                                      <p>{mes.text}</p>
+                                    </div>
+                                    <span>{chatTime(mes.createdAt)}</span>
+                                  </div>
+                                  <div class="messg-usr-img">
+                                    <img
+                                      src={
+                                        userData?.image
+                                          ? baseURL + "/file/" + userData.image
+                                          : "/images/luser.jpg"
+                                      }
+                                      alt=""
+                                    />
+                                  </div>
+                                </div>
+                              ) : (
+                                <div
+                                  ref={scrollRef}
+                                  class="main-message-box st3"
+                                >
+                                  <div class="message-dt st3">
+                                    <div class="message-inner-dt">
+                                      <p>{mes.text}</p>
+                                    </div>
+                                    <span>{chatTime(mes.createdAt)}</span>
+                                  </div>
+                                  <div class="messg-usr-img">
+                                    <img
+                                      src={
+                                        activeChat.image
+                                          ? baseURL +
+                                            "/file/" +
+                                            activeChat.image
+                                          : "/images/luser.jpg"
+                                      }
+                                      alt=""
+                                    />
+                                  </div>
+                                </div>
+                              );
+                            })}
+                        </>
+                      )}
+                    </div>
+                    <div class="message-send-area">
+                      <form>
+                        <div class="mf-field">
+                          <input
+                            type="text"
+                            name="message"
+                            value={messageText}
+                            onChange={(e) => setmessageText(e.target.value)}
+                            placeholder="Type a message here"
+                          />
+                          <button type="submit" onClick={handelSendMessage}>
+                            <svg
+                              viewBox="0 0 24 24"
+                              width="24"
+                              height="24"
+                              class=""
+                            >
+                              <path
+                                fill="currentColor"
+                                d="M1.101 21.757 23.8 12.028 1.101 2.3l.011 7.912 13.623 1.816-13.623 1.817-.011 7.912z"
+                              ></path>
+                            </svg>
+                          </button>
+                        </div>
+                      </form>
+                    </div>
                   </div>
-                  <div class="messages-line">
-                  {messageLoader?<Loader isSmall={true}/>:<>
-                    {userData &&
-                      messages?.map((mes, i) => {
-                        return mes.senderId === userData._id ? (
-                          <div
-                            ref={scrollRef}
-                            class="main-message-box ta-right"
-                          >
-                            <div class="message-dt">
-                              <div class="message-inner-dt">
-                                <p>{mes.text}</p>
-                              </div>
-                              <span>{chatTime(mes.createdAt)}</span>
-                            </div>
-                            <div class="messg-usr-img">
-                              <img
-                                src={
-                                  userData?.image
-                                    ? baseURL + "/file/" + userData.image
-                                    : "/images/luser.jpg"
-                                }
-                                alt=""
-                              />
-                            </div>
-                          </div>
-                        ) : (
-                          <div ref={scrollRef} class="main-message-box st3">
-                            <div class="message-dt st3">
-                              <div class="message-inner-dt">
-                                <p>{mes.text}</p>
-                              </div>
-                              <span>{chatTime(mes.createdAt)}</span>
-                            </div>
-                            <div class="messg-usr-img">
-                              <img
-                                src={
-                                  activeChat.image
-                                    ? baseURL + "/file/" + activeChat.image
-                                    : "/images/luser.jpg"
-                                }
-                                alt=""
-                              />
-                            </div>
-                          </div>
-                        );
-                      })}</>}
+                ) : (
+                  <div class="no-chat">
+                    <div>
+                      <img src="/images/conv.png" alt=""></img>
+                    </div>
+                    <div>
+                      <h1>Select a chat to start conversation</h1>
+                    </div>
                   </div>
-                  <div class="message-send-area">
-                    <form>
-                      <div class="mf-field">
-                        <input
-                          type="text"
-                          name="message"
-                          value={messageText}
-                          onChange={(e) => setmessageText(e.target.value)}
-                          placeholder="Type a message here"
-                        />
-                        <button type="submit" onClick={handelSendMessage}>
-                        <svg viewBox="0 0 24 24" width="24" height="24" class=""><path fill="currentColor" d="M1.101 21.757 23.8 12.028 1.101 2.3l.011 7.912 13.623 1.816-13.623 1.817-.011 7.912z"></path></svg>
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                </div>:
-                <div class="no-chat">
-                  <div>
-                  <img src="/images/conv.png" alt=""></img>
-                  </div>
-                  <div>
-                    <h1>Select a chat to start conversation</h1>
-                  </div>
-                </div>
-                }
+                )}
               </div>
             </div>
           </div>
         </div>
       </section>
-      {/* <Footer/> */}
     </>
   );
 };

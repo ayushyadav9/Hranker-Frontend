@@ -5570,13 +5570,63 @@ a:hover {
   border-right: 1px solid #e4e4e4;
 }
 
+.msgs-list .search-user-list {
+  position: absolute;
+  width: 58%;
+  /* height: 50px; */
+  background-color: white;
+  top: 51px;
+  right: 3px;
+  z-index: 2;
+  border-radius: 5px;
+  max-height: 215px;
+  min-height: 30px;
+  box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
+  overflow: auto;
+}
 
+.msgs-list .search-user-list li {
+  padding-left: 12px;
+  font-size: 14px;
+  height: 50px;
+  align-items: center;
+  display: flex;
+  border-bottom: 1px solid #e1e1e1;
+  cursor: pointer;
+}
 
+.msgs-list .search-user-list li .user-d {
+  display: flex;
+  flex-direction: column;
+}
+.msgs-list .search-user-list li .username {
+  font-size: 11px;
+}
+
+.msgs-list .search-user-list img {
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  margin-right: 11px;
+}
+
+.msgs-list .search-user-list li:hover {
+  background-color: #e1e1e1;
+}
+
+/*.msgs-list .search-user-list li:first-child {
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+}*/
+.msgs-list .search-user-list li:last-child {
+  border: none;
+} 
 
 .msg-title {
   float: left;
   width: 100%;
   padding: 24px 20px;
+  border-bottom: 1px solid #eeeeee;
 }
 .msg-title > h3 {
   color: #000000;
@@ -5593,10 +5643,31 @@ a:hover {
   display: inline-block;
   margin-right: 15px;
 }
+.msg-title ul li img {
+  width: 15px;
+}
+.msg-title input {
+  border: none;
+  line-height: 0px;
+  height: 20px;
+  float: right;
+  border-radius: 4px;
+  font-size: 14px;
+  padding: 6px 8px;
+  transition:0.3s;
+  width: 0%;
+}
+.msg-title .show{
+  border-bottom: 1px solid;
+  width: 76%;
+  transition:0.3s;
+}
+
 .msg-title ul li:last-child {
   margin-right: 0;
 }
-.msg-title ul li a {
+.msg-title ul li div {
+  cursor: pointer;
   color: #b2b2b2;
   font-size: 18px;
 }
@@ -5621,9 +5692,9 @@ messages-list::-webkit-scrollbar {
   border-bottom: 1px solid #eeeeee;
   cursor: pointer;
 }
-.messages-list ul li:last-child {
+/* .messages-list ul li:last-child {
   border: none;
-}
+} */
 .messages-list ul li.active {
   background-color: #efefef;
 }

@@ -9,7 +9,7 @@ import {
   addToExam,
   addToSubject,
   closeAll,
-  toggleMessage,
+  // toggleMessage,
   toggleNoti,
   toggleSearch,
   toggleUser,
@@ -20,7 +20,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const notiRef = useRef();
-  const messageRef = useRef();
+  // const messageRef = useRef();
   const userRef = useRef();
   const userRef2 = useRef();
   const searchRef = useRef();
@@ -38,7 +38,7 @@ const Navbar = () => {
   useEffect(() => {
     document.body.addEventListener("click", (e) => {
       if (
-        !messageRef.current.contains(e.target) &&
+        // !messageRef.current.contains(e.target) &&
         !notiRef.current.contains(e.target) &&
         !userRef.current.contains(e.target) &&
         !userRef2.current.contains(e.target) &&
@@ -245,12 +245,13 @@ const Navbar = () => {
                   </li>
                   <li>
                     <div
-                      ref={messageRef}
-                      onClick={() => {
-                        dispatch(toggleMessage());
-                      }}
+                      // ref={messageRef}
+                      // onClick={() => {
+                      //   dispatch(toggleMessage());
+                      // }}
                       title=""
                       className="not-box-openm"
+                      onClick={() => navigate("/chat")}
                     >
                       <span>
                         <img src="/images/message.svg" alt="" />
