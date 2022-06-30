@@ -5837,6 +5837,7 @@ messages-list::-webkit-scrollbar {
 }
 .message-inner-dt > p {
   float: right;
+  word-break: break-all;
   max-width: 400px;
     width: auto;
     background-color: #019FE2;
@@ -5857,6 +5858,7 @@ messages-list::-webkit-scrollbar {
   /* max-width: 400px; */
   padding: 7px 11px;
   float: left;
+  word-break: break-all;
 }
 .message-dt.st3 .message-inner-dt > p img {
   float: right;

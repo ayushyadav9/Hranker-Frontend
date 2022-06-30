@@ -43,10 +43,10 @@ const Chat = () => {
 
   useEffect(() => {
     console.log(arrivalMessage);
+    let t= [activeChat?._id, userData?._id]
+    console.log(t)
     arrivalMessage &&
-      (activeChat._id === arrivalMessage.senderId ||
-        userData._id === arrivalMessage.senderId) &&
-      setmessages((prev) => [...prev, arrivalMessage]);
+    [activeChat?._id, userData?._id].includes(arrivalMessage.senderId) && setmessages((prev) => [...prev, arrivalMessage]);
   }, [arrivalMessage, activeChat, userData]);
 
   useEffect(() => {
@@ -76,7 +76,6 @@ const Chat = () => {
           : "";
         t.push(tmems);
       }
-      console.log(t);
       setconvoData(t);
     }
   }, [conversations, userData]);
@@ -100,7 +99,6 @@ const Chat = () => {
           if (result.success) {
             setmessages(result.data);
           }
-          console.log(result);
         },
         (error) => {
           console.log(error);
