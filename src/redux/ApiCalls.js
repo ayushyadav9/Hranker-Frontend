@@ -197,3 +197,39 @@ export const unfollowUser = createAsyncThunk("auth/unfollow", async (data) => {
   let res = await result.json();
   return res;
 });
+
+export const getTopPosts = createAsyncThunk("post/getTopPosts", async (token) => {
+  let result = await fetch(`${baseURL}/post/getTopPosts`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  let res = await result.json();
+  return res;
+});
+
+export const getActiveLeaderboard = createAsyncThunk("users/getActiveLeaderboard", async (token) => {
+  let result = await fetch(`${baseURL}/getActiveLeaderboard`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  let res = await result.json();
+  return res;
+});
+
+export const getConversations = createAsyncThunk("chat/getConversations", async (token) => {
+  let result = await fetch(`${baseURL}/chat/getConversations`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  let res = await result.json();
+  return res;
+});

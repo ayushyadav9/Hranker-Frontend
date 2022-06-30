@@ -9,13 +9,14 @@ import SignUp from "./pages/Registration/SignUp/SignUp";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import {  useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getLeaderboard, getUser } from "./redux/ApiCalls";
+import { getActiveLeaderboard, getLeaderboard, getTopPosts, getUser } from "./redux/ApiCalls";
 import { setToken } from "./redux/reducers/userReducers";
 import Points from "./pages/Points/Points";
 import UserProfile from "./pages/UserProfile/UserProfile";
 import BlogPost from "./pages/Post/BlogPost";
 import Leaderboard from "./pages/Leaderboard/Leaderboard";
 import QuesPost from "./pages/Post/QuesPost";
+import Chat from "./pages/Chat/Chat";
 
 function App() {
   const location = useLocation();
@@ -34,9 +35,11 @@ function App() {
   useEffect(() => {
     let token = localStorage.getItem("userJWT");
     if(token){
+      dispatch(getTopPosts(token))
       dispatch(setToken(token))
       dispatch(getUser(token))
       dispatch(getLeaderboard(token))
+      dispatch(getActiveLeaderboard(token))
     }
     // eslint-disable-next-line
   }, [])
@@ -67,6 +70,10 @@ function App() {
 
           <Route element={<ProtectedRoute />}>
             <Route path="/leaderboard" element={<Leaderboard/>} />
+          </Route>
+
+          <Route element={<ProtectedRoute />}>
+            <Route path="/chat" element={<Chat/>} />
           </Route>
 
           <Route element={<ProtectedRoute />}>

@@ -1,4 +1,5 @@
 import React from "react";
+// import { useParams } from "react-router-dom";
 import LeftSidebar from "../../components/Home/LeftSidebar";
 import MainNewsFeed from "../../components/Home/MainNewsFeed";
 import BlogPost from "../../components/Home/Popups/BlogPost";
@@ -10,6 +11,7 @@ import { useSelector } from "react-redux";
 const Homepage = () => {
   let  { userData} = useSelector((state)=>state.user);
   const { loadings } = useSelector((state)=>state.post)
+
   return (
     <>
     {loadings.voteLoading && <Loader/>}

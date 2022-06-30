@@ -27,7 +27,7 @@ const QuesPost = ({ post, userData }) => {
   useEffect(() => {
     if (post.options.length > 0) {
       let t = post.answeredBy.filter((id) => id === userData._id);
-      console.log(t)
+      // console.log(t)
       if(t.length===0) setisAnswered(false);
       if (t.length > 0) {
         setisAnswered(true);

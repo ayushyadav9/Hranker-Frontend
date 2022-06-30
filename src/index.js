@@ -10,6 +10,7 @@ import userReducer from './redux/reducers/userReducers';
 import postReducers from './redux/reducers/postReducers';
 import navReducer from './redux/reducers/navReducer';
 import LeaderboardReducers from './redux/reducers/LeaderboardReducers';
+import ChatReducers from './redux/reducers/ChatReducers';
 
 
 const store = configureStore({
@@ -17,7 +18,8 @@ const store = configureStore({
     user:userReducer,
     post:postReducers,
     nav:navReducer,
-    leaderBoard: LeaderboardReducers
+    leaderBoard: LeaderboardReducers,
+    chat: ChatReducers
   }
 })
 

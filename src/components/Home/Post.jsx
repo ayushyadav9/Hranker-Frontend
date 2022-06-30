@@ -4,7 +4,6 @@ import { getDateAndTime } from "../../utils/timeCalculator";
 import Loader from "../../utils/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import {addComment, addToSave, getNotifications, toggleLike,} from "../../redux/ApiCalls";
-
 import { Link } from "react-router-dom";
 
 

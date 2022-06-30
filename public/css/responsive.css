@@ -1,11 +1,12 @@
 
 
 @media (max-width: 1200px) {
-	header nav {position: fixed;top: 0;left: 0;width: 200px;height: 100%;background-color: #212121;padding: 25px 20px;opacity: 0;visibility: hidden;z-index: 0}
+	header nav {position: fixed;top: 0;left: 0;width: 50%;height: 100%;background-color: white; border-right: 2px solid #ececec;
+	 padding: 25px 20px;opacity: 0;visibility: hidden;z-index: 0}
 	header nav.active {opacity: 1;visibility: visible;z-index: 9999;}
 	header nav ul li {float: left;width: 100%;text-align: left;padding: 0 0 0 0;margin-bottom: 20px;}
 	.menu-btn {display: block;}
-	header nav ul li span {display: inline-block;margin-right: 10px;}
+	header nav ul li span {    display: inline-flex;margin-right: 10px;}
 	.widget-about h3 {font-size: 16px;}
 	.widget-about span {font-size: 13px;}
 	.suggestion-usd {padding: 15px 5px;}
@@ -201,6 +202,7 @@
 	.notification-info h3 {line-height: 18px;}
 	.conversation-box {width: 100%;right: 0;}
 	.user-account-settingss {right: auto;left: 0;}
+	.search-bar-popup{right: auto;left: 0;}
 	.login-resources {text-align: left;}
 	.forum-bar ul li:last-child {margin-bottom: 0;}
 	.conversation-box {left: -20px;width: 280px;}

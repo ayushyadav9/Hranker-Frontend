@@ -16,8 +16,10 @@ const MainNewsFeed = () => {
   const dispatch = useDispatch();
 
   let { postsData, loadings } = useSelector((state) => state.post);
+  let { selectedExams, selectedSubjects } = useSelector((state) => state.nav);
   let { userData } = useSelector((state) => state.user);
   const [temPostData, settemPostData] = useState(null);
+  const [querriedData, setquerriedData] = useState(null)
   const [activeTab, setactiveTab] = useState(0);
 
   useEffect(() => {
@@ -31,20 +33,38 @@ const MainNewsFeed = () => {
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    if(postsData){
+      if(selectedExams.length>0 || selectedSubjects.length>0){
+        let tempData = postsData.filter((post) => {
+          return (
+            post.examTags.filter((value) => selectedExams.includes(value)).length > 0 ||
+            post.subjectTags.filter((value) => selectedSubjects.includes(value)).length >0
+          );
+        });
+        console.log(tempData)
+        setquerriedData(tempData)
+      }else{
+        setquerriedData(postsData)
+      }
+    }
+  }, [selectedExams,selectedSubjects,postsData])
+  
+
 
   useEffect(() => {
-    if (postsData) {
+    if (querriedData) {
       if (activeTab === 0) {
-        settemPostData(postsData);
+        settemPostData(querriedData);
       } else if (activeTab === 1) {
-        let t = postsData.filter((item) => item.type === 1);
+        let t = querriedData.filter((item) => item.type === 1);
         settemPostData(t);
       } else if (activeTab === 2) {
-        let t = postsData.filter((item) => item.type === 2);
+        let t = querriedData.filter((item) => item.type === 2);
         settemPostData(t);
       }
     }
-  }, [postsData, activeTab]);
+  }, [querriedData, activeTab]);
 
   const handelChangeTab = (id) => {
     setactiveTab(id);
@@ -89,39 +109,18 @@ const MainNewsFeed = () => {
           <div className="posts-section">
             <div className="post-nav">
               <ul className="nav nav-tabs">
-                <li
-                  onClick={() => {
-                    handelChangeTab(0);
-                  }}
-                  className="nav-item"
-                >
-                  <div
-                    className={`nav-link ${activeTab === 0 ? "active" : ""}`}
-                  >
+                <li onClick={() => { handelChangeTab(0)}} className="nav-item">
+                  <div className={`nav-link ${activeTab === 0 ? "active" : ""}`}>
                     All Posts
                   </div>
                 </li>
-                <li
-                  onClick={() => {
-                    handelChangeTab(1);
-                  }}
-                  className="nav-item"
-                >
-                  <div
-                    className={`nav-link ${activeTab === 1 ? "active" : ""}`}
-                  >
+                <li onClick={() => {handelChangeTab(1)}} className="nav-item">
+                  <div className={`nav-link ${activeTab === 1 ? "active" : ""}`}>
                     Blog Posts
                   </div>
                 </li>
-                <li
-                  onClick={() => {
-                    handelChangeTab(2);
-                  }}
-                  className="nav-item"
-                >
-                  <div
-                    className={`nav-link ${activeTab === 2 ? "active" : ""}`}
-                  >
+                <li onClick={() => { handelChangeTab(2)}} className="nav-item">
+                  <div className={`nav-link ${activeTab === 2 ? "active" : ""}`}>
                     Question Posts
                   </div>
                 </li>
@@ -142,6 +141,7 @@ const MainNewsFeed = () => {
                   );
                 })
             )}
+            {temPostData && temPostData.length===0 && <div className="no-posts">No Post To Show</div>}
           </div>
         </div>
       </div>

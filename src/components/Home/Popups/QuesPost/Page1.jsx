@@ -1,10 +1,9 @@
 import React, { useRef } from "react";
 import Loader from "../../../../utils/Loader";
-import FileBase64 from 'react-file-base64';
+import FileBase64 from "react-file-base64";
 import { useState } from "react";
 import { subjects } from "../../../../utils/defaultTags";
 import { useEffect } from "react";
-
 
 const Page1 = ({
   handelUpdateOption,
@@ -16,24 +15,24 @@ const Page1 = ({
   setoptions,
   examTags,
   handelTagging,
-  subjectTags, 
+  subjectTags,
   setsubjectTags,
   handelClose,
   setactive,
   handelPost,
-  isLoader
+  isLoader,
 }) => {
-  const [examTagText, setExamTagText] = useState("")
-  const [filteredTags, setFilteredTags] = useState([])
-  const tagRef = useRef()
+  const [examTagText, setExamTagText] = useState("");
+  const [filteredTags, setFilteredTags] = useState([]);
+  const tagRef = useRef();
   useEffect(() => {
-    document.body.addEventListener('click',(e)=>{
-      if(!tagRef.current.contains(e.target)){
-        setFilteredTags([])
+    document.body.addEventListener("click", (e) => {
+      if (!tagRef.current.contains(e.target)) {
+        setFilteredTags([]);
       }
-    })
+    });
     // eslint-disable-next-line
-  }, [])
+  }, []);
 
   const handelSave = (e) => {
     e.preventDefault();
@@ -59,20 +58,20 @@ const Page1 = ({
     }
   };
 
-  const handelTagSelection = (tag) =>{
-    if(subjectTags.indexOf(tag) === -1) {
-      setsubjectTags([...subjectTags,tag]);
+  const handelTagSelection = (tag) => {
+    if (subjectTags.indexOf(tag) === -1) {
+      setsubjectTags([...subjectTags, tag]);
     }
-    setFilteredTags([])
-    setExamTagText("")
-  }
+    setFilteredTags([]);
+    setExamTagText("");
+  };
 
-  const handelTagRemove = (tag) =>{
-    let t = [...subjectTags]
-    const index = t.indexOf(tag)
+  const handelTagRemove = (tag) => {
+    let t = [...subjectTags];
+    const index = t.indexOf(tag);
     t.splice(index, 1);
     setsubjectTags(t);
-  }
+  };
 
   return (
     <form>
@@ -88,33 +87,40 @@ const Page1 = ({
             placeholder="Title"
           />
         </div>
-        {examTags.map((tag, i) => {
+        <div className="col-lg-12" style={{marginBottom:"10px"}}>
+          {examTags.map((tag, i) => {
+            return (
+              <div
+                key={i}
+                onClick={() => {handelTagging(tag.id)}}
+                className={`tags ${tag.isActive ? "active" : ""}`}
+              >
+                {tag.name}
+              </div>
+            );
+          })}
+        </div>
+
+        <div ref={tagRef} className="col-lg-12">
+          {subjectTags.length > 0 && (
+            <ul>
+              {subjectTags.map((val, i) => {
                 return (
-                  <div
-                    key={i}
-                    onClick={() => {
-                      handelTagging(tag.id);
-                    }}
-                    className={`tags ${tag.isActive ? "active" : ""}`}
-                  >
-                    {tag.name}
-                  </div>
+                  <li>
+                    <div title="" className="skl-name">
+                      {val}
+                      <i
+                        onClick={() => {
+                          handelTagRemove(val);
+                        }}
+                        className="la la-close"
+                      ></i>
+                    </div>
+                  </li>
                 );
               })}
-        <div ref={tagRef} className="col-lg-12">
-        {subjectTags.length>0 &&
-          <ul>
-            {subjectTags.map((val,i)=>{
-              return(
-                <li>
-                  <div title="" className="skl-name">
-                    {val}
-                    <i onClick={()=>{handelTagRemove(val)}} className="la la-close"></i>
-                  </div>
-                </li>
-              )
-            })}
-          </ul>}
+            </ul>
+          )}
           <form>
             <input
               type="text"
@@ -126,7 +132,10 @@ const Page1 = ({
               <div className="dataResult">
                 {filteredTags.map((value, key) => {
                   return (
-                    <div onClick={()=>handelTagSelection(value.name)} className="dataItem">
+                    <div
+                      onClick={() => handelTagSelection(value.name)}
+                      className="dataItem"
+                    >
                       <p>{value.name} </p>
                     </div>
                   );
@@ -166,6 +175,7 @@ const Page1 = ({
                 value={op.value}
                 onChange={(e) => handelUpdateOption(e, op.id)}
               />
+
               <div onClick={() => handelDeleteOption(op.id)}>
                 <img src="/images/close.svg" alt=""></img>
               </div>

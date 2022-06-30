@@ -132,24 +132,22 @@ const BlogPost = () => {
                   name="title"
                   placeholder="Title"
                   value={formData.title}
-                  onChange={(e) =>
-                    setformdata({ ...formData, title: e.target.value })
-                  }
+                  onChange={(e) =>setformdata({ ...formData, title: e.target.value })}
                 />
               </div>
-              {tags.map((tag, i) => {
-                return (
-                  <div
-                    key={i}
-                    onClick={() => {
-                      handelTagging(tag.id);
-                    }}
-                    className={`tags ${tag.isActive ? "active" : ""}`}
-                  >
-                    {tag.name}
-                  </div>
-                );
-              })}
+              <div className="col-lg-12" style={{marginBottom:"10px"}}>
+                {tags.map((tag, i) => {
+                  return (
+                    <div
+                      key={i}
+                      onClick={() => {handelTagging(tag.id) }}
+                      className={`tags ${tag.isActive ? "active" : ""}`}
+                    >
+                      {tag.name}
+                    </div>
+                  );
+                })}
+              </div>
 
               <div ref={tagRef} className="col-lg-12">
                 {subjectTags.length > 0 && (
@@ -159,12 +157,7 @@ const BlogPost = () => {
                         <li>
                           <div title="" className="skl-name">
                             {val}
-                            <i
-                              onClick={() => {
-                                handelTagRemove(val);
-                              }}
-                              className="la la-close"
-                            ></i>
+                            <i onClick={() => {handelTagRemove(val)}} className="la la-close"></i>
                           </div>
                         </li>
                       );

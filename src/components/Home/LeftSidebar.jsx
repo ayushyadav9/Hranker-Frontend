@@ -6,7 +6,7 @@ import { userRank } from "../../utils/timeCalculator";
 
 const LeftSidebar = () => {
   let { userData, points } = useSelector((state) => state.user);
-  let { data } = useSelector((state) => state.leaderBoard);
+  let { topUsers } = useSelector((state) => state.leaderBoard);
 
   return (
     <div className="col-lg-3 col-md-4 pd-left-none no-pd">
@@ -62,8 +62,8 @@ const LeftSidebar = () => {
             <i className="la la-ellipsis-v"></i>
           </div>
           <div className="suggestions-list">
-            {data &&
-              data.slice(0, Math.min(3, data.length)).map((item, i) => {
+            {topUsers &&
+              topUsers.slice(0, Math.min(3, topUsers.length)).map((item, i) => {
                 return (
                   <div key={i} className="suggestion-usd">
                     <img
@@ -76,7 +76,9 @@ const LeftSidebar = () => {
                     />
                     <div className="sgt-text">
                       <>
+                      <Link  to={`/user-profile/${item.username}`} target="_blank">
                         <h4>{item.name}</h4>
+                      </Link>
                       </>
                       <span>({item.username})</span>
                     </div>

@@ -6,11 +6,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../../redux/reducers/userReducers";
 import { Link } from "react-router-dom";
 import {
+  addToExam,
+  addToSubject,
   closeAll,
   toggleMessage,
   toggleNoti,
+  toggleSearch,
   toggleUser,
 } from "../../redux/reducers/navReducer";
+import { defaultTags, subjects } from "../../utils/defaultTags";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -19,10 +23,17 @@ const Navbar = () => {
   const messageRef = useRef();
   const userRef = useRef();
   const userRef2 = useRef();
+  const searchRef = useRef();
   let { userData, isLoggedIn } = useSelector((state) => state.user);
-  let { userPopup, messagePopup } = useSelector((state) => state.nav);
+  let { userPopup, messagePopup,searchPopup, selectedExams,selectedSubjects } = useSelector((state) => state.nav);
   const [SideNav, setSideNav] = useState(false);
   const [userInput, setuserInput] = useState("");
+  // const [selectedExams, setselectedExams] = useState([])
+  // const [selectedSubjects, setselectedSubjects] = useState([])
+  const [searchPostText, setsearchPostText] = useState("");
+  const [filteredExam, setfilteredExam] = useState(defaultTags);
+  const [filteredSubjects, setfilteredSubjects] = useState(subjects);
+  // const [searchPopup, setsearchPopup] = useState(false)
 
   useEffect(() => {
     document.body.addEventListener("click", (e) => {
@@ -30,7 +41,8 @@ const Navbar = () => {
         !messageRef.current.contains(e.target) &&
         !notiRef.current.contains(e.target) &&
         !userRef.current.contains(e.target) &&
-        !userRef2.current.contains(e.target)
+        !userRef2.current.contains(e.target) &&
+        !searchRef.current.contains(e.target)
       ) {
         dispatch(closeAll());
       }
@@ -48,12 +60,52 @@ const Navbar = () => {
     dispatch(closeAll());
     navigate(url);
   };
-
   const handelSearchUser = (e) => {
     e.preventDefault();
     dispatch(closeAll());
     navigate(`user-profile/${userInput}`);
   };
+  const handelSearchPopup = ()=>{
+    dispatch(toggleSearch())
+  }
+
+  const handelSearchFilter = (e)=>{
+    let text = e.target.value
+    setsearchPostText(text);
+    const newSubs = subjects.filter((value) => {
+      return value.name.toLowerCase().includes(text.toLowerCase());
+    });
+    const newExams = defaultTags.filter((value) => {
+      return value.name.toLowerCase().includes(text.toLowerCase());
+    });
+
+    if (text === "") {
+      setfilteredSubjects(subjects)
+      setfilteredExam(defaultTags)
+    } else {
+      setfilteredSubjects(newSubs);
+      setfilteredExam(newExams)
+    }
+
+  }
+
+  const handelExam = (tExam)=>{
+    // let t = [...new Set([...selectedExams, tExam])];
+    dispatch(addToExam(tExam))
+    // t = t.join(" ")
+    // let prevSubs = selectedSubjects.join(" ")
+    // setSearchParams({"exam": t,"subject":prevSubs}) 
+    dispatch(toggleSearch())     
+  }
+
+  const handelSubject = (tSubject)=>{
+    // let t = [...new Set([...selectedSubjects, tSubject])];
+    dispatch(addToSubject(tSubject))
+    // t = t.join(" ")
+    // let prevExams = selectedExams.join(" ")
+    // setSearchParams({"exam": prevExams,"subject":t}) 
+    dispatch(toggleSearch())     
+  }
 
   return (
     <>
@@ -64,7 +116,52 @@ const Navbar = () => {
               <div onClick={() => handelRedirect("/")} className="logo">
                 <img src="/images/navLogo.png" alt="" />
               </div>
-              <div className="search-bar"></div>
+              <div ref={searchRef} class="search-bar">
+                <form>
+                  <input
+                    type="text"
+                    value={searchPostText}
+                    onChange={handelSearchFilter}
+                    placeholder="Search for Exams or Subjects..."
+                    onClick={handelSearchPopup}
+                  />
+                  {/* <button type="submit">
+                    <img src="/images/search.svg" alt=""></img>
+                  </button> */}
+                </form>
+                <div
+                  className={`search-bar-popup ${searchPopup ? "active" : ""}`}
+                >
+                  {filteredExam && filteredExam.length > 0 && (
+                    <>
+                      <h3>Exams </h3>
+                      <ul className="tags">
+                        {filteredExam.map((tag, i) => {
+                          return (
+                            <li className={`${selectedExams.includes(tag.name)?"active-tag":""}`} key={i} onClick={()=>handelExam(tag.name)}>
+                              <div title="">{tag.name}</div>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </>
+                  )}
+                  {filteredSubjects && filteredSubjects.length > 0 && (
+                    <>
+                      <h3>Subjects</h3>
+                      <ul className="tags">
+                        {filteredSubjects.map((sub, i) => {
+                          return (
+                            <li className={`${selectedSubjects.includes(sub.name)?"active-tag":""}`} key={i} onClick={()=>handelSubject(sub.name)}>
+                              <div title="">{sub.name}</div>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </>
+                  )}
+                </div>
+              </div>
               <div className="user-account">
                 <div
                   ref={userRef}
@@ -78,7 +175,6 @@ const Navbar = () => {
                   ) : (
                     <img src="/images/user.svg" alt="" />
                   )}
-
                   <div className="username" href="/" title="">
                     {userData.name.split(" ")[0]}
                   </div>
@@ -108,21 +204,6 @@ const Navbar = () => {
                     <li>
                       <div onClick={() => handelRedirect("/profile")} title="">
                         Show Profile
-                      </div>
-                    </li>
-                    <li>
-                      <div onClick={() => handelRedirect("/")} title="">
-                        Privacy
-                      </div>
-                    </li>
-                    <li>
-                      <div onClick={() => handelRedirect("/")} title="">
-                        Faqs
-                      </div>
-                    </li>
-                    <li>
-                      <div onClick={() => handelRedirect("/")} title="">
-                        Terms & Conditions
                       </div>
                     </li>
                   </ul>

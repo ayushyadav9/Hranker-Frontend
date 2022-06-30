@@ -8,14 +8,29 @@ import { getDateAndTime } from "../../../utils/timeCalculator";
 const Saved = ({ activeTab }) => {
   let { savedPosts, userData } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const [postData, setpostData] = useState(null)
   const [activeState, setactiveState] = useState(0);
+
   useEffect(() => {
     let token = localStorage.getItem("userJWT");
     if (token) {
       dispatch(getSavedPosts(token));
     }
     // eslint-disable-next-line
-  }, []);
+  }, [])
+
+  useEffect(() => {
+    if(savedPosts){
+      if(activeState===0){
+        setpostData(savedPosts.blogPosts)
+      }else if(activeState===1){
+        console.log(savedPosts.quesPosts)
+        setpostData(savedPosts.quesPosts)
+      }
+    }
+  }, [savedPosts, activeState])
+
+  
 
   return (
     <div
@@ -41,30 +56,20 @@ const Saved = ({ activeTab }) => {
         </li>
       </ul>
       <div className="tab-content" id="myTabContent">
-        <div
-          className={`tab-pane fade show ${activeState === 0 ? "active" : ""}`}
-          id="mange"
-          role="tabpanel"
-          aria-labelledby="mange-tab"
-        >
-          {savedPosts &&
-            savedPosts.blogPosts.map((blog, i) => {
+        <div className={`tab-pane fade show ${activeState === 0|| activeState === 1? "active" : ""}`}>
+          {postData &&
+            postData.map((blog, i) => {
               return (
                 <div key={i} className="post-bar no-margin">
                   <div className="post_topbar">
                     <div className="usy-dt">
                       {blog.user.image ? (
-                        <img
-                          className="postUserDP"
-                          src={baseURL + "/file/" + blog.user.image}
-                          alt=""
-                        />
+                        <img className="postUserDP"src={baseURL + "/file/" + blog.user.image} alt=""/>
                       ) : (
                         <div className="user-dummy">
                           {blog.user.name.charAt(0)}
                         </div>
                       )}
-                      {/*  */}
                       <div className="usy-name">
                         <h3>{blog.user.name}</h3>
                         <span>
@@ -156,33 +161,6 @@ const Saved = ({ activeTab }) => {
                         blog.description
                       )}
                     </p>
-                    <ul className="skill-tags">
-                      <li>
-                        <a href="/" title="">
-                          bank-po
-                        </a>
-                      </li>
-                      <li>
-                        <a href="/" title="">
-                          clerk
-                        </a>
-                      </li>
-                      <li>
-                        <a href="/" title="">
-                          bank-clerk
-                        </a>
-                      </li>
-                      <li>
-                        <a href="/" title="">
-                          rrb-po
-                        </a>
-                      </li>
-                      <li>
-                        <a href="/" title="">
-                          rrb-clerk
-                        </a>
-                      </li>
-                    </ul>
                   </div>
                   <div className="job-status-bar">
                     <ul className="like-com">
@@ -212,7 +190,7 @@ const Saved = ({ activeTab }) => {
                       </li>
                     </ul>
                     <div href="/">
-                      <i className="fas fa-eye"></i>Views 50
+                      <i className="fas fa-eye"></i>Views {blog.viewers.length}
                     </div>
                   </div>
                 </div>

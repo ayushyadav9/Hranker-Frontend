@@ -10,13 +10,21 @@ import { userRank } from "../../utils/timeCalculator";
 
 const Leaderboard = () => {
   const { userData,userToken } = useSelector((state) => state.user);
-  const { data,loading } = useSelector((state) => state.leaderBoard)
+  const { topUsers, activeUsers, loading } = useSelector((state) => state.leaderBoard)
   const dispatch = useDispatch();
   const [leaderData, setleaderData] = useState(null);
   const [myRank, setmyRank] = useState(null);
+  const [activeState, setactiveState] = useState(0)
 
   useEffect(() => {
-    if (userData && data) {
+    if (userData && topUsers) {
+      let data;
+      if(activeState===0){
+        data = topUsers;
+      }else if(activeState===1){
+        data = activeUsers
+      }
+
       let copiedData = JSON.parse(JSON.stringify(data));
       let meIdx = copiedData.findIndex((item) => item._id === userData._id);
       let me = copiedData[meIdx];
@@ -28,7 +36,12 @@ const Leaderboard = () => {
       dispatch(getLeaderboard(userToken))
     }
     // eslint-disable-next-line
-  }, [userData,data]);
+  }, [userData,topUsers,activeState]);
+
+
+  const handelChangeState = (id)=>{
+    setactiveState(id)
+  }
 
   return (
     <>
@@ -39,7 +52,10 @@ const Leaderboard = () => {
             <div className="main-section">
               <div className="container">
                 <div className="main-section-data">
-                  <div className="points-heading">Global Ranking</div>
+                  <div className="lead-heading">
+                    <div onClick={()=>handelChangeState(0)} className={`lead-name ${activeState===0?"active":""}`}>Global Ranking</div>
+                    <div onClick={()=>handelChangeState(1)} className={`lead-name ${activeState===1?"active":""}`}>Activity Ranking</div>
+                  </div>
                   <div className="col-12">
                     <div className="freelancerbiding">
                       <div className="row">

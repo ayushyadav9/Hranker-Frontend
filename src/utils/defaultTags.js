@@ -26,12 +26,12 @@ export const defaultTags = [
     },
     {
       id: 5,
-      name: "Dehli Police",
+      name: "NEET",
       isActive: 0,
     },
     {
       id: 6,
-      name: "NEET",
+      name: "Dehli Police",
       isActive: 0,
     },
     {
@@ -154,7 +154,7 @@ export const subjects = [
   },
   {
     id: 20,
-    name: "Chemistry",
+    name: "Reading Comprehension",
   },
   
   {
@@ -220,9 +220,5 @@ export const subjects = [
   {
     id: 36,
     name: "Verbal Aptitude",
-  },
-  {
-    id: 37,
-    name: "Reading Comprehension",
   }
 ]
