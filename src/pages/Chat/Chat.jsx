@@ -201,7 +201,7 @@ const Chat = () => {
                               </div>
                               <div class="usr-mg-info">
                                 <h3>{con.name}</h3>
-                                <p>{con.lastMessage?.text} </p>
+                                <p>{con.lastMessage?.text.slice(0, 27) + "..."} </p>
                               </div>
                               <span class="posted_time">
                                 {con.lastMessage
