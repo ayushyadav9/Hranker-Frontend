@@ -31,7 +31,6 @@ const Chat = () => {
   useEffect(() => {
     socket.current = io(baseURL);
     socket.current.on("getMessage", (data) => {
-      console.log(data)
       setArrivalMessage({
         senderId: data.senderId,
         text: data.text,
@@ -41,15 +40,17 @@ const Chat = () => {
   }, []);
 
   useEffect(() => {
+    console.log(arrivalMessage)
     arrivalMessage &&
-    activeChat._id === arrivalMessage.senderId &&
+    (activeChat._id === arrivalMessage.senderId  || userData._id === arrivalMessage.senderId) &&
       setmessages((prev) => [...prev, arrivalMessage]);
-  }, [arrivalMessage, activeChat]);
+  }, [arrivalMessage, activeChat, userData]);
 
   useEffect(() => {
     if(userData){
       socket.current.emit("addUser", userData._id);
       socket.current.on("getUsers", (users) => {
+        console.log(users)
         let t = users.map(item=>{
           return item.userId
         })
