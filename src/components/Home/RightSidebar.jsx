@@ -66,7 +66,7 @@ const RightSidebar = () => {
                     <div className="job-details">
                       <Link
                         to={`/${post.type === 1 ? "post" : "quesPost"}/${
-                          post._id
+                          post.slug
                         }`}
                         target="_blank"
                       >
