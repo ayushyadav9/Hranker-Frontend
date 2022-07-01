@@ -162,7 +162,7 @@ const QuesPost = ({ post, userData }) => {
             </ul>
             <ul className="bk-links">
               <li>
-                <Link to={`/quesPost/${post._id}`} target="_blank">
+                <Link to={`/quesPost/${post.slug}`} target="_blank">
                   <div className="open-newtab">
                     <img src="/images/open.svg" alt=""></img>
                   </div>

@@ -87,11 +87,11 @@ function App() {
           </Route>
 
           <Route element={<ProtectedRoute />}>
-            <Route path="/post/:id" element={<BlogPost/>} />
+            <Route path="/post/:slug" element={<BlogPost/>} />
           </Route>
 
           <Route element={<ProtectedRoute />}>
-            <Route path="/quesPost/:id" element={<QuesPost/>} />
+            <Route path="/quesPost/:slug" element={<QuesPost/>} />
           </Route>
 
           <Route element={<ProtectedRoute />}>

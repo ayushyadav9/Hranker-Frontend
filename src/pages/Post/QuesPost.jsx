@@ -9,7 +9,7 @@ import Loader from "../../utils/Loader";
 import { getDateAndTime } from "../../utils/timeCalculator";
 
 const QuesPost = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const dispatch = useDispatch();
   const { userData, userToken } = useSelector((state) => state.user);
   const [postData, setpostData] = useState(null);
@@ -19,14 +19,14 @@ const QuesPost = () => {
   const [commentValue, setCommentValue] = useState("");
 
   useEffect(() => {
-    if (id) {
+    if (slug) {
       fetch(`${baseURL}/post/getQuesPost`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("userJWT")}`,
         },
-        body: JSON.stringify({ postId: id }),
+        body: JSON.stringify({ slug: slug }),
       })
         .then((res) => res.json())
         .then(
@@ -42,7 +42,7 @@ const QuesPost = () => {
           }
         );
     }
-  }, [id]);
+  }, [slug]);
 
   useEffect(() => {
     if (postData && userData) {
