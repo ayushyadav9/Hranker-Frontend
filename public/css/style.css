@@ -3442,7 +3442,9 @@ footer {
 .user_pro_status div {
   margin-bottom: 17px;
   font-size: 21px;
-  font-weight: 350;
+  margin-bottom: 17px;
+  font-size: 21px;
+  color: #fea116;
 }
 .flw-hr {
   float: left;
@@ -3483,19 +3485,20 @@ footer {
 .flw-status li {
   display: inline-block;
   margin-right: 17px;
-  padding: 8px 16px;
-  border-radius: 7px;
-  box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+  padding: 4px 11px;
+  font-size: -5px;
+  border-radius: 6px;
+  border-bottom: 1px solid grey;
 }
 .flw-status li:last-child {
   margin-right: 0;
 }
 .flw-status li span {
   color: rgba(60, 60, 67);
-  font-size: 1rem;
-  font-weight: 400;
-  margin-bottom: 6px;
-  display: block;
+    font-size: 16px;
+    font-weight: 300;
+    margin-bottom: 5px;
+    display: block;
 }
 .flw-status li b {
   color: #000000;
