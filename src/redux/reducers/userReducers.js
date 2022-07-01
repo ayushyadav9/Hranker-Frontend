@@ -63,6 +63,7 @@ const userReducer = createSlice({
       })
       .addCase(getUser.rejected, (state, action) => {
         state.isReLogin =  true
+        state.isLoggedIn = false;
         state.loadings.getUserLoading = false;
         state.error = true;
       })

@@ -75,6 +75,11 @@ const Chat = () => {
         let mems = conversations[i].members.filter((it) => {
           return it._id !== userData._id;
         })[0];
+        console.log(mems)
+        if(mems.length===0){ 
+          setconvoData(null) 
+          return; 
+        }
         let tmems = JSON.parse(JSON.stringify(mems));
         tmems.convId = conversations[i]._id;
         tmems.createdAt = conversations[i].createdAt;
@@ -99,6 +104,7 @@ const Chat = () => {
     });
     // eslint-disable-next-line
   }, []);
+
   const handelChatData = async (con) => {
     setmessages([]);
     setactiveChat(con);
@@ -107,7 +113,7 @@ const Chat = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("userJWT")}`,
+        Authorization: `Bearer ${userToken}`,
       },
       body: JSON.stringify({ convId: con.convId }),
     })
@@ -147,7 +153,7 @@ const Chat = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("userJWT")}`,
+          Authorization: `Bearer ${userToken}`,
         },
         body: JSON.stringify({ text: messageText, convId: activeChat.convId }),
       })
@@ -172,7 +178,7 @@ const Chat = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("userJWT")}`,
+          Authorization: `Bearer ${userToken}`,
         },
       })
         .then((res) => res.json())
@@ -205,7 +211,7 @@ const Chat = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("userJWT")}`,
+        Authorization: `Bearer ${userToken}`,
       },
       body: JSON.stringify({ senderId: userData?._id, receiverId: id})
     })
@@ -230,7 +236,6 @@ const Chat = () => {
   }, [messages, activeChat]);
 
   return (
-
     <>
       <section class="messages-page">
         <div class="container">

@@ -34,8 +34,8 @@ function App() {
   }, [location.pathname])
   
   useEffect(() => {
-    if(isReLogin){
-      localStorage.removeItem("userToken")
+    if(isReLogin===true){
+      localStorage.removeItem("userJWT")
       navigate("/sign-in")
     }
     // eslint-disable-next-line
