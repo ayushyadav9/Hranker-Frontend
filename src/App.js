@@ -7,7 +7,7 @@ import Profile from "./pages/Profile/Profile";
 import SignIn from "./pages/Registration/SignIn/SignIn";
 import SignUp from "./pages/Registration/SignUp/SignUp";
 import ProtectedRoute from "./routes/ProtectedRoute";
-import {  useLocation } from "react-router-dom";
+import {  useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getActiveLeaderboard, getLeaderboard, getTopPosts, getUser } from "./redux/ApiCalls";
 import { setToken } from "./redux/reducers/userReducers";
@@ -20,9 +20,11 @@ import Chat from "./pages/Chat/Chat";
 
 function App() {
   const location = useLocation();
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const [isPopupOpen, setisPopupOpen] = useState(false)
   const {popups} = useSelector((state)=>state.post)
+  const {isReLogin} = useSelector((state)=>state.user)
   const [url, seturl] = useState(true)
 
   useEffect(() => {
@@ -30,6 +32,14 @@ function App() {
       seturl(false)
     }
   }, [location.pathname])
+  
+  useEffect(() => {
+    if(isReLogin){
+      localStorage.removeItem("userToken")
+      navigate("/sign-in")
+    }
+    // eslint-disable-next-line
+  }, [isReLogin])
   
 
   useEffect(() => {

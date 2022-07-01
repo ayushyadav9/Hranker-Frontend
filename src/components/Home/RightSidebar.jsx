@@ -75,7 +75,7 @@ const RightSidebar = () => {
                       <p>
                         <span style={{ fontWeight: 300 }}>by</span>
                         <Link
-                          to={`/user-profile/${post.user.username}`}
+                          to={`/user-profile/${post?.user?.username}`}
                           target="_blank"
                         >
                           {" "}

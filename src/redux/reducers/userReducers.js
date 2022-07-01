@@ -4,6 +4,7 @@ import { loginUser, getUser, googleLoginUser, registerUser, getSavedPosts, markN
 const initialState = {
   isLoggedIn: false,
   userToken: null,
+  isReLogin: false,
   loadings: {
     loginLoading: false,
     getUserLoading: false,
@@ -46,6 +47,7 @@ const userReducer = createSlice({
     builder
       //GetUser
       .addCase(getUser.fulfilled, (state, action) => {
+        state.isReLogin =  false
         state.loadings.getUserLoading = false;
         if (action.payload.success === true) {
           state.userData = action.payload.user;
@@ -56,9 +58,11 @@ const userReducer = createSlice({
         }
       })
       .addCase(getUser.pending, (state, action) => {
+        state.isReLogin =  false
         state.loadings.getUserLoading = true;
       })
       .addCase(getUser.rejected, (state, action) => {
+        state.isReLogin =  true
         state.loadings.getUserLoading = false;
         state.error = true;
       })
