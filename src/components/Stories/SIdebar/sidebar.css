@@ -1,0 +1,63 @@
+.Sidebar{
+    height: 99%;
+    width:18vw;
+    background-color: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin-top: 5px;
+    
+    margin-left: 20px;
+    
+    border-radius: 5px;
+    box-shadow: 0 3px 10px rgb(0 0 0 / 20%);
+    
+}
+
+
+.Sidebar-Content-Scroller{
+    overflow-y: auto;
+    height: 85%;
+    padding: 15px 15px 78px;
+}
+
+.Sidebar-Footer-Story-Add{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-weight: 400;
+    position: absolute;
+    bottom: 0;
+    height: 2.2rem;
+    border-top: 1px solid #ddd;
+    width: 100%;
+    background-color: red;
+}
+
+.btn{
+    background-color: #00e2fa;
+    background-image:  linear-gradient(90deg,#52A0FD,#00e2fa);
+    color: white;
+    width: 100%;
+    font-size: 1.5 rem;
+}
+
+
+.divider{
+    
+    margin: 0px 0px 10px 0px;
+    font-weight: 600;
+    font-size: 20px;
+    color: #404040;
+}
+.All-Story-List{
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width:1200px){
+    .Sidebar{
+        width: 100%;
+        margin-left: 0;
+    }
+}

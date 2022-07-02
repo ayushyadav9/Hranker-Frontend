@@ -17,13 +17,17 @@ import BlogPost from "./pages/Post/BlogPost";
 import Leaderboard from "./pages/Leaderboard/Leaderboard";
 import QuesPost from "./pages/Post/QuesPost";
 import Chat from "./pages/Chat/Chat";
-
+import Story from "./pages/Story/Story";
+import StoryContent from "./pages/Story/StoryContent";
 function App() {
   const location = useLocation();
   const dispatch = useDispatch();
-  const [isPopupOpen, setisPopupOpen] = useState(false)
-  const {popups} = useSelector((state)=>state.post)
-  const [url, seturl] = useState(true)
+  const [isPopupOpen, setisPopupOpen] = useState(false);
+  const {popups} = useSelector((state)=>state.post);
+  const [url, seturl] = useState(true);
+
+  
+
 
   useEffect(() => {
     if(location.pathname==="/sign-in" || location.pathname==="/sign-up"){
@@ -87,6 +91,13 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/points" element={<Points/>} />
           </Route>
+          <Route element={<ProtectedRoute />}>
+            <Route path="/stories" element={<Story />} />
+          </Route>
+          <Route element={<ProtectedRoute />}>
+            <Route path="/stories/:id" element={<StoryContent />} />
+          </Route>
+          
 
         </Routes>
     </div>

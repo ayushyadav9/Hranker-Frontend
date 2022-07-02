@@ -11,6 +11,7 @@ import {
 } from "../../redux/reducers/postReducers";
 import QuesPost from "./QuesPost";
 import { useState } from "react";
+import { Avatar } from "antd";
 
 const MainNewsFeed = () => {
   const dispatch = useDispatch();
@@ -106,6 +107,16 @@ const MainNewsFeed = () => {
               </ul>
             </div>
           </div>
+
+          <div className="stories-section">
+                <div>
+                  <Avatar
+                   alt="A"
+                  />
+                </div>
+          </div>      
+
+
           <div className="posts-section">
             <div className="post-nav">
               <ul className="nav nav-tabs">

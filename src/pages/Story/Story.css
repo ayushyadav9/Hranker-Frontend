@@ -1,0 +1,29 @@
+.App{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    
+  }
+  
+  body{
+    margin:0;
+    padding: 0;
+  }
+  
+  a{
+    text-decoration: none;
+    
+    color: inherit;
+  }
+  
+  a:hover{
+    cursor: pointer;
+  }
+  button{
+    all:unset;
+    cursor: pointer;
+  
+  }
+  .no-hover{
+    pointer-events: none;
+  }

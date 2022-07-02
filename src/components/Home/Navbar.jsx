@@ -244,6 +244,14 @@ const Navbar = () => {
                     </div>
                   </li>
                   <li>
+                    <div onClick={() => handelRedirect("/stories")} title="">
+                      <span>
+                        <img src="/images/story-icon.png" alt="" />
+                      </span>
+                      <span>Stories</span>
+                    </div>
+                  </li>
+                  <li>
                     <div
                       // ref={messageRef}
                       // onClick={() => {

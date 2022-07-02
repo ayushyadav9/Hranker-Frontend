@@ -1,0 +1,26 @@
+.display1{
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 250%;
+    width:50%;
+    word-break: break-all;
+    position:absolute;
+    max-height: 30%;
+    bottom: 2%;
+    background: rgb(0,0,0,0.5);
+    overflow-y:auto;
+
+}
+.display1 p{
+    display: inline;
+    font-size: 2rem;
+    
+}
+@media (max-width:"1200px"){
+    .display1 p{
+        font-size:1.2rem;
+    }
+}

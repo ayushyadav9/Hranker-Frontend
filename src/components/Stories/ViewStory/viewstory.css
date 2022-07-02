@@ -1,0 +1,128 @@
+.view-story{
+    position: fixed;
+    top: 0;
+    /* right: 0; */
+    left: 19.7vw;
+    width: 79.8VW;
+    height: 100%;
+    background-color: #fff;
+    opacity: 1;
+}
+
+.view-story-image-div{
+    position: relative;
+    width: 99%;
+    height: 98%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0.5rem;
+    background: rgb(0,0,0,1);
+    z-index: -1;
+}
+
+.view-story-top-content{
+    position: absolute;
+    top: 1.1rem;
+    left: 1rem;
+    width: 96.8%;
+    display: flex;
+    align-items: center;
+    background-color: rgb(0,0,0,0.05);
+    color: white;
+}
+.shrink{
+    width: 60vw;
+}
+.view-story img{
+   
+   max-width: 70%;
+   max-height: 100%;
+   object-fit: contain;
+}
+
+
+.cross-btn{
+    position: absolute;
+    right: 0;
+    padding:0.8rem;
+    padding-top: 0;
+
+}
+
+
+
+
+.Navigator .forwardArrow{
+    position: absolute;
+    top: 0;
+    right: 10%;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    
+}
+
+
+.Navigator .backwardArrow{
+    position: absolute;
+    top: 0;
+    left: 10%;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    
+}
+
+.not-found-wrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    animation: hideAnimation 0s ease-in 1s;
+    animation-fill-mode: forwards;
+    visibility: hidden;
+    
+    
+  }
+  @keyframes hideAnimation{
+      to{
+        visibility:visible;
+      }
+  }
+  .not-found-wrapper h1 {
+    font-size: 3rem;
+    
+  }
+  .not-found-wrapper .message {
+    font-size: 1.5rem;
+    padding: 20px;
+    text-align: center;
+    width: 60%;
+    
+  }
+
+
+@media (max-width:1200px){
+    .view-story{
+        width: 100%;
+        left:0;
+    }
+
+    .view-story-image-div{
+        height: 100%;
+        margin-top: 0;
+        width: 100%;
+    }
+
+    .view-story img{
+        max-width: 70%;
+    }
+
+    .Navigator .backwardArrow{
+        left: 7%;
+    }
+
+    .Navigator .forwardArrow{
+        right: 7%;
+    }
+}
