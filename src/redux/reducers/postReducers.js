@@ -13,6 +13,7 @@ const initialState = {
     blogPopup:false,
     quesPopup:false
   },
+  confetti: false,
   postsData: null,
   error: null,
 };
@@ -29,6 +30,9 @@ const postReducer = createSlice({
     },
     toggleQuesPopup(state){
       state.popups.quesPopup = !state.popups.quesPopup
+    },
+    toggleConfetti(state){
+      state.confetti = !state.confetti
     },
     clearFeed(state){
       state.postsData = null
@@ -125,6 +129,9 @@ const postReducer = createSlice({
               return n;
             });
             state.postsData = t
+            if(action.payload.isCorrect){
+              state.confetti=true;
+            }
         } else {
           state.error = action.payload.message;
         }
@@ -139,5 +146,5 @@ const postReducer = createSlice({
   },
 });
 
-export const { setToken, toggleBlogPopup, toggleQuesPopup, clearFeed } = postReducer.actions;
+export const { setToken, toggleBlogPopup, toggleQuesPopup, clearFeed, toggleConfetti } = postReducer.actions;
 export default postReducer.reducer;

@@ -17,13 +17,15 @@ import BlogPost from "./pages/Post/BlogPost";
 import Leaderboard from "./pages/Leaderboard/Leaderboard";
 import QuesPost from "./pages/Post/QuesPost";
 import Chat from "./pages/Chat/Chat";
+import Congratulations from "./utils/Congratulation";
+import { toggleConfetti } from "./redux/reducers/postReducers";
 
 function App() {
   const location = useLocation();
   const navigate = useNavigate()
   const dispatch = useDispatch();
   const [isPopupOpen, setisPopupOpen] = useState(false)
-  const {popups} = useSelector((state)=>state.post)
+  const {popups, confetti} = useSelector((state)=>state.post)
   const {isReLogin} = useSelector((state)=>state.user)
   const [url, seturl] = useState(true)
 
@@ -40,6 +42,16 @@ function App() {
     }
     // eslint-disable-next-line
   }, [isReLogin])
+
+  useEffect(() => {
+    if(confetti){
+      setTimeout(()=>{
+        dispatch(toggleConfetti())
+      }, 5000);
+    }
+     // eslint-disable-next-line
+  }, [confetti])
+  
   
 
   useEffect(() => {
@@ -57,6 +69,7 @@ function App() {
   return (
     <div className={popups.blogPopup || popups.quesPopup|| isPopupOpen?"wrapper overlay":"wrapper"}>
         {url && <Navbar/>}
+        {confetti && <Congratulations/>}
         <Routes>
 
           <Route element={<ProtectedRoute />}>

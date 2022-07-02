@@ -104,7 +104,7 @@ const QuesPost = ({ post, userData }) => {
         className="posty"
         style={{
           borderRadius: "7px",
-          border: `1px solid ${isAnswered===true ? "#00e400" : "black"}`,
+          border: `1px solid ${isAnswered===true ? correctOption.length? optionAnswered?.id===correctOption[0]?.id? "#00e400":"red": "#e3c4a7": "black"}`,
         }}
       >
         <div className="post-bar no-margin">
@@ -202,7 +202,7 @@ const QuesPost = ({ post, userData }) => {
               {post.image && <img src={post.image} alt=""></img>}
             </ul>
             <p>
-              {post.description.length > 25 ? (
+              {post.description.split(" ").length > 25 ? (
                 <>
                   {post.description.split(" ").slice(0, 25).join(" ") + "..."}
                   <span>Read more</span>
