@@ -1298,7 +1298,7 @@ main {
   justify-content: center;
   margin-bottom: 17px;
 }
-.post-nav .no-posts{
+.no-posts{
   text-align: center;
   padding: 10px;
   font-size: 21px;
@@ -3442,7 +3442,9 @@ footer {
 .user_pro_status div {
   margin-bottom: 17px;
   font-size: 21px;
-  font-weight: 350;
+  margin-bottom: 17px;
+  font-size: 21px;
+  color: #fea116;
 }
 .flw-hr {
   float: left;
@@ -3483,19 +3485,20 @@ footer {
 .flw-status li {
   display: inline-block;
   margin-right: 17px;
-  padding: 8px 16px;
-  border-radius: 7px;
-  box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+  padding: 4px 11px;
+  font-size: -5px;
+  border-radius: 6px;
+  border-bottom: 1px solid grey;
 }
 .flw-status li:last-child {
   margin-right: 0;
 }
 .flw-status li span {
   color: rgba(60, 60, 67);
-  font-size: 1rem;
-  font-weight: 400;
-  margin-bottom: 6px;
-  display: block;
+    font-size: 16px;
+    font-weight: 300;
+    margin-bottom: 5px;
+    display: block;
 }
 .flw-status li b {
   color: #000000;
@@ -5840,15 +5843,14 @@ messages-list::-webkit-scrollbar {
   float: left;
   width: 100%;
   position: relative;
-  margin-top: 15.5px;
+  margin: 3.5px 0px;
 }
 .messg-usr-img {
   position: absolute;
-  /* bottom: 25px; */
   left: 20px;
-  /* width: 50px; */
 }
 .messg-usr-img img {
+  margin-top: 3px;
   width: 32px;
   height: 32px;
   -webkit-border-radius: 100px;
@@ -5879,6 +5881,11 @@ messages-list::-webkit-scrollbar {
   width: auto;
   margin-right: 6px;
 }
+
+.main-message-box.ta-right .message-dt .message-inner-dt> p {
+  border-bottom-right-radius: 4px;
+}
+
 .message-inner-dt {
   float: left;
   -webkit-border-radius: 15px;
@@ -5922,6 +5929,13 @@ messages-list::-webkit-scrollbar {
     -o-border-radius: 15px;
     border-radius: 15px;
 }
+.message-inner-dt >p> span {
+  font-size: 9px;
+  margin-left: 6px;
+  position: relative;
+  margin-bottom: 0px;
+  top: 8px;
+}
 .message-dt.st3 .message-inner-dt > p {
   background-color: #efefef;
   color: #686868;
@@ -5929,6 +5943,7 @@ messages-list::-webkit-scrollbar {
   /* max-width: 400px; */
   padding: 7px 11px;
   float: left;
+  border-bottom-left-radius: 4px;
   word-break: break-all;
 }
 .message-dt.st3 .message-inner-dt > p img {

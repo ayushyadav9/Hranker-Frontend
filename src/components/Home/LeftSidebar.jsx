@@ -67,6 +67,7 @@ const LeftSidebar = () => {
                 return (
                   <div key={i} className="suggestion-usd">
                     <img
+                      style={{height:"30px"}}
                       src={`${
                         item.image
                           ? baseURL + "/file/" + item.image
@@ -77,7 +78,7 @@ const LeftSidebar = () => {
                     <div className="sgt-text">
                       <>
                       <Link  to={`/user-profile/${item.username}`} target="_blank">
-                        <h4>{item.name}</h4>
+                        <h4>{item.name.split(" ")[0]}</h4>
                       </Link>
                       </>
                       <span>({item.username})</span>

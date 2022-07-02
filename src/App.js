@@ -7,7 +7,7 @@ import Profile from "./pages/Profile/Profile";
 import SignIn from "./pages/Registration/SignIn/SignIn";
 import SignUp from "./pages/Registration/SignUp/SignUp";
 import ProtectedRoute from "./routes/ProtectedRoute";
-import {  useLocation } from "react-router-dom";
+import {  useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getActiveLeaderboard, getLeaderboard, getTopPosts, getUser } from "./redux/ApiCalls";
 import { setToken } from "./redux/reducers/userReducers";
@@ -19,21 +19,41 @@ import QuesPost from "./pages/Post/QuesPost";
 import Chat from "./pages/Chat/Chat";
 import Story from "./pages/Story/Story";
 import StoryContent from "./pages/Story/StoryContent";
+import Congratulations from "./utils/Congratulation";
+import { toggleConfetti } from "./redux/reducers/postReducers";
+
 function App() {
   const location = useLocation();
+  const navigate = useNavigate()
   const dispatch = useDispatch();
-  const [isPopupOpen, setisPopupOpen] = useState(false);
-  const {popups} = useSelector((state)=>state.post);
-  const [url, seturl] = useState(true);
-
-  
-
+  const [isPopupOpen, setisPopupOpen] = useState(false)
+  const {popups, confetti} = useSelector((state)=>state.post)
+  const {isReLogin} = useSelector((state)=>state.user)
+  const [url, seturl] = useState(true)
 
   useEffect(() => {
     if(location.pathname==="/sign-in" || location.pathname==="/sign-up"){
       seturl(false)
     }
   }, [location.pathname])
+  
+  useEffect(() => {
+    if(isReLogin===true){
+      localStorage.removeItem("userJWT")
+      navigate("/sign-in")
+    }
+    // eslint-disable-next-line
+  }, [isReLogin])
+
+  useEffect(() => {
+    if(confetti){
+      setTimeout(()=>{
+        dispatch(toggleConfetti())
+      }, 5000);
+    }
+     // eslint-disable-next-line
+  }, [confetti])
+  
   
 
   useEffect(() => {
@@ -51,6 +71,7 @@ function App() {
   return (
     <div className={popups.blogPopup || popups.quesPopup|| isPopupOpen?"wrapper overlay":"wrapper"}>
         {url && <Navbar/>}
+        {confetti && <Congratulations/>}
         <Routes>
 
           <Route element={<ProtectedRoute />}>
@@ -81,11 +102,11 @@ function App() {
           </Route>
 
           <Route element={<ProtectedRoute />}>
-            <Route path="/post/:id" element={<BlogPost/>} />
+            <Route path="/post/:slug" element={<BlogPost/>} />
           </Route>
 
           <Route element={<ProtectedRoute />}>
-            <Route path="/quesPost/:id" element={<QuesPost/>} />
+            <Route path="/quesPost/:slug" element={<QuesPost/>} />
           </Route>
 
           <Route element={<ProtectedRoute />}>

@@ -66,7 +66,7 @@ const RightSidebar = () => {
                     <div className="job-details">
                       <Link
                         to={`/${post.type === 1 ? "post" : "quesPost"}/${
-                          post._id
+                          post.slug
                         }`}
                         target="_blank"
                       >
@@ -75,7 +75,7 @@ const RightSidebar = () => {
                       <p>
                         <span style={{ fontWeight: 300 }}>by</span>
                         <Link
-                          to={`/user-profile/${post.user.username}`}
+                          to={`/user-profile/${post?.user?.username}`}
                           target="_blank"
                         >
                           {" "}

@@ -7,6 +7,7 @@ import QuesPost from "../../components/Home/Popups/QuesPost";
 import RightSidebar from "../../components/Home/RightSidebar";
 import Loader from "../../utils/Loader";
 import { useSelector } from "react-redux";
+// import Congratulation from "../../utils/Congratulation";
 
 const Homepage = () => {
   let  { userData} = useSelector((state)=>state.user);
@@ -14,6 +15,7 @@ const Homepage = () => {
 
   return (
     <>
+    {/* <Congratulation/> */}
     {loadings.voteLoading && <Loader/>}
       {userData? (
         <div>
