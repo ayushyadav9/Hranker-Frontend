@@ -8,6 +8,19 @@ import { getConversations } from "../../redux/ApiCalls";
 import { chatTime } from "../../utils/timeCalculator";
 import { io } from "socket.io-client";
 import Loader from "../../utils/Loader";
+import { isLastMessage, isSameSender } from "../../utils/ChatLogic";
+import Lottie from "react-lottie";
+import animationData from "./typing.json";
+var socket;
+
+const defaultOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: animationData,
+  rendererSettings: {
+    preserveAspectRatio: "xMidYMid slice",
+  },
+};
 
 const Chat = () => {
   const dispatch = useDispatch();
@@ -17,6 +30,7 @@ const Chat = () => {
   const [searchUserText, setsearchUserText] = useState("");
   const [activeChat, setactiveChat] = useState(null);
   const [messages, setmessages] = useState([]);
+  const [socketConnected, setSocketConnected] = useState(false)
   const [messageText, setmessageText] = useState("");
   const [onlineUsers, setonlineUsers] = useState([]);
   const [arrivalMessage, setArrivalMessage] = useState(null);
@@ -24,9 +38,13 @@ const Chat = () => {
   const [searchBar, setsearchBar] = useState(false);
   const [filteredUsers, setfilteredUsers] = useState(null);
   const [filterLoading, setfilterLoading] = useState(false);
+  const [typing, setTyping] = useState(false)
+  const [isTyping, setIsTyping] = useState(false)
+  const [newMessage, setnewMessage] = useState([])
   const scrollRef = useRef();
   const userDrop = useRef();
-  const socket = useRef();
+
+  // const socket = useRef();
 
   useEffect(() => {
     if (userToken) {
@@ -36,20 +54,44 @@ const Chat = () => {
   }, [userToken]);
 
   useEffect(() => {
-    socket.current = io(baseURL);
-    socket.current.on("getMessage", (data) => {
+    socket = io(baseURL);
+    if(userData){
+      socket.emit("setup", userData._id);
+    }
+    socket.on("connected", () => setSocketConnected(true));
+    socket.on("typing", () => {
+      setIsTyping(true)
+    });
+    socket.on("stop typing", () => setIsTyping(false));
+  }, [userData]);
+  
+  useEffect(() => {
+    console.log("AS")
+  }, [isTyping])
+  
+
+  useEffect(() => {
+    socket.on("getMessage", (data) => {
       setArrivalMessage({
+        convId: data.convId,
         senderId: data.senderId,
         text: data.text,
         createdAt: data.createdAt,
       });
+      console.log(data)
+
+      if(!activeChat || activeChat?.convId !== data.convId){
+        console.log(data)
+        setnewMessage([...newMessage, data.convId])
+      }
     });
-  }, []);
+  })
+  
 
   useEffect(() => {
-    console.log(arrivalMessage);
-    let t = [activeChat?._id, userData?._id];
-    console.log(t);
+    // console.log(arrivalMessage);
+    // let t = [activeChat?._id, userData?._id];
+    // console.log(t);
     arrivalMessage &&
       [activeChat?._id, userData?._id].includes(arrivalMessage.senderId) &&
       setmessages((prev) => [...prev, arrivalMessage]);
@@ -57,8 +99,8 @@ const Chat = () => {
 
   useEffect(() => {
     if (userData) {
-      socket.current.emit("addUser", userData._id);
-      socket.current.on("getUsers", (users) => {
+      socket.emit("addUser", userData._id);
+      socket.on("getUsers", (users) => {
         console.log(users);
         let t = users.map((item) => {
           return item.userId;
@@ -67,6 +109,7 @@ const Chat = () => {
       });
     }
   }, [userData]);
+
 
   useEffect(() => {
     if (conversations && userData) {
@@ -108,6 +151,7 @@ const Chat = () => {
   const handelChatData = async (con) => {
     setmessages([]);
     setactiveChat(con);
+    socket.emit("join chat", con.convId);
     setmessageLoader(true);
     fetch(`${baseURL}/chat/getMessages`, {
       method: "POST",
@@ -134,7 +178,8 @@ const Chat = () => {
   const handelSendMessage = (e) => {
     e.preventDefault();
     if (messageText.length > 0) {
-      socket.current.emit("sendMessage", {
+      socket.emit("sendMessage", {
+        convId: activeChat.convId,
         senderId: userData._id,
         receiverId: activeChat._id,
         text: messageText,
@@ -231,6 +276,28 @@ const Chat = () => {
       );
   }
 
+
+  const handelTyping = (e)=>{
+    setmessageText(e.target.value)
+    console.log(socketConnected)
+    if (!socketConnected) return;
+      let lastTypingTime = new Date().getTime();
+      var timerLength = 1000;
+      setTimeout(() => {
+        var timeNow = new Date().getTime();
+        var timeDiff = timeNow - lastTypingTime;
+        if (timeDiff >= timerLength) {
+          socket.emit("stop typing", activeChat.convId);
+          setTyping(false);
+        }
+      }, timerLength);
+    if(!typing){
+      setTyping(true)
+      socket.emit("typing", activeChat.convId);
+    }
+    
+  }
+
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, activeChat]);
@@ -251,13 +318,22 @@ const Chat = () => {
                         ) : (
                           filteredUsers?.map((item, i) => {
                             return (
-                              <li onClick={()=>handelStartConvo(item._id)}>
+                              <li onClick={() => handelStartConvo(item._id)}>
                                 <div>
-                                  <img src={item.image ? baseURL + "/file/" + item.image: "/images/luser.jpg"} alt=""></img>
+                                  <img
+                                    src={
+                                      item.image
+                                        ? baseURL + "/file/" + item.image
+                                        : "/images/luser.jpg"
+                                    }
+                                    alt=""
+                                  ></img>
                                 </div>
                                 <div className="user-d">
                                   <span>{item.name}</span>
-                                  <span className="username">({item.username})</span>
+                                  <span className="username">
+                                    ({item.username})
+                                  </span>
                                 </div>
                               </li>
                             );
@@ -299,50 +375,60 @@ const Chat = () => {
                       <Loader isSmall={true} />
                     ) : (
                       <ul>
-                        {convoData && convoData.slice().sort((a, b) => b.createdAt - a.createdAt).map((con, i) => {
-                          return (
-                            <li
-                              onClick={() => handelChatData(con)}
-                              key={i}
-                              class={
-                                activeChat && activeChat._id === con._id
-                                  ? "active"
-                                  : ""
-                              }
-                            >
-                              <div class="usr-msg-details">
-                                <div class="usr-ms-img">
-                                  <img
-                                    src={
-                                      con.image
-                                        ? baseURL + "/file/" + con.image
-                                        : "/images/luser.jpg"
-                                    }
-                                    alt=""
-                                  />
-                                  {onlineUsers.includes(con._id) && (
-                                    <span class="msg-status"></span>
-                                  )}
-                                </div>
-                                <div class="usr-mg-info">
-                                  <h3>{con.name}</h3>
-                                  {con.lastMessage &&<p>
-                                    {con.lastMessage.text.length > 27
-                                      ? con.lastMessage.text.slice(0, 27) +
-                                        "..."
-                                      : con.lastMessage.text}
-                                  </p>}
-                                </div>
-                                <span class="posted_time">
-                                  {con.lastMessage
-                                    ? chatTime(con.lastMessage.createdAt)
-                                    : ""}
-                                </span>
-                                {/* <span class="msg-notifc">1</span> */}
-                              </div>
-                            </li>
-                          );
-                        })}
+                        {convoData &&
+                          convoData
+                            .slice()
+                            .sort((a, b) => b.createdAt - a.createdAt)
+                            .map((con, i) => {
+                              return (
+                                <li
+                                  onClick={() => handelChatData(con)}
+                                  key={i}
+                                  class={
+                                    activeChat && activeChat._id === con._id
+                                      ? "active"
+                                      : ""
+                                  }
+                                >
+                                  <div class="usr-msg-details">
+                                    <div class="usr-ms-img">
+                                      <img
+                                        src={
+                                          con.image
+                                            ? baseURL + "/file/" + con.image
+                                            : "/images/luser.jpg"
+                                        }
+                                        alt=""
+                                      />
+                                      {onlineUsers.includes(con._id) && (
+                                        <span class="msg-status"></span>
+                                      )}
+                                    </div>
+                                    <div class="usr-mg-info">
+                                      <h3>{con.name}</h3>
+                                      {con.lastMessage && (
+                                        <p>
+                                          {con.lastMessage.text.length > 27
+                                            ? con.lastMessage.text.slice(
+                                                0,
+                                                27
+                                              ) + "..."
+                                            : con.lastMessage.text}
+                                        </p>
+                                      )}
+                                    </div>
+                                    <span class="posted_time">
+                                      {con.lastMessage
+                                        ? chatTime(con.lastMessage.createdAt)
+                                        : ""}
+                                    </span>
+                                    {newMessage.includes(con.convId) && (
+                                      <span class="msg-notifc">1</span>
+                                    )}
+                                  </div>
+                                </li>
+                              );
+                            })}
                       </ul>
                     )}
                   </div>
@@ -394,19 +480,35 @@ const Chat = () => {
                                 >
                                   <div class="message-dt">
                                     <div class="message-inner-dt">
-                                      <p>{mes.text}</p>
+                                      <p>
+                                        {mes.text}
+                                        <span>{chatTime(mes.createdAt)}</span>
+                                      </p>
                                     </div>
-                                    <span>{chatTime(mes.createdAt)}</span>
                                   </div>
                                   <div class="messg-usr-img">
-                                    <img
-                                      src={
-                                        userData?.image
-                                          ? baseURL + "/file/" + userData.image
-                                          : "/images/luser.jpg"
-                                      }
-                                      alt=""
-                                    />
+                                    {(isSameSender(
+                                      messages,
+                                      mes,
+                                      i,
+                                      userData._id
+                                    ) ||
+                                      isLastMessage(
+                                        messages,
+                                        i,
+                                        userData._id
+                                      )) && (
+                                      <img
+                                        src={
+                                          userData?.image
+                                            ? baseURL +
+                                              "/file/" +
+                                              userData.image
+                                            : "/images/luser.jpg"
+                                        }
+                                        alt=""
+                                      />
+                                    )}
                                   </div>
                                 </div>
                               ) : (
@@ -416,25 +518,53 @@ const Chat = () => {
                                 >
                                   <div class="message-dt st3">
                                     <div class="message-inner-dt">
-                                      <p>{mes.text}</p>
+                                      <p>
+                                        {mes.text}
+                                        <span>{chatTime(mes.createdAt)}</span>
+                                      </p>
                                     </div>
-                                    <span>{chatTime(mes.createdAt)}</span>
                                   </div>
                                   <div class="messg-usr-img">
-                                    <img
-                                      src={
-                                        activeChat.image
-                                          ? baseURL +
-                                            "/file/" +
-                                            activeChat.image
-                                          : "/images/luser.jpg"
-                                      }
-                                      alt=""
-                                    />
+                                    {(isSameSender(
+                                      messages,
+                                      mes,
+                                      i,
+                                      userData._id
+                                    ) ||
+                                      isLastMessage(
+                                        messages,
+                                        i,
+                                        userData._id
+                                      )) && (
+                                      <img
+                                        src={
+                                          activeChat.image
+                                            ? baseURL +
+                                              "/file/" +
+                                              activeChat.image
+                                            : "/images/luser.jpg"
+                                        }
+                                        alt=""
+                                      />
+                                    )}
                                   </div>
                                 </div>
                               );
                             })}
+                          {(
+                            isTyping===true && <div ref={scrollRef}
+                              // class="main-message-box st3"
+                            >
+                              <div class="message-dt st3">
+                                <Lottie
+                                  options={defaultOptions}
+                                // height={50}
+                                  width={86}
+                                  style={{ marginBottom: 0, marginLeft: 0 , padding: "10px"}}/>
+                              </div>
+                              <div class="messg-usr-img"></div>
+                            </div>
+                          )}
                         </>
                       )}
                     </div>
@@ -445,7 +575,7 @@ const Chat = () => {
                             type="text"
                             name="message"
                             value={messageText}
-                            onChange={(e) => setmessageText(e.target.value)}
+                            onChange={(e) => handelTyping(e)}
                             placeholder="Type a message here"
                           />
                           <button type="submit" onClick={handelSendMessage}>
