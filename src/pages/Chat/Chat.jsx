@@ -9,18 +9,18 @@ import { chatTime } from "../../utils/timeCalculator";
 import { io } from "socket.io-client";
 import Loader from "../../utils/Loader";
 import { isLastMessage, isSameSender } from "../../utils/ChatLogic";
-import Lottie from "react-lottie";
-import animationData from "./typing.json";
+// import Lottie from "react-lottie";
+// import animationData from "./typing.json";
 var socket;
 
-const defaultOptions = {
-  loop: true,
-  autoplay: true,
-  animationData: animationData,
-  rendererSettings: {
-    preserveAspectRatio: "xMidYMid slice",
-  },
-};
+// const defaultOptions = {
+//   loop: true,
+//   autoplay: true,
+//   animationData: animationData,
+//   rendererSettings: {
+//     preserveAspectRatio: "xMidYMid slice",
+//   },
+// };
 
 const Chat = () => {
   const dispatch = useDispatch();
@@ -453,7 +453,7 @@ const Chat = () => {
                           {onlineUsers.includes(activeChat?._id) ? (
                             <>
                               <h3>{activeChat ? activeChat.name : ""}</h3>
-                              <p style={{ color: "#07d007" }}>Online</p>
+                              <p style={{ color: "#07d007" }}>{isTyping===true?"Typing...":"Online"}</p>
                             </>
                           ) : (
                             <h3 className="isOnline">
@@ -551,7 +551,7 @@ const Chat = () => {
                                 </div>
                               );
                             })}
-                          {(
+                          {/* {(
                             isTyping===true && <div ref={scrollRef}
                               // class="main-message-box st3"
                             >
@@ -564,7 +564,7 @@ const Chat = () => {
                               </div>
                               <div class="messg-usr-img"></div>
                             </div>
-                          )}
+                          )} */}
                         </>
                       )}
                     </div>

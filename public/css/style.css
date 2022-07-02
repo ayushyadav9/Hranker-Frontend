@@ -5843,7 +5843,7 @@ messages-list::-webkit-scrollbar {
   float: left;
   width: 100%;
   position: relative;
-  margin-top: 6.5px;
+  margin: 3.5px 0px;
 }
 .messg-usr-img {
   position: absolute;
