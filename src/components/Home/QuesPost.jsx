@@ -129,7 +129,10 @@ const QuesPost = ({ post, userData }) => {
                 </Link>
                 <span>
                   <img src="images/clock.svg" alt="" />
-                  {getDateAndTime(post.createdAt)}
+                  {getDateAndTime(post.createdAt)} 
+                  {post.subjectTags.map((sub,i)=>{
+                    return <span>• {sub} {post.subjectTags.length===i+1?"":"|"}</span>
+                  })}
                 </span>
               </div>
             </div>
@@ -150,16 +153,14 @@ const QuesPost = ({ post, userData }) => {
             </div>
           </div>
           <div className="epi-sec">
-            <ul className="descp">
-              <li>
-                <img src="images/icon8.png" alt="" />
-                <span>SSC Student</span>
-              </li>
-              <li>
-                <img src="images/location.svg" alt="" />
-                <span>India</span>
-              </li>
-            </ul>
+            {/* <ul className="descp">
+            {post.subjectTags.map((sub,i)=>{
+                return(
+                  <li>
+                    <span>{sub}</span>
+                  </li>
+                )})}
+            </ul> */}
             <ul className="bk-links">
               <li>
                 <Link to={`/quesPost/${post.slug}`} target="_blank">
@@ -190,7 +191,6 @@ const QuesPost = ({ post, userData }) => {
           </div>
 
           <div className="job_descp">
-            <h3>{post.title}</h3>
             <ul className="job-dt">
               {post.examTags.map((tag, i) => {
                 return (
@@ -199,8 +199,9 @@ const QuesPost = ({ post, userData }) => {
                   </li>
                 );
               })}
-              {post.image && <img src={post.image} alt=""></img>}
             </ul>
+            <h3>{post.title}</h3>
+              {post.image && <img src={post.image} alt=""></img>}
             <p>
               {post.description.split(" ").length > 25 ? (
                 <>
@@ -211,6 +212,7 @@ const QuesPost = ({ post, userData }) => {
                 post.description
               )}
             </p>
+            
           </div>
 
           <div className="options-list">
@@ -254,6 +256,7 @@ const QuesPost = ({ post, userData }) => {
               Correct Answer: <span style={{fontWeight:700}}>{correctOption.map((com, i) => String.fromCharCode(com.id + 96) + ") " + com.value)}</span>
             </div>
           )}
+          
           <div className="job-status-bar">
             <ul className="like-com">
               <li>
