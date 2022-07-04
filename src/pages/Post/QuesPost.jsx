@@ -26,7 +26,7 @@ const QuesPost = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("userJWT")}`,
         },
-        body: JSON.stringify({ slug: slug }),
+        body: JSON.stringify({id: userData?._id, slug: slug }),
       })
         .then((res) => res.json())
         .then(
@@ -42,7 +42,7 @@ const QuesPost = () => {
           }
         );
     }
-  }, [slug]);
+  }, [slug, userData]);
 
   useEffect(() => {
     if (postData && userData) {
@@ -148,7 +148,7 @@ const QuesPost = () => {
 
   return (
     <>
-      {postData && userData ? (
+      {postData ? (
         <div>
           <main>
             <div className="main-section">
@@ -204,7 +204,7 @@ const QuesPost = () => {
                                   <span>India</span>
                                 </li>
                               </ul>
-                              <ul className="bk-links">
+                              {userData && <ul className="bk-links">
                                 <li>
                                   <div onClick={handelSavePost} title="">
                                     <div className="save">
@@ -213,7 +213,7 @@ const QuesPost = () => {
                                       ) : (
                                         <i
                                           className={`${
-                                            userData.saved.quesPosts.filter(
+                                            userData?.saved.quesPosts.filter(
                                               (i) => i === postData._id
                                             ).length > 0
                                               ? "la la-check"
@@ -224,7 +224,7 @@ const QuesPost = () => {
                                     </div>
                                   </div>
                                 </li>
-                              </ul>
+                              </ul>}
                             </div>
                             <div className="job_descp accountnone">
                               <h3>{postData.title}</h3>
@@ -272,7 +272,7 @@ const QuesPost = () => {
                                   <div
                                     className={
                                       postData.likers.filter(
-                                        (i) => i === userData._id
+                                        (i) => i === userData?._id
                                       ).length > 0
                                         ? "isLiked"
                                         : ""
@@ -308,7 +308,7 @@ const QuesPost = () => {
                               )}
                             </div>
 
-                            <div className="comment-section-post">
+                            {userData && <div className="comment-section-post">
                               <div className="post-comment-blog">
                                 <div className="cm_img-blog">
                                   {userData.image ? (
@@ -334,7 +334,7 @@ const QuesPost = () => {
                                   </form>
                                 </div>
                               </div>
-                            </div>
+                            </div>}
                             {postData.comments.map((com, i) => {
                               return (
                                 <div key={i} className="comment-sec-blog">

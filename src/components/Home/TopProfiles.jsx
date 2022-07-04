@@ -41,7 +41,7 @@ const topUsers = [
 var settings = {
   infinite: false,
   speed: 500,
-  slidesToShow: 5,
+  slidesToShow: 6,
   slidesToScroll: 1,
   adaptiveHeight:true,
   variableWidth:true,
