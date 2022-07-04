@@ -1,7 +1,7 @@
 import './singleStory.css';
 //  css done
 
-
+import { baseURL } from '../../../api';
 const timeshower =require('./timeshower');
 
 
@@ -12,7 +12,17 @@ const SingleStory =({profilePicSrc,username,createdAt})=>{
         <div className="single-story">
 
             <div className="story-dp">
-                <img src="https://www.bootdey.com/img/Content/avatar/avatar7.png" alt=""  />
+                                {profilePicSrc ? (
+                                  <img
+                                    
+                                    src={
+                                      baseURL + "/file/" + profilePicSrc
+                                    }
+                                    alt=""
+                                  />
+                                ) : (
+                                  <img src="/images/user40.png" alt="" />
+                                )}
             </div>
 
             <div className="story-author">

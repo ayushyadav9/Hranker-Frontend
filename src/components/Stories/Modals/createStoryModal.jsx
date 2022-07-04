@@ -11,6 +11,7 @@ import { baseURL } from "../../../api";
 
 // css done
 import "../Modals/createStoryModal.css";
+import { Close } from "@mui/icons-material";
 
 
 
@@ -124,11 +125,11 @@ function CreateStory({ modalState,setModalState,user_id,dataRecaller,setDataReca
 
                 }}
             >
-                <strong>
+                <strong style={{fontWeight:"bold"}}>
                     Create Story 
                 </strong>
                 <button onClick={()=> setModalState(false)}>
-                            <i class="material-icons"> close</i>
+                            <Close/>
                 </button>
             </div>
         </DialogTitle>
@@ -163,7 +164,7 @@ function CreateStory({ modalState,setModalState,user_id,dataRecaller,setDataReca
                 </React.Fragment>
             }
 
-            <Divider/>
+            {/* <Divider/> */}
 
             <div className="text-input">
             <textarea name="" id="textHere" placeholder="Enter Your Story Here..." onChange={(e)=>textAreaHandler(e)}></textarea>

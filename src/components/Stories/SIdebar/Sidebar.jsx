@@ -1,3 +1,5 @@
+import { Divider } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import{useState} from 'react';
 import {
     NavLink
@@ -30,6 +32,7 @@ const Sidebar =
                 
                 <div className="Sidebar-Content-Scroller">
                     <h2>Stories</h2>
+                    <Divider/>
                     <div className="All-Story-List">
 
 
@@ -43,11 +46,11 @@ const Sidebar =
                                                     
                                                         
                                                         <NavLink
-                                                            to={story._id}
+                                                            to={"/stories/"+story._id}
                                                         >
                                                             <div
                                                             >
-                                                                <SingleStory profilePicSrc={baseURL+"/file/"+story.user.image} username={story.user.name} createdAt={story.createdAt}/>
+                                                                <SingleStory profilePicSrc={story.user.image} username={story.user.name} createdAt={story.createdAt}/>
                                                                 
                                                             </div>
                                                         </NavLink>
@@ -56,7 +59,7 @@ const Sidebar =
                                         
                                     
                                 }
-
+                            
                             <p className="divider">Others Stories</p>
 
                             {
@@ -65,9 +68,9 @@ const Sidebar =
                                         stories[1].map(story=>{
                                             return(
                                                 <NavLink
-                                                    to={story._id}
+                                                    to={"/stories/"+story._id}
                                                 >
-                                                    <SingleStory profilePicSrc={baseURL+"/file/"+story.user.image} username={story.user.name} createdAt={story.createdAt}/>
+                                                    <SingleStory profilePicSrc={story.user.image} username={story.user.name} createdAt={story.createdAt}/>
         
                                                 </NavLink>
                                             )
@@ -80,7 +83,7 @@ const Sidebar =
                 <div className="Sidebar-Footer-Story-Add">
                     <button  className='btn' onClick={()=>setCreateStoryModalState(true)}>
                         
-                        <span style={{fontSize:"22px"}}>+</span>
+                        <span style={{}}><AddIcon/></span>
                         &nbsp;
                         <span>
                             Create Story

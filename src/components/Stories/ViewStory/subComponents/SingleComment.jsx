@@ -8,12 +8,19 @@ const timeshower =require('../../utilities/timeshower');
 
 const SingleComment =({commentData})=>{
     return(
-        <div className='singlecomment'>
-            <Avatar 
-            src={baseURL+"/file/"+commentData.image}
-            sx={{ bgcolor: deepPurple[500] }}
-            alt={commentData.username}/>
-            <div className='singleCommentContent'>
+        <div className='story-singlecomment'>
+            {!commentData.image &&
+                <Avatar 
+                src={baseURL+"/file/"+commentData.image}
+                sx={{ bgcolor: deepPurple[500] }}
+                
+                alt={commentData.username}/>
+            }
+            {
+                commentData.image &&
+                <img src={baseURL+"/file/"+commentData.image} style={{width:"50px",height:"50px",borderRadius:"50%",objectFit:"cover"}} alt=""/>
+            }
+            <div className='story-singleCommentContent'>
 
                 <strong>{commentData.username},</strong><span style={{fontSize:"13px"}}>  {timeshower(Date.now()-commentData.commentedAt)}</span>
                 <div style={{paddingTop:"3%"}}>

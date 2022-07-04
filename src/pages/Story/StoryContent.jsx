@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import {
-  Routes,
-  Route,
-  useParams,
+
+    useParams,
 } from "react-router-dom";
 
 import Sidebar from '../../components/Stories/SIdebar/Sidebar';
@@ -14,65 +13,62 @@ import './Story.css';
 
 function StoryContent() {
 
-  const [stories, setStories] = useState(null);
-  const { userData } = useSelector((state) => state.user);
-  
-  const user_id = userData?._id;
-  const [dataRecaller, setDataRecaller] = useState(false);
-  const {id}=useParams();
-  console.log(id);
-  useEffect(() => {
-    // console.log("use effect");
-    fetch(baseURL + "/stories", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json; charset=UTF-8"
-      },
-      body: JSON.stringify({
-        user_id: user_id
-      })
-    })
-      .then((res) => {
+    const [stories, setStories] = useState(null);
+    const { userData } = useSelector((state) => state.user);
 
-        return res.json();
-      })
-      .then((data) => {
+    const user_id = userData?._id;
+    const [dataRecaller, setDataRecaller] = useState(false);
+    const { id } = useParams();
+    console.log(id);
 
-        setStories(data.data);
+    useEffect(() => {
+        if(user_id){
 
-      })
-  }, [dataRecaller]);
+            console.log("use effect");
+            fetch(baseURL + "/stories", {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                },
+                body: JSON.stringify({
+                    user_id: user_id
+                })
+            })
+                .then((res) => {
+    
+                    return res.json();
+                })
+                .then(async(data) => {
+    
+                    await setStories(data.data);
+    
+                })
+        }
+    }, [dataRecaller,user_id]);
 
-  return (
+    return (
 
 
 
-    <div className="App">
-
-      {/* <div>kjdsjfaks</div> */}
-
+        <div className="App">
             <Sidebar
                 stories={stories}
                 user_id={user_id}
                 dataRecaller={dataRecaller}
                 setDataRecaller={setDataRecaller}
             />
-
-      
-
-            <ViewStory
-              user_id={user_id}
-              dataRecaller={dataRecaller}
-              setDataRecaller={setDataRecaller}
-            />
-          }
-
-       
-
-    </div>
+            {
+                stories && 
+                <ViewStory
+                    user_id={user_id}
+                    dataRecaller={dataRecaller}
+                    setDataRecaller={setDataRecaller}
+                />
+            }
+        </div>
 
 
-  );
+    );
 }
 
 export default StoryContent;

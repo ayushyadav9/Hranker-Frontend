@@ -39,9 +39,9 @@ const ViewersListShow= ({Viewers,openViewersList,setOpenViewersList})=>{
                   }}
             >
                 {
-                    Viewers.map(viewer=>{
+                    Viewers.slice(0).reverse().map(viewer=>{
                         return(
-                            <SingleStory profilePicSrc={""} username={viewer.username} createdAt={viewer.createdAt}/>
+                            <SingleStory profilePicSrc={viewer.image} username={viewer.username} createdAt={viewer.createdAt}/>
                         )
                     })
                 }

@@ -1,22 +1,22 @@
 .view-story{
     position: fixed;
-    top: 0;
+    top: 12%;
     /* right: 0; */
-    left: 19.7vw;
-    width: 79.8VW;
-    height: 100%;
+    left: 21.7vw;
+    width: 74.8VW;
+    height: 80%;
     background-color: #fff;
     opacity: 1;
 }
 
 .view-story-image-div{
     position: relative;
-    width: 99%;
-    height: 98%;
+    width: 99.5%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 0.5rem;
+    margin-top: 0;
     background: rgb(0,0,0,1);
     z-index: -1;
 }
@@ -32,7 +32,7 @@
     color: white;
 }
 .shrink{
-    width: 60vw;
+    width: 58vw;
 }
 .view-story img{
    
@@ -50,7 +50,9 @@
 
 }
 
-
+.cross-btn a:hover{
+    color:inherit;
+}
 
 
 .Navigator .forwardArrow{
@@ -106,6 +108,7 @@
     .view-story{
         width: 100%;
         left:0;
+        height: 88%;
     }
 
     .view-story-image-div{

@@ -1,29 +1,79 @@
 .App{
     width: 100vw;
-    height: 100vh;
+    height: 87vh;
     display: flex;
     
   }
   
-  body{
-    margin:0;
-    padding: 0;
-  }
   
-  a{
+.App  a{
     text-decoration: none;
-    
     color: inherit;
   }
   
-  a:hover{
-    cursor: pointer;
-  }
-  button{
-    all:unset;
-    cursor: pointer;
+.App h2{
+  display: block;
+  font-size: 1.5em;
+  margin-top: 0.83em;
+  margin-bottom: 0.83em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+
+.App h3{
+  display: block;
+  font-size: 1.17em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+
+.App p{
+  display: block;
+  /* margin-top: 1em; */
+  margin-bottom: 1em;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.App strong{
+  font-weight: bold;
+}
   
+button{
+  all:unset;
+  cursor: pointer;
+
+}
+  
+.no-hover{
+  pointer-events: none;
+}
+
+.no-story-view-message{
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    top: 12%;
+    /* right: 0; */
+    left: 21.7vw;
+    width: 70.8VW;
+    height: 80%;
+    background-color: #FFFFFF;
+    opacity: 1;
+    color:#a3a7a8;
+}
+
+.no-story-view-message img{
+  display: block;
+}
+@media (max-width:1200px){
+  .no-story-view-message{
+    display: none;
   }
-  .no-hover{
-    pointer-events: none;
-  }
+}

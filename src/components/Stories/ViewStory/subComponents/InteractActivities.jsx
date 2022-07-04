@@ -117,21 +117,22 @@ const InteractActivities =(
         <div className="InteractBar">
             <div>
 
-                {(user_id===viewStoryData.user_id)&&<button onClick={()=>deletestory()}>
-                    <Link
-                        to="/"
-                    >
-                        <DeleteIcon sx={{fontSize:"200%"}}/>
-                    </Link>
-                </button>}
+                {(user_id===viewStoryData.user._id)&&
+                    <button onClick={()=>deletestory()}>
+                        <Link
+                            to="/stories"
+                        >
+                            <DeleteIcon sx={{fontSize:"200%"}}/>
+                        </Link>
+                    </button>}
             </div>
             
             <div>
                 
 
                     <button 
-                        disabled={user_id !== viewStoryData.user_id} 
-                        className={user_id !==viewStoryData.user_id ? 'no-hover':''}
+                        disabled={user_id !== viewStoryData.user._id} 
+                        className={user_id !==viewStoryData.user._id ? 'no-hover':''}
                         onClick={async()=> await setOpenViewersList(true)}
                     >
                     <VisibilityIcon sx={{fontSize:"200%"}}/> 

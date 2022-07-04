@@ -14,6 +14,7 @@ import Textdisplay2 from './subComponents/textdisplay2';
 import { baseURL } from '../../../api';
 
 import './viewstory.css';
+import '../utilities/singleStory.css';
 
 
 const timeshower=require('../utilities/timeshower');
@@ -29,7 +30,7 @@ const ViewStory =(
 
 
     let {id}=useParams();
-    console.log(id);
+    console.log(id,"id in viewstory");
     
     const[commentsection,setCommentSection]=useState(false);
     const[viewStoryData,setViewStoryData]=useState(null);
@@ -39,7 +40,7 @@ const ViewStory =(
     
 
     useEffect(()=>{
-        // console.log("useeffect in viewStory");
+        console.log("useeffect in viewStory");
         const getsingleStoryViewData= async(id)=>{
             let singleStoryData=await fetch(baseURL+"/stories/getstorydata",{
                 method:"POST",
@@ -48,16 +49,15 @@ const ViewStory =(
                 },
                 body:JSON.stringify({
                     story_id:id,
-                    user_id:user_id,
+                    user_id:user_id
                     
                 })
             })
             .then((res)=>{
-                // console.log(res);
                 return res.json();
             })
             .then(async(data)=>{
-                // console.log(data.data);
+                console.log(data.data);
                 await setViewStoryData(data.data);
                 await setstoryIdArray(data.storyIdArray);
                 return data.data;
@@ -71,7 +71,7 @@ const ViewStory =(
 
     console.log(viewStoryData,"outside useefferct")
 
-    // console.log("bottom")
+    
 
     return(
         <div className={"view-story "+ (commentsection ? 'shrink':'')}>
@@ -131,7 +131,7 @@ const ViewExistingStory=(
         if(viewStoryData.type===1 ){
             console.log("it ran in viewStory type1")
             let img_id=viewStoryData.image;
-            fetch(baseURL+"stories/getimage",{
+            fetch(baseURL+"/stories/getimage",{
             method:"POST",
             headers:{
                 "Content-type": "application/json; charset=UTF-8"
@@ -180,18 +180,29 @@ const ViewExistingStory=(
 
                 <div className="single-story no-hover">
                     <div className="story-dp">
-                        <img src={baseURL+"/file/"+viewStoryData.user.image} alt=""  />
+                                {viewStoryData.user.image ? (
+                                  <img
+                                    style={{height:'auto'}}
+                                    src={
+                                      baseURL + "/file/" + viewStoryData.user.image
+                                    }
+                                    alt=""
+                                  />
+                                ) : (
+                                  <img style={{height:'auto'}}src="/images/user40.png" alt="" />
+                                )}
+                        
                     </div>
                     <div className="story-author">
-                        <p className="name">{viewStoryData.user.name}</p>
-                        <p className="time">{timeshower(Date.now()-viewStoryData.createdAt)}</p>
+                        <p className="name" style={{color:"#fff"}}>{viewStoryData.user.name}</p>
+                        <p className="time" style={{color:'#fff'}}>{timeshower(Date.now()-viewStoryData.createdAt)}</p>
                     </div>                        
                 </div>
 
                 <div className="cross-btn">
                     <button >
                         <Link
-                            to="/"
+                            to="/stories"
                         >
 
                             <ClearIcon/>  
@@ -206,7 +217,7 @@ const ViewExistingStory=(
 
                         <div className='backwardArrow'>
                             <Link
-                                to={prev_id}
+                                to={"/stories/"+prev_id}
                             >
                             <Button style={{padding:"0",margin:"0"}}>
 
@@ -220,7 +231,7 @@ const ViewExistingStory=(
 
                         <div className="forwardArrow">
                             <Link
-                                to={next_id}
+                                to={"/stories/"+next_id}
                             >
                             <Button style={{padding:"0",margin:"0"}}>
 

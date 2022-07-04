@@ -12,6 +12,10 @@
     padding-bottom: 6%;
 }
 
+.InteractBar a:hover{
+    color:inherit;
+}
+
 .make-center{
     display: flex;
     justify-content: center;
