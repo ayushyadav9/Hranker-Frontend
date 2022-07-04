@@ -9,18 +9,8 @@ import { chatTime } from "../../utils/timeCalculator";
 import { io } from "socket.io-client";
 import Loader from "../../utils/Loader";
 import { isLastMessage, isSameSender } from "../../utils/ChatLogic";
-// import Lottie from "react-lottie";
-// import animationData from "./typing.json";
 var socket;
 
-// const defaultOptions = {
-//   loop: true,
-//   autoplay: true,
-//   animationData: animationData,
-//   rendererSettings: {
-//     preserveAspectRatio: "xMidYMid slice",
-//   },
-// };
 
 const Chat = () => {
   const dispatch = useDispatch();
@@ -423,7 +413,7 @@ const Chat = () => {
                                         : ""}
                                     </span>
                                     {newMessage.includes(con.convId) && (
-                                      <span class="msg-notifc">1</span>
+                                      <span class="msg-notifc"></span>
                                     )}
                                   </div>
                                 </li>

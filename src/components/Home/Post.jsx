@@ -83,7 +83,10 @@ const Post = ({ post, userData }) => {
                 </Link>
                 <span>
                   <img src="images/clock.svg" alt="" />
-                  {getDateAndTime(post.createdAt)}
+                  {getDateAndTime(post.createdAt)} <span>•</span>
+                  {post.subjectTags.map((sub,i)=>{
+                    return <span>{sub} {post.subjectTags.length===i+1?"":"|"}</span>
+                  })}
                 </span>
               </div>
             </div>
@@ -116,16 +119,7 @@ const Post = ({ post, userData }) => {
             </div>
           </div>
           <div className="epi-sec">
-            <ul className="descp">
-              <li>
-                <img src="images/icon8.png" alt="" />
-                <span>SSC Student</span>
-              </li>
-              <li>
-                <img src="images/location.svg" alt="" />
-                <span>India</span>
-              </li>
-            </ul>
+            
             <ul className="bk-links">
               <li>
                 <Link to={`/post/${post.slug}`} target="_blank">
@@ -155,7 +149,6 @@ const Post = ({ post, userData }) => {
             </ul>
           </div>
           <div className="job_descp">
-            <h3>{post.title}</h3>
             <ul className="job-dt">
               {post.examTags.map((tag, i) => {
                 return (
@@ -164,45 +157,29 @@ const Post = ({ post, userData }) => {
                   </li>
                 );
               })}
-              {post.image && <img src={post.image} alt=""></img>}
             </ul>
+            <h3>{post.title}</h3>
+              {post.image && <img src={post.image} alt=""></img>}
             <p>
-              {post.description.length > 25 ? (
+            {post.description.split(" ").length > 26 ? (
                 <>
-                  {post.description.split(" ").slice(0, 25).join(" ") + "..."}
-                  <span>Read more</span>
+                  {post.description.split(" ").slice(0, 26).join(" ") + " ...."}
+                  <span> <Link to={`/post/${post.slug}`} target="_blank">Read more</Link></span>
                 </>
               ) : (
                 post.description
-              )}
+            )}
             </p>
 
             {/* <ul className="skill-tags">
-                <li>
+            {post.subjectTags.map((sub,i)=>{
+                return(
+                  <li>
                   <div title="">
-                    bank-po
+                    {sub}
                   </div>
                 </li>
-                <li>
-                  <div title="">
-                    clerk
-                  </div>
-                </li>
-                <li>
-                  <div title="">
-                    bank-clerk
-                  </div>
-                </li>
-                <li>
-                  <div title="">
-                    rrb-po
-                  </div>
-                </li>
-                <li>
-                  <div title="">
-                    rrb-clerk
-                  </div>
-                </li>
+                )})}
               </ul> */}
           </div>
 
