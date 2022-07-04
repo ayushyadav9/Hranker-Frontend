@@ -18,6 +18,7 @@ import Leaderboard from "./pages/Leaderboard/Leaderboard";
 import QuesPost from "./pages/Post/QuesPost";
 import Chat from "./pages/Chat/Chat";
 import Congratulations from "./utils/Congratulation";
+
 import { toggleConfetti } from "./redux/reducers/postReducers";
 
 function App() {

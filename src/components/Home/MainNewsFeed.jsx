@@ -11,6 +11,8 @@ import {
 } from "../../redux/reducers/postReducers";
 import QuesPost from "./QuesPost";
 import { useState } from "react";
+import TopProfiles from "./TopProfiles";
+
 
 const MainNewsFeed = () => {
   const dispatch = useDispatch();
@@ -106,6 +108,7 @@ const MainNewsFeed = () => {
               </ul>
             </div>
           </div>
+          <TopProfiles/>
           <div className="posts-section">
             <div className="post-nav">
               <ul className="nav nav-tabs">

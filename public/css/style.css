@@ -1873,32 +1873,45 @@ main {
   float: left;
   width: 100%;
   padding: 20px;
+  background: white;
+  border-radius: 7px;
 }
+
+.circle{
+  position:relative;
+  width:100px;
+  height:100px;
+  /* svg{
+    fill:none;
+    stroke:#8a3ab9;
+    stroke-linecap: round;
+    stroke-width:3;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+    animation: stroke-draw 6s ease-out infinite alternate; 
+    // animation: stroke-draw 6s cubic-bezier(0.77, 0, 0.175, 1) infinite alternate; 
+  } */
+}
+
 .user-profy {
   float: left;
-  width: 100%;
-  background-color: #fff;
+  width: fit-content;
   text-align: center;
-  border-left: 1px solid #ececec;
+  /* border-left: 1px solid #ececec;
   border-bottom: 1px solid #ececec;
-  border-right: 1px solid #ececec;
-  -webkit-box-shadow: 0px 0.5px 0.2px rgba(0, 0, 0, 0.24);
-  -moz-box-shadow: 0px 0.5px 0.2px rgba(0, 0, 0, 0.24);
-  -ms-box-shadow: 0px 0.5px 0.2px rgba(0, 0, 0, 0.24);
-  -o-box-shadow: 0px 0.5px 0.2px rgba(0, 0, 0, 0.24);
-  box-shadow: 0px 0.5px 0.2px rgba(0, 0, 0, 0.24);
-  padding: 20px 0 0 0;
+  border-right: 1px solid #ececec; */
+  /* box-shadow: 0px 0.5px 0.2px rgba(0, 0, 0, 0.24); */
+  padding-left: 15px;
+  /* padding-top: 15px; */
 }
 .user-profy > img {
   float: none;
-  margin-bottom: 6px;
 }
 .user-profy h3 {
   color: #000000;
   font-size: 16px;
   font-weight: 600;
   text-transform: capitalize;
-  margin-bottom: 4px;
 }
 .user-profy span {
   color: #b2b2b2;
@@ -1951,6 +1964,11 @@ main {
   color: #fff;
 }
 .slick-slide img {
+  /* border: 3px solid white; */
+  background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+  padding: 1px;
+  border-radius: 100px;
+  margin: 4px 0px;
   display: inline-block;
 }
 .slick-slide {
@@ -7987,6 +8005,45 @@ ul#myTab {
   font-size: 14px;
   color: #666666;
 }
+.slick-next::before {
+  font-size: 19px;
+  /* padding: 2px; */
+  color: #ffffff;
+  position: absolute;
+  top: 50%;
+  right: -11px;
+  line-height: 29px;
+  transform: translateY(-50%);
+  font-family: fontawesome;
+  width: 30px;
+  height: 30px;
+  content: ">";
+  background-color: #019fe2;
+  border-radius: 100px;
+  border: 1px solid #e6e6e6;
+  text-align: center;
+  cursor: pointer;
+}
+
+.slick-prev::before {
+  font-size: 19px;
+  color: #ffffff;
+  position: absolute;
+  top: 50%;
+  right: 0px;
+  line-height: 29px;
+  transform: translateY(-50%);
+  font-family: fontawesome;
+  width: 30px;
+  height: 30px;
+  content: "<";
+  background-color: #019fe2;
+  border-radius: 100px;
+  border: 1px solid #e6e6e6;
+  text-align: center;
+  cursor: pointer;
+}
+
 
 .loader-container {
   width: 100%;
