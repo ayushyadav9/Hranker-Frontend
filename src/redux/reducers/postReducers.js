@@ -7,7 +7,8 @@ const initialState = {
     getUserLoading: false,
     toggleLikeLoading: false,
     voteLoading: false,
-    addCommentLoading: false
+    addCommentLoading: false,
+
   },
   popups:{
     blogPopup:false,
@@ -143,6 +144,7 @@ const postReducer = createSlice({
         state.loadings.voteLoading = false;
         state.error = true;
       })
+      
   },
 });
 

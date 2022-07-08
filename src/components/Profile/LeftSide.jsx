@@ -36,7 +36,7 @@ const LeftSide = ({userData}) => {
           <i className="la la-ellipsis-v"></i>
         </div>
         <div className="suggestions-list">
-          {userData.viewers && userData.viewers.map((user,i)=>{
+          {userData.viewers.length>0? userData.viewers && userData.viewers.map((user,i)=>{
             return(<div className="suggestion-usd">
             <img src={user.image?baseURL+"/file/"+ user.image :"/images/luser.jpg"} alt="" />
             <div className="sgt-text">
@@ -47,12 +47,13 @@ const LeftSide = ({userData}) => {
               <i className="la la-plus"></i>
             </span>
           </div>)
-          })}
+          }):<div style={{textAlign:"center"}}>No one has viewed </div>}
+          {/* {userData?.viewers.length>0 &&
           <div className="view-more">
             <a href="/" title="">
               View More
             </a>
-          </div>
+          </div>} */}
         </div>
       </div>
     </div>

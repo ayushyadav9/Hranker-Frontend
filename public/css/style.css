@@ -1389,6 +1389,9 @@ main {
   position: relative;
   top: 7px;
 }
+.ed-opts li {
+  cursor: pointer;
+}
 .ed-opts > div {
   color: #b2b2b2;
   cursor: pointer;

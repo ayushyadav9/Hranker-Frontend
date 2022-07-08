@@ -1,42 +1,35 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React,{useState} from "react";
+import { useSelector,useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import Loader from "../../utils/Loader";
+import {deletePost} from "../../redux/ApiCalls"
 
 const UserPost = ({ post }) => {
-  let { userData } = useSelector((state) => state.user);
+  let { userData,userToken } = useSelector((state) => state.user);
+  const [isOpen, setisOpen] = useState(false)
+  const dispatch = useDispatch();
+  const handelDeletePost = ()=>{
+    let data = {
+      postId: post._id,
+      type: post.type,
+      token: userToken
+    }
+    dispatch(deletePost(data))
+    console.log(data)
+  }
   return (
     <>
       {userData ? (
         <div className="post-bar">
           <div className="post_topbar">
             <div className="ed-opts">
-              <div href="/" title="" className="ed-opts-open">
+              <div onClick={()=>setisOpen(prev=>!prev)} className="ed-opts-open">
                 <i className="la la-ellipsis-v"></i>
               </div>
-              <ul className="ed-options">
+              <ul className={`ed-options ${isOpen?"active":""}`}>
                 <li>
-                  <div href="/" title="">
-                    Edit Post
-                  </div>
-                </li>
-                <li>
-                  <div href="/" title="">
-                    Unsaved
-                  </div>
-                </li>
-                <li>
-                  <div href="/" title="">
-                    Unbid
-                  </div>
-                </li>
-                <li>
-                  <div href="/" title="">
-                    Close
-                  </div>
-                </li>
-                <li>
-                  <div href="/" title="">
-                    Hide
+                  <div onClick = {handelDeletePost}>
+                    Delete Post
                   </div>
                 </li>
               </ul>
@@ -57,43 +50,27 @@ const UserPost = ({ post }) => {
             </ul>
             {post.image && <img src={post.image} alt=""></img>}
             <p>
-              {post.description && post.description.length > 25 ? (
+              {post.description && post.description.split(" ").length > 25 ? (
                 <>
                   {post.description.split(" ").slice(0, 25).join(" ") + "..."}
-                  <span href="/" title="">
-                    view more
-                  </span>
+                    <span style={{color:"#e44d3a", fontWeight: "600", display: "block"}} title="">
+                  <Link to={`/post/${post.slug}`} target="_blank">
+                      View more
+                  </Link>
+                    </span>
                 </>
               ) : (
                 post.description
               )}
             </p>
             <ul className="skill-tags">
-              <li>
-                <div href="/" title="">
-                  HTML
-                </div>
-              </li>
-              <li>
-                <div href="/" title="">
-                  PHP
-                </div>
-              </li>
-              <li>
-                <div href="/" title="">
-                  CSS
-                </div>
-              </li>
-              <li>
-                <div href="/" title="">
-                  Javascript
-                </div>
-              </li>
-              <li>
-                <div href="/" title="">
-                  Wordpress
-                </div>
-              </li>
+              {post.subjectTags.map((item,i)=>{
+                return (<li key={i}>
+                  <div href="/" title="">
+                    {item}
+                  </div>
+                </li>)
+              })}
             </ul>
           </div>
           <div className="job-status-bar">

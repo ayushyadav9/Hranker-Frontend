@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginUser, getUser, googleLoginUser, registerUser, getSavedPosts, markNotiAsRead, getNotifications, addToSave, followUser, unfollowUser } from "../ApiCalls";
+import { loginUser, getUser, googleLoginUser, registerUser, getSavedPosts, markNotiAsRead, getNotifications, addToSave, followUser, unfollowUser, deletePost } from "../ApiCalls";
 
 const initialState = {
   isLoggedIn: false,
@@ -11,7 +11,8 @@ const initialState = {
     savedPostsLoading: false,
     notiReadLoading: false,
     getNotiLoading: false,
-    followLoading: false
+    followLoading: false,
+    deletePostLoading: false
   },
   userData: null,
   points: null,
@@ -235,6 +236,28 @@ const userReducer = createSlice({
       })
       .addCase(unfollowUser.rejected, (state, action) => {
         state.loadings.followLoading = false;
+        state.error = true;
+      })
+      .addCase(deletePost.fulfilled, (state, action) => {
+        state.loadings.deletePostLoading = false;
+        if (action.payload.success === true) {
+          let postType = action.payload.data.type;
+          if(postType===1){
+            let t = state.userData.posts.blogPosts.filter((item)=>item._id!==action.payload.data.postId)
+            state.userData.posts.blogPosts = t;
+          }else if(postType===2){
+            let t = state.userData.posts.quesPosts.filter((item)=>item._id!==action.payload.data.postId)
+            state.userData.posts.blogPosts = t;
+          }
+        } else {
+          state.error = action.payload.message;
+        }
+      })
+      .addCase(deletePost.pending, (state, action) => {
+        state.loadings.deletePostLoading = true;
+      })
+      .addCase(deletePost.rejected, (state, action) => {
+        state.loadings.deletePostLoading = false;
         state.error = true;
       })
   },
