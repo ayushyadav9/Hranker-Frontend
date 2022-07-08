@@ -1840,7 +1840,7 @@ main {
 .top-profiles {
   float: left;
   width: 100%;
-  border: 1px solid #e5e5e5;
+  /* border: 1px solid #e5e5e5; */
   margin-bottom: 20px;
 }
 .pf-hd {
