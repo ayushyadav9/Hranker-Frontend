@@ -51,11 +51,11 @@ const Sidebar =
                                                 stories[0].map(story=>{
                                                     return(
                                                         
-                                                            <div key={story._id}>
+                                                            // <div key={story._id}>
 
                                                                 <NavLink
                                                                     to={"/stories/"+story._id}
-                                                                    
+                                                                    key={story._id}
                                                                     className={isActive => " "+ (isActive.isActive ? "navLinkActive":'')}
                                                                 >
                                                                     <div
@@ -64,7 +64,7 @@ const Sidebar =
                                                                         
                                                                     </div>
                                                                 </NavLink>
-                                                            </div>
+                                                            // </div>
                                                     )
                                                 })
 
@@ -85,9 +85,10 @@ const Sidebar =
 
                                         stories[1].map(story=>{
                                             return(
-                                                <div key={story._id}>
+                                                // <div key={story._id}>
                                                     <NavLink
                                                         to={"/stories/"+story._id}
+                                                        key={story._id}
                                                         className={isActive => " "+ (isActive.isActive ? "navLinkActive":'')}
 
                                                     >
@@ -95,7 +96,7 @@ const Sidebar =
             
                                                     </NavLink>
 
-                                                </div>
+                                                // </div>
                                             )
                                         })
                         
