@@ -32,7 +32,7 @@ const UserProfile = () => {
             console.log(result);
 
             if (result.success) {
-              if(result.user._id===userData._id){
+              if(result.user._id===userData?._id){
                 navigate("/profile")
               }
               setsearchedUserData(result.user);
@@ -46,7 +46,7 @@ const UserProfile = () => {
         );
     }
     // eslint-disable-next-line
-  }, [username]);
+  }, [username,userData]);
 
   
 
@@ -178,7 +178,7 @@ const UserProfile = () => {
           </footer>
         </div>
       ) : (
-        <></>
+        <Loader></Loader>
       )}
     </>
   );

@@ -9,17 +9,19 @@ const UserPost = ({ post }) => {
   const [isOpen, setisOpen] = useState(false)
   const dispatch = useDispatch();
   const handelDeletePost = ()=>{
-    let data = {
-      postId: post._id,
-      type: post.type,
-      token: userToken
+    let isExecuted = window.confirm("Post will be deleted forever!!");
+    if(isExecuted){
+      let data = {
+        postId: post._id,
+        type: post.type,
+        token: userToken
+      }
+      dispatch(deletePost(data))
     }
-    dispatch(deletePost(data))
-    console.log(data)
   }
   return (
     <>
-      {userData ? (
+      {userData && post ? (
         <div className="post-bar">
           <div className="post_topbar">
             <div className="ed-opts">
@@ -38,7 +40,7 @@ const UserPost = ({ post }) => {
           <div className="job_descp">
             <h3>{post.title}</h3>
             <ul className="job-dt">
-              {post.examTags.map((tag, i) => {
+              {post.examTags?.map((tag, i) => {
                 return (
                   <li key={i}>
                     <div href="/" title="">
@@ -64,7 +66,7 @@ const UserPost = ({ post }) => {
               )}
             </p>
             <ul className="skill-tags">
-              {post.subjectTags.map((item,i)=>{
+              {post.subjectTags?.map((item,i)=>{
                 return (<li key={i}>
                   <div href="/" title="">
                     {item}
