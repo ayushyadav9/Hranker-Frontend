@@ -159,7 +159,12 @@ const Post = ({ post, userData }) => {
               })}
             </ul>
             <h3>{post.title}</h3>
-              {post.image && <img src={post.image} alt=""></img>}
+            {post.image && (
+              <div style={{ justifyContent: "center",display: "flex"}}>
+              <img src={post.image} alt=""></img>
+              </div>
+            )}
+              {/* {post.image && <img src={post.image} alt=""></img>} */}
             <p>
             {post.description.split(" ").length > 26 ? (
                 <>
