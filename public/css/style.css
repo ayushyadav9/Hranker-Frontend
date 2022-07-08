@@ -2454,6 +2454,7 @@ main {
   width: 165px;
 }
 .job-details h3 {
+  max-width: 150px;
   color: #000000;
   font-size: 14px;
   font-weight: 600;
