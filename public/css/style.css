@@ -790,7 +790,7 @@ nav > ul > li > a:hover {
   float: left;
   width: 100%;
   border-bottom: 1px solid #e5e5e5;
-  padding: 15px 20px;
+  padding: 20px;
 }
 .on-off-status {
   float: left;
@@ -815,7 +815,7 @@ nav > ul > li > a:hover {
 .search_form {
   float: left;
   width: 100%;
-  padding: 20px;
+  padding: 16px 10px;
   border-bottom: 1px solid #e5e5e5;
 }
 .search_form form {
@@ -854,8 +854,14 @@ nav > ul > li > a:hover {
 .us-links {
   float: left;
   width: 100%;
+  cursor: pointer;
+  justify-content: center;
+  display: flex;
   border-bottom: 1px solid #e5e5e5;
   padding: 20px;
+}
+.us-links:hover {
+  background-color: #dadada;
 }
 .us-links li {
   float: left;
@@ -870,8 +876,8 @@ nav > ul > li > a:hover {
   float: left;
   width: 100%;
   color: #000000;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 600;
 }
 .tc {
   text-align: center;
@@ -1385,9 +1391,7 @@ main {
   /* margin-top: 2px; */
 }
 .ed-opts {
-  float: right;
   position: relative;
-  top: 7px;
 }
 .ed-opts li {
   cursor: pointer;
@@ -1395,24 +1399,26 @@ main {
 .ed-opts > div {
   color: #b2b2b2;
   cursor: pointer;
+  width: 15px;
   font-size: 24px;
   float: right;
   position: relative;
-  left: 10px;
-  top: -10px;
+  top: 17px;
 }
 .ed-options {
   position: absolute;
   top: 100%;
-  right: 0;
-  width: 130px;
+  text-align: center;
+  top: 40px;
+  right: 10px;
+  width: 120px;
   background-color: #fff;
-  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.28);
+  -webkit-box-shadow: 0 0 10px rgb(0 0 0 / 28%);
   -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.28);
   -ms-box-shadow: 0 0 10px rgba(0, 0, 0, 0.28);
   -o-box-shadow: 0 0 10px rgba(0, 0, 0, 0.28);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.28);
-  padding: 20px;
+  box-shadow: 0 0 10px rgb(0 0 0 / 28%);
+  padding: 11px;
   opacity: 0;
   visibility: hidden;
   z-index: 0;
@@ -1639,18 +1645,25 @@ main {
 .bk-links li:last-child {
   margin-right: 0;
 }
-.bk-links li .save {
+.bk-links .save2 {
   color: #fff;
-  /* font-size: 24px; */
   width: 33px;
   height: 30px;
-  /* margin-top: -1px; */
   padding-top: 8px;
-  /* padding: 12px; */
-  /* padding-left: 0px; */
+  border-radius: 4px;
+  background-color: #e44d3a;
+  text-align: center;
+}
+.bk-links .save {
+  color: #fff;
+  width: 33px;
+  height: 30px;
+  padding-top: 8px;
+  border-radius: 4px;
   background-color: #53d690;
   text-align: center;
 }
+
 .bk-links li i.la-envelope {
   background-color: #e44d3a;
 }
@@ -2137,7 +2150,7 @@ main {
 }
 .comment-list {
   display: table;
-  padding-bottom: 15px;
+  /* padding-bottom: 15px; */
 }
 .main-comment {
   /* padding-bottom: 15px; */
@@ -7469,19 +7482,57 @@ messages-list::-webkit-scrollbar {
   font-weight: 400;
 }
 .freelancerbiding hr {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-top: 0rem;
+  margin-bottom: 0rem;
 }
 .repcent {
-  text-align: left;
+  display: flex;
+  justify-content: center;
+}
+.repcent-points {
+  display: flex;
+  justify-content: center;
+}
+.is-myRank{
+  background-color: aliceblue;
+}
+
+.repcent-points>p {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: black;
+}
+.repcent .active{
+  margin: 8px 28px;
+  font-weight: 600;
+}
+.repcent .active img{
+  width: 17px;
+  margin-right: 5px;
+}
+.repcent .lead-top {
+  display: flex;
+  justify-content: center;
+}
+.repcent .active >p{
+  font-size: 11px;
+  margin-top: 11px;
+  line-height: 0px;
+  font-weight: 400;
 }
 .bidrit {
   margin-right: 21px;
   float: right;
 }
+.bidrit h3{
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: black;
+}
 .bidrit .leader-points {
-  margin-top: 10px;
-  margin-right: 24px;
+  margin-right: 58px;
 }
 .repcent i {
   padding-left: 5px;
@@ -7525,11 +7576,11 @@ messages-list::-webkit-scrollbar {
   font-size: 15px;
   font-weight: 600;
 }
-.repcent p {
-  margin-top: 8px;
-  text-align: center;
-  padding-left: 7px;
-}
+/* .repcent div { */
+  /* margin-top: 8px; */
+  /* text-align: center; */
+  /* padding-left: 7px; */
+/* } */
 .noreview ul li i {
   color: #b2b2b2;
 }

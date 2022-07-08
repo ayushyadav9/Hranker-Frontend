@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { baseURL } from "../../../api";
+// import { baseURL } from "../../../api";
 import { getDateAndTime } from "../../../utils/timeCalculator";
 import { useSelector,useDispatch } from "react-redux";
 import { toggleNoti } from "../../../redux/reducers/navReducer";
@@ -19,28 +19,28 @@ const Notifications = () => {
     // eslint-disable-next-line
   }, [isLoggedIn]);
   
-  const handelAllRead = () => {
-    fetch(`${baseURL}/noti/markAllNotificationsAsRead`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("userJWT")}`,
-      },
-    })
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          if (result.success) {
+  // const handelAllRead = () => {
+  //   fetch(`${baseURL}/noti/markAllNotificationsAsRead`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${localStorage.getItem("userJWT")}`,
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then(
+  //       (result) => {
+  //         if (result.success) {
            
-          } else {
-          }
-          console.log(result);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-  };
+  //         } else {
+  //         }
+  //         console.log(result);
+  //       },
+  //       (error) => {
+  //         console.log(error);
+  //       }
+  //     );
+  // };
   const handelRedirect = ()=>{
     dispatch(toggleNoti());
     navigate("/notification")
@@ -50,12 +50,12 @@ const Notifications = () => {
       className={`notification-box noti ${notiPopup && "active"}`}
       id="notification"
     >
-      <div className="nt-title">
+      {/* <div className="nt-title">
         <h4>Setting</h4>
         <div onClick={handelAllRead} title="">
           Mark all as read
         </div>
-      </div>
+      </div> */}
       <div className="nott-list">
         {notifications && notifications.slice()
           .sort((a, b) => b.createdAt - a.createdAt)

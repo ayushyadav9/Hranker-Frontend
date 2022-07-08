@@ -42,21 +42,10 @@ const RightSidebar = () => {
           <img src="images/logonav.png" alt="" />
           <h3>When community becomes unity</h3>
           <span>Be a part of High Ranker Community</span>
-          <div className="sign_link">
-            <h3>
-              <a href="/sign-up" title="">
-                Sign up
-              </a>
-            </h3>
-            <Link to="/" title="">
-              Learn More
-            </Link>
-          </div>
         </div>
         <div className="widget widget-jobs">
           <div className="sd-title">
             <h3>Top Posts</h3>
-            <i className="la la-ellipsis-v"></i>
           </div>
           <div className="jobs-list">
             {topPosts &&

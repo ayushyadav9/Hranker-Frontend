@@ -23,13 +23,11 @@ const LeftSidebar = () => {
                   }
                   alt=""
                 />
-                {/* <img src="images/resources/user-pic.png" alt="" /> */}
               </div>
             </div>
             <div className="user-specs">
               <h3>{userData.name}</h3>
-              {/* <h3>sads</h3> */}
-              <span>{userData.about ? userData.about : "No bio yet"}</span>
+              <span>({userData.username})</span>
               <h2>{points} Points</h2>
             </div>
           </div>
@@ -59,7 +57,7 @@ const LeftSidebar = () => {
         <div className="suggestions full-width">
           <div className="sd-title">
             <h3>Top Users</h3>
-            <i className="la la-ellipsis-v"></i>
+            {/* <i className="la la-ellipsis-v"></i> */}
           </div>
           <div className="suggestions-list">
             {topUsers &&

@@ -6,7 +6,6 @@ const RightSide = () => {
     <div className="right-sidebar">
       <div className="message-btn">
         <Link to="/chat" title="">
-          {/* <i className="fas fa-cog"></i> */}
           Messages
         </Link>
       </div>

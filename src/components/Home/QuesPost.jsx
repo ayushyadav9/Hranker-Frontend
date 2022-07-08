@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { baseURL } from "../../api";
 import { getDateAndTime } from "../../utils/timeCalculator";
 import Loader from "../../utils/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  addComment,
   addToSave,
   getNotifications,
   handelVote,
@@ -15,12 +16,12 @@ const QuesPost = ({ post, userData }) => {
   const dispatch = useDispatch();
   const { userToken } = useSelector((state) => state.user);
   
-  const optionRef = useRef();
   const [likeLoading, setlikeLoading] = useState(false);
   const [showCommentSection, setshowCommentSection] = useState(false)
-  const [isOptionsOpen, setIsOptionsOpen] = useState(false);
+  const [commentValue, setCommentValue] = useState("");
   const [saveLoader, setsaveLoader] = useState(false);
   const [isAnswered, setisAnswered] = useState(false);
+  const [isComLoader, setisComLoader] = useState(false);
   const [optionAnswered, setoptionAnswered] = useState(null);
   const [correctOption, setcorrectOption] = useState(null)
 
@@ -47,13 +48,20 @@ const QuesPost = ({ post, userData }) => {
    // eslint-disable-next-line
   }, [post.answeredBy]);
 
-  useEffect(() => {
-    document.body.addEventListener("click", (e) => {
-      if (!optionRef.current.contains(e.target)) {
-        setIsOptionsOpen(false);
-      }
-    });
-  }, []);
+
+  const handelAddComment = async (e) => {
+    e.preventDefault();
+    setisComLoader(true);
+    let data = {
+      token: userToken,
+      postId: post._id,
+      commentValue: commentValue,
+      postType: 2,
+    };
+    await dispatch(addComment(data));
+    setisComLoader(false);
+    setCommentValue("");
+  };
 
   const calcPercentage = (id) => {
     if (post.answeredBy.length > 0) {
@@ -109,7 +117,7 @@ const QuesPost = ({ post, userData }) => {
       >
         <div className="post-bar no-margin">
           <div className="post_topbar">
-            <div className="usy-dt">
+            <div className="usy-dt" style={{ marginBottom: "20px" }}>
               {post.user.image ? (
                 <img
                   className="postUserDP"
@@ -137,57 +145,36 @@ const QuesPost = ({ post, userData }) => {
               </div>
             </div>
             <div className="ed-opts">
-              <div
-                ref={optionRef}
-                onClick={() => setIsOptionsOpen((pre) => !pre)}
-                title=""
-                className="ed-opts-open"
-              >
-                <i className="la la-ellipsis-v"></i>
-              </div>
-              <ul className={`ed-options ${isOptionsOpen ? "active" : ""}`}>
+              <ul className="bk-links">
                 <li>
-                  <div title="">Edit Post</div>
+                  <Link to={`/post/${post.slug}`} target="_blank">
+                    <div className="open-newtab">
+                      <img src="/images/open.svg" alt=""></img>
+                    </div>
+                  </Link>
+                </li>
+                <li>
+                  <div onClick={handelSavePost} title="">
+                    {userData.saved.quesPosts.filter((i) => i === post._id).length > 0?
+                        <div className="save">
+                          {saveLoader ? (
+                            <Loader isSmall={true} />
+                          ) : (
+                            <i className="la la-check"></i>
+                          )}
+                        </div>:
+                        <div className="save2">
+                          {saveLoader ? (
+                            <Loader isSmall={true} />
+                          ) : (
+                            <i className="la la-bookmark"></i>
+                          )}
+                        </div>
+                      }
+                  </div>
                 </li>
               </ul>
-            </div>
-          </div>
-          <div className="epi-sec">
-            {/* <ul className="descp">
-            {post.subjectTags.map((sub,i)=>{
-                return(
-                  <li>
-                    <span>{sub}</span>
-                  </li>
-                )})}
-            </ul> */}
-            <ul className="bk-links">
-              <li>
-                <Link to={`/quesPost/${post.slug}`} target="_blank">
-                  <div className="open-newtab">
-                    <img src="/images/open.svg" alt=""></img>
-                  </div>
-                </Link>
-              </li>
-              <li>
-                <div onClick={handelSavePost} title="">
-                  <div className="save">
-                    {saveLoader ? (
-                      <Loader isSmall={true} />
-                    ) : (
-                      <i
-                        className={`${
-                          userData.saved.quesPosts.filter((i) => i === post._id)
-                            .length > 0
-                            ? "la la-check"
-                            : "la la-bookmark"
-                        }`}
-                      ></i>
-                    )}
-                  </div>
-                </div>
-              </li>
-            </ul>
+              </div>
           </div>
 
           <div className="job_descp">
@@ -206,7 +193,6 @@ const QuesPost = ({ post, userData }) => {
               <img src={post.image} alt=""></img>
               </div>
             )}
-              {/* {post.image && <img src={post.image} alt=""></img>} */}
             <p>
               {post.description.split(" ").length > 25 ? (
                 <>
@@ -301,87 +287,108 @@ const QuesPost = ({ post, userData }) => {
               </div>
             )}
           </div>
-          <div className="comment-section">
-          <div className="post-comment">
-          {showCommentSection && (
-            <>
-              <div className="comment-sec">
-                <ul>
-                  {post.comments
-                    .slice()
-                    .sort((a, b) => b.createdAt - a.createdAt)
-                    .map((com, i) => {
-                      return (
-                        <li className="main-comment" key={i}>
-                          <div className="comment-list ">
-                            <div className="bg-img"></div>
-                            <div className="comment">
-                              <div style={{ display: "flex" }}>
-                                <img
-                                  className="userProf"
-                                  src={
-                                    com.user.image
-                                      ? baseURL + "/file/" + com.user.image
-                                      : "images/user40.png"
-                                  }
-                                  alt=""
-                                />
-                                <h3>{com.user.name}</h3>
-                                <span>
-                                  <img src="images/clock.svg" alt="" />{" "}
-                                  {getDateAndTime(com.createdAt)}
-                                </span>
-                              </div>
-                              <p>{com.comment}</p>
-                              {/* <a href="/" title="">
-                              <i className="fa fa-reply-all"></i>Reply
-                            </a> */}
-                            </div>
-                          </div>
-                          <ul>
-                            {com.replies.map((rep, i) => {
-                              return (
-                                <li key={i}>
-                                  <div className="comment-list ">
-                                    <div className="bg-img"></div>
-                                    <div className="comment">
-                                      <div style={{ display: "flex" }}>
-                                        <img
-                                          className="reply"
-                                          src={
-                                            rep.user.image
-                                              ? rep.user.image
-                                              : "images/user40.png"
-                                          }
-                                          alt=""
-                                        />
-                                        <h3>{rep.user.name}</h3>
-                                        <span>
-                                          <img src="images/clock.svg" alt="" />{" "}
-                                          {getDateAndTime(rep.createdAt)}
-                                        </span>
-                                      </div>
-                                      <p>{rep.reply}</p>
-                                      {/* <a href="/" title="">
-                                      <i className="fa fa-reply-all"></i>Reply
-                                    </a> */}
-                                    </div>
-                                  </div>
-                                </li>
-                              );
-                            })}
-                          </ul>
-                        </li>
-                      );
-                    })}
+          </div>
+            <div className="comment-section">
+              <div className="post-comment">
+                <div className="cm_img">
+                  {userData.image ? (
+                    <img src={baseURL + "/file/" + userData.image} alt="" />
+                  ) : (
+                    <img src="/images/luser.jpg" alt=""></img>
+                  )}
+                </div>
 
-                </ul>
+                <div className="comment_box">
+                  <form>
+                    <input
+                      type="text"
+                      value={commentValue}
+                      onChange={(e) => setCommentValue(e.target.value)}
+                      placeholder="Post a comment"
+                    />
+                    <button onClick={handelAddComment} type="submit">
+                      {isComLoader ? <Loader isSmall={true} /> : "Send"}
+                    </button>
+                  </form>
+                </div>
               </div>
-            </>
-          )}
-          </div>
-          </div>
-        </div>
+              {showCommentSection && (
+                <>
+                  <div className="comment-sec">
+                    <ul>
+                      {post.comments
+                        .slice()
+                        .sort((a, b) => b.createdAt - a.createdAt)
+                        .map((com, i) => {
+                          return (
+                            <li className="main-comment" key={i}>
+                              <div className="comment-list ">
+                                <div className="bg-img"></div>
+                                <div className="comment">
+                                  <div style={{ display: "flex" }}>
+                                    <img
+                                      className="userProf"
+                                      src={
+                                        com.user.image
+                                          ? baseURL + "/file/" + com.user.image
+                                          : "images/user40.png"
+                                      }
+                                      alt=""
+                                    />
+                                    <h3>{com.user.name}</h3>
+                                    <span>
+                                      <img src="images/clock.svg" alt="" />{" "}
+                                      {getDateAndTime(com.createdAt)}
+                                    </span>
+                                  </div>
+                                  <p>{com.comment}</p>
+                                  {/* <a href="/" title="">
+                                  <i className="fa fa-reply-all"></i>Reply
+                                </a> */}
+                                </div>
+                              </div>
+                              <ul>
+                                {com.replies.map((rep, i) => {
+                                  return (
+                                    <li key={i}>
+                                      <div className="comment-list ">
+                                        <div className="bg-img"></div>
+                                        <div className="comment">
+                                          <div style={{ display: "flex" }}>
+                                            <img
+                                              className="reply"
+                                              src={
+                                                rep.user.image
+                                                  ? rep.user.image
+                                                  : "images/user40.png"
+                                              }
+                                              alt=""
+                                            />
+                                            <h3>{rep.user.name}</h3>
+                                            <span>
+                                              <img src="images/clock.svg" alt="" />{" "}
+                                              {getDateAndTime(rep.createdAt)}
+                                            </span>
+                                          </div>
+                                          <p>{rep.reply}</p>
+                                          {/* <a href="/" title="">
+                                          <i className="fa fa-reply-all"></i>Reply
+                                        </a> */}
+                                        </div>
+                                      </div>
+                                    </li>
+                                  );
+                                })}
+                              </ul>
+                            </li>
+                          );
+                        })}
+
+                    </ul>
+                  </div>
+                </>
+              )}
+            </div>
       </div>
     </>
   );

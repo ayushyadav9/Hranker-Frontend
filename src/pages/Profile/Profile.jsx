@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { baseURL } from "../../api";
 import LeftSide from "../../components/Profile/LeftSide";
-import RightSide from "../../components/Profile/RightSide";
+// import RightSide from "../../components/Profile/RightSide";
 import Bids from "../../components/Profile/Tabs/Bids";
 import Feed from "../../components/Profile/Tabs/Feed";
 import Info from "../../components/Profile/Tabs/Info";
@@ -100,14 +100,6 @@ const Profile = ({ setisPopupOpen }) => {
             <div className="add-pic-box">
               <div className="container">
                 <div className="row no-gutters">
-                  <div className="col-lg-12 col-sm-12">
-                    <input
-                      type="file"
-                      onChange={(e) => handelUploadDP(e)}
-                      id="file"
-                    />
-                    <label htmlFor="file">Change Image</label>
-                  </div>
                 </div>
               </div>
             </div>
@@ -118,7 +110,7 @@ const Profile = ({ setisPopupOpen }) => {
                 <div className="main-section-data">
                   <div className="row">
                     <div className="col-lg-3">
-                      <LeftSide userData={userData} />
+                      <LeftSide userData={userData} handelUploadDP={handelUploadDP}/>
                     </div>
                     <div className="col-lg-6">
                       <div className="main-ws-sec">
@@ -159,42 +151,6 @@ const Profile = ({ setisPopupOpen }) => {
                                   <span>Saved</span>
                                 </div>
                               </li>
-                              {/* <li
-                                data-tab="my-bids"
-                                className={activeTab === 3 ? "active":""}
-                              >
-                                <div title="" onClick={() => setactiveTab(3)}>
-                                  <img src="images/ic5.png" alt="" />
-                                  <span>Bids</span>
-                                </div>
-                              </li>
-                              <li
-                                data-tab="portfolio-dd"
-                                className={activeTab === 4 ? "active":""}
-                              >
-                                <div title="" onClick={() => setactiveTab(4)}>
-                                  <img src="images/ic3.png" alt="" />
-                                  <span>Portfolio</span>
-                                </div>
-                              </li>
-                              <li
-                                data-tab="rewivewdata"
-                                className={activeTab === 5 ? "active":""}
-                              >
-                                <div title="" onClick={() => setactiveTab(5)}>
-                                  <img src="images/review.png" alt="" />
-                                  <span>Reviews</span>
-                                </div>
-                              </li>
-                              <li
-                                data-tab="payment-dd"
-                                className={activeTab === 6 ? "active":""}
-                              >
-                                <div title="" onClick={() => setactiveTab(6)}>
-                                  <img src="images/ic6.png" alt="" />
-                                  <span>Payment</span>
-                                </div>
-                              </li> */}
                             </ul>
                           </div>
                         </div>
@@ -212,7 +168,7 @@ const Profile = ({ setisPopupOpen }) => {
                       </div>
                     </div>
                     <div className="col-lg-3">
-                      <RightSide />
+                      {/* <RightSide /> */}
                     </div>
                   </div>
                 </div>

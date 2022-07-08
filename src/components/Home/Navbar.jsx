@@ -20,12 +20,11 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const notiRef = useRef();
-  // const messageRef = useRef();
   const userRef = useRef();
   const userRef2 = useRef();
   const searchRef = useRef();
   let { userData, isLoggedIn } = useSelector((state) => state.user);
-  let { userPopup, messagePopup,searchPopup, selectedExams,selectedSubjects } = useSelector((state) => state.nav);
+  let { userPopup,searchPopup, selectedExams,selectedSubjects } = useSelector((state) => state.nav);
   const [SideNav, setSideNav] = useState(false);
   const [userInput, setuserInput] = useState("");
   // const [selectedExams, setselectedExams] = useState([])
@@ -46,6 +45,9 @@ const Navbar = () => {
       ) {
         dispatch(closeAll());
       }
+      // if(!notiRef.current.contains(e.target) &&  ){
+      //   dispatch(closeAll());
+      // }
     });
     // eslint-disable-next-line
   }, []);
@@ -185,12 +187,10 @@ const Navbar = () => {
                   className={`user-account-settingss ${userPopup && "active"}`}
                   id="users"
                 >
-                  <h3>Search User</h3>
+                  {/* <h3>Search User</h3> */}
                   <div className="search_form">
                     <form>
-                      <input
-                        type="text"
-                        value={userInput}
+                      <input type="text" value={userInput} placeholder="Search users..."
                         onChange={(e) => setuserInput(e.target.value)}
                         name="search"
                       />
@@ -199,19 +199,21 @@ const Navbar = () => {
                       </button>
                     </form>
                   </div>
-                  <h3>Setting</h3>
-                  <ul className="us-links">
+                  {/* <h3>Setting</h3> */}
+                  <ul onClick={() => handelRedirect("/profile")} className="us-links">
                     <li>
-                      <div onClick={() => handelRedirect("/profile")} title="">
+                      <div title="">
                         Show Profile
                       </div>
                     </li>
                   </ul>
-                  <h3 className="tc">
-                    <div onClick={handelLogout} title="">
-                      Logout
-                    </div>
-                  </h3>
+                  <ul onClick={handelLogout} className="us-links">
+                    <li>
+                      <div title="">
+                        Logout
+                      </div>
+                    </li>
+                  </ul>
                 </div>
               </div>
               <nav className={SideNav ? "active" : ""}>
@@ -253,7 +255,6 @@ const Navbar = () => {
                   </li>
                   <li>
                     <div
-                      
                       title=""
                       className="not-box-openm"
                       onClick={() => navigate("/chat")}
@@ -262,75 +263,6 @@ const Navbar = () => {
                         <img src="/images/message.svg" alt="" />
                       </span>
                       <span>Messages</span>
-                    </div>
-                    <div
-                      className={`notification-box msg ${
-                        messagePopup ? "active" : ""
-                      }`}
-                      id="message"
-                    >
-                      <div className="nt-title">
-                        <h4>Setting</h4>
-                        <a href="/" title="">
-                          Clear all
-                        </a>
-                      </div>
-                      <div className="nott-list">
-                        <div className="notfication-details">
-                          <div className="noty-user-img">
-                            <img src="/images/resources/ny-img1.png" alt="" />
-                          </div>
-                          <div className="notification-info">
-                            <h3>
-                              <a href="messages.html" title="">
-                                Jassica William
-                              </a>{" "}
-                            </h3>
-                            <p>
-                              Lorem ipsum dolor sit amet, consectetur
-                              adipisicing elit, sed do.
-                            </p>
-                            <span>2 min ago</span>
-                          </div>
-                        </div>
-                        <div className="notfication-details">
-                          <div className="noty-user-img">
-                            <img src="/images/resources/ny-img2.png" alt="" />
-                          </div>
-                          <div className="notification-info">
-                            <h3>
-                              <a href="messages.html" title="">
-                                Jassica William
-                              </a>
-                            </h3>
-                            <p>Lorem ipsum dolor sit amet.</p>
-                            <span>2 min ago</span>
-                          </div>
-                        </div>
-                        <div className="notfication-details">
-                          <div className="noty-user-img">
-                            <img src="/images/resources/ny-img3.png" alt="" />
-                          </div>
-                          <div className="notification-info">
-                            <h3>
-                              <a href="messages.html" title="">
-                                Jassica William
-                              </a>
-                            </h3>
-                            <p>
-                              Lorem ipsum dolor sit amet, consectetur
-                              adipisicing elit, sed do eiusmod tempo incididunt
-                              ut labore et dolore magna aliqua.
-                            </p>
-                            <span>2 min ago</span>
-                          </div>
-                        </div>
-                        <div className="view-all-nots">
-                          <a href="messages.html" title="">
-                            View All Messsages
-                          </a>
-                        </div>
-                      </div>
                     </div>
                   </li>
                   <li>
@@ -347,7 +279,7 @@ const Navbar = () => {
                       </span>
                       <span>Notification</span>
                     </div>
-                    <Notifications />
+                    <Notifications/>
                   </li>
                 </ul>
               </nav>

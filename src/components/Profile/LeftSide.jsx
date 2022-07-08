@@ -1,14 +1,14 @@
 import React from "react";
 import { baseURL } from "../../api";
 
-const LeftSide = ({userData}) => {
+const LeftSide = ({userData, handelUploadDP}) => {
   return (
     <div className="main-left-sidebar">
       <div className="user_profile">
         <div className="user-pro-img">
           <img src={userData.image?baseURL+"/file/"+ userData.image:"/images/luser.jpg"} alt="" />
           <div className="add-dp" id="OpenImgUpload">
-            <input type="file" id="file" />
+            <input type="file" id="file" onChange={(e) => handelUploadDP(e)}/>
             <label htmlFor="file">
               <i className="fas fa-camera"></i>
             </label>
@@ -33,7 +33,6 @@ const LeftSide = ({userData}) => {
       <div className="suggestions full-width">
         <div className="sd-title">
           <h3>People Viewed Profile</h3>
-          <i className="la la-ellipsis-v"></i>
         </div>
         <div className="suggestions-list">
           {userData.viewers.length>0? userData.viewers && userData.viewers.map((user,i)=>{

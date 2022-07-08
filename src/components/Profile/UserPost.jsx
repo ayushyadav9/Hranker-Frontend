@@ -3,9 +3,12 @@ import { useSelector,useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import Loader from "../../utils/Loader";
 import {deletePost} from "../../redux/ApiCalls"
+import { getDateAndTime } from "../../utils/timeCalculator";
+import { baseURL } from "../../api";
 
 const UserPost = ({ post }) => {
   let { userData,userToken } = useSelector((state) => state.user);
+  const [showCommentSection, setShowCommentSection] = useState(false);
   const [isOpen, setisOpen] = useState(false)
   const dispatch = useDispatch();
   const handelDeletePost = ()=>{
@@ -24,6 +27,36 @@ const UserPost = ({ post }) => {
       {userData && post ? (
         <div className="post-bar">
           <div className="post_topbar">
+          <div className="usy-dt" style={{ marginBottom: "20px" }}>
+              {userData.image ? (
+                <img
+                  className="postUserDP"
+                  src={baseURL + "/file/" + userData.image}
+                  alt=""
+                />
+              ) : (
+                <div className="user-dummy">{userData.name.charAt(0)}</div>
+              )}
+              <div className="usy-name">
+                <Link
+                  to={`/user-profile/${userData.username}`}
+                  target="_blank"
+                >
+                  <h3>{userData.name}</h3>
+                </Link>
+                <span>
+                  <img src="images/clock.svg" alt="" />
+                  {getDateAndTime(post.createdAt)} <span>•</span>
+                  {post.subjectTags.map((sub, i) => {
+                    return (
+                      <span>
+                        {sub} {post.subjectTags.length === i + 1 ? "" : "|"}
+                      </span>
+                    );
+                  })}
+                </span>
+              </div>
+            </div>
             <div className="ed-opts">
               <div onClick={()=>setisOpen(prev=>!prev)} className="ed-opts-open">
                 <i className="la la-ellipsis-v"></i>
@@ -85,21 +118,99 @@ const UserPost = ({ post }) => {
                       : ""
                   }
                 >
-                  <i className="fas fa-heart"></i> Like{" "}
+                  <i className="fas fa-heart"></i> {" "}
                   {post.likers ? post.likers.length : 0}
                 </div>
               </li>
               <li>
-                <div href="/" className="com">
-                  <i className="fas fa-comment-alt"></i>
-                  Comment {post.comments && post.comments.length}
+                <div onClick={() => setShowCommentSection((prev) => !prev)} className="com">
+                  <i className="fas fa-comment-alt"></i>{" "}
+                   {post.comments && post.comments.length}
                 </div>
               </li>
             </ul>
             <div href="/">
-              <i className="fas fa-eye"></i>Views 50
+              <i className="fas fa-eye"></i>Views {post.viewers && post.viewers.length}
             </div>
           </div>
+
+          <div className="comment-section">
+            {showCommentSection && (
+              <>
+                <div className="comment-sec">
+                  <ul>
+                    {post.comments
+                      .slice()
+                      .sort((a, b) => b.createdAt - a.createdAt)
+                      .map((com, i) => {
+                        return (
+                          <li className="main-comment" key={i}>
+                            <div className="comment-list ">
+                              <div className="bg-img"></div>
+                              <div className="comment">
+                                <div style={{ display: "flex" }}>
+                                  <img
+                                    className="userProf"
+                                    src={
+                                      com.user.image
+                                        ? baseURL + "/file/" + com.user.image
+                                        : "images/user40.png"
+                                    }
+                                    alt=""
+                                  />
+                                  <h3>{com.user.name}</h3>
+                                  <span>
+                                    <img src="images/clock.svg" alt="" />{" "}
+                                    {getDateAndTime(com.createdAt)}
+                                  </span>
+                                </div>
+                                <p>{com.comment}</p>
+                                {/* <a href="/" title="">
+                                <i className="fa fa-reply-all"></i>Reply
+                              </a> */}
+                              </div>
+                            </div>
+                            <ul>
+                              {com.replies.map((rep, i) => {
+                                return (
+                                  <li key={i}>
+                                    <div className="comment-list ">
+                                      <div className="bg-img"></div>
+                                      <div className="comment">
+                                        <div style={{ display: "flex" }}>
+                                          <img
+                                            className="reply"
+                                            src={
+                                              rep.user.image
+                                                ? rep.user.image
+                                                : "images/user40.png"
+                                            }
+                                            alt=""
+                                          />
+                                          <h3>{rep.user.name}</h3>
+                                          <span>
+                                            <img src="images/clock.svg" alt="" />{" "}
+                                            {getDateAndTime(rep.createdAt)}
+                                          </span>
+                                        </div>
+                                        <p>{rep.reply}</p>
+                                        {/* <a href="/" title="">
+                                        <i className="fa fa-reply-all"></i>Reply
+                                      </a> */}
+                                      </div>
+                                    </div>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </li>
+                        );
+                      })}
+                  </ul>
+                </div>
+              </>
+            )}
+        </div>
         </div>
       ) : (
         <Loader />
