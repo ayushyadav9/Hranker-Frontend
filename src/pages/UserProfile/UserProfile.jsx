@@ -5,7 +5,7 @@ import { baseURL } from "../../api";
 import Feed from "../../components/UserProfile/Feed";
 import Info from "../../components/UserProfile/Info";
 import LeftSide from "../../components/UserProfile/LeftSide";
-import RightSide from "../../components/UserProfile/RightSide";
+// import RightSide from "../../components/UserProfile/RightSide";
 import Loader from "../../utils/Loader";
 
 const UserProfile = () => {
@@ -110,7 +110,7 @@ const UserProfile = () => {
                       </div>
                     </div>
                     <div className="col-lg-3">
-                      <RightSide />
+                      {/* <RightSide /> */}
                     </div>
                   </div>
                 </div>
