@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { baseURL } from "../../api";
 import Feed from "../../components/UserProfile/Feed";
 import Info from "../../components/UserProfile/Info";
@@ -9,8 +10,10 @@ import Loader from "../../utils/Loader";
 
 const UserProfile = () => {
   const [activeTab, setactiveTab] = useState(0);
+  const navigate = useNavigate();
   const [searchedUserData, setsearchedUserData] = useState(null);
   const [isLoading, setisLoading] = useState(false);
+  const {userData} = useSelector((state)=>state.user)
   const { username } = useParams();
   useEffect(() => {
     if (username) {
@@ -27,7 +30,11 @@ const UserProfile = () => {
           (result) => {
             setisLoading(false);
             console.log(result);
+
             if (result.success) {
+              if(result.user._id===userData?._id){
+                navigate("/profile")
+              }
               setsearchedUserData(result.user);
             } else {
             }
@@ -38,7 +45,8 @@ const UserProfile = () => {
           }
         );
     }
-  }, [username]);
+    // eslint-disable-next-line
+  }, [username,userData]);
 
   
 
@@ -170,7 +178,7 @@ const UserProfile = () => {
           </footer>
         </div>
       ) : (
-        <></>
+        <Loader></Loader>
       )}
     </>
   );

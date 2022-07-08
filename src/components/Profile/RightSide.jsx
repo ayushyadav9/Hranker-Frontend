@@ -1,13 +1,14 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const RightSide = () => {
   return (
     <div className="right-sidebar">
       <div className="message-btn">
-        <a href="profile-account-setting.html" title="">
-          <i className="fas fa-cog"></i>
-          Setting
-        </a>
+        <Link to="/chat" title="">
+          {/* <i className="fas fa-cog"></i> */}
+          Messages
+        </Link>
       </div>
       <div className="widget widget-portfolio">
         <div className="wd-heady">

@@ -233,3 +233,17 @@ export const getConversations = createAsyncThunk("chat/getConversations", async 
   let res = await result.json();
   return res;
 });
+
+export const deletePost = createAsyncThunk("post/delete-post", async (data) => {
+  let result = await fetch(`${baseURL}/post/deletePost`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${data.token}`,
+    },
+    body: JSON.stringify({type:data.type, postId: data.postId}),
+  });
+  let res = await result.json();
+  console.log(res)
+  return res;
+});
