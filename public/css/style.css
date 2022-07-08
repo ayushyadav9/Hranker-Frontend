@@ -1682,7 +1682,7 @@ main {
   margin-bottom: 15px;
 }
 .job_descp img {
-  min-width: 100%;
+  /* min-width: 100%; */
   max-height: 350px;
   object-fit: cover;
   margin-bottom: 12px;

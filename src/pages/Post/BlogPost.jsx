@@ -207,7 +207,9 @@ const BlogPost = () => {
                                   );
                                 })}
                                 {postData.image && (
+                                  <div style={{justifyContent: "center",display: "flex"}}>
                                   <img src={postData.image} alt=""></img>
+                                  </div>
                                 )}
                               </ul>
                               <p>{postData.description}</p>
