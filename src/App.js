@@ -102,11 +102,11 @@ function App() {
             <Route path="/chat" element={<Chat/>} />
           </Route>
 
-          <Route element={<ProtectedRoute />}>
+          <Route>
             <Route path="/post/:slug" element={<BlogPost/>} />
           </Route>
 
-          <Route element={<ProtectedRoute />}>
+          <Route>
             <Route path="/quesPost/:slug" element={<QuesPost/>} />
           </Route>
 

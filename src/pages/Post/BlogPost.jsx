@@ -24,7 +24,7 @@ const BlogPost = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("userJWT")}`,
         },
-        body: JSON.stringify({ slug: slug }),
+        body: JSON.stringify({ id:userData?._id, slug: slug }),
       })
         .then((res) => res.json())
         .then(
@@ -40,7 +40,7 @@ const BlogPost = () => {
           }
         );
     }
-  }, [slug]);
+  }, [slug,userData]);
 
   const handelToggleLike = () => {
     let t = { ...postData };
@@ -96,7 +96,7 @@ const BlogPost = () => {
 
   return (
     <>
-      {postData && userData ? (
+      {postData ? (
         <div>
           <main>
             <div className="main-section">
@@ -173,7 +173,7 @@ const BlogPost = () => {
                                 </li>
                               </ul>
                               <ul className="bk-links">
-                                <li>
+                                {userData && <li>
                                   <div onClick={handelSavePost} title="">
                                     <div className="save">
                                       {saveLoader ? (
@@ -181,7 +181,7 @@ const BlogPost = () => {
                                       ) : (
                                         <i
                                           className={`${
-                                            userData.saved.blogPosts.filter(
+                                            userData?.saved.blogPosts.filter(
                                               (i) => i === postData._id
                                             ).length > 0
                                               ? "la la-check"
@@ -191,7 +191,7 @@ const BlogPost = () => {
                                       )}
                                     </div>
                                   </div>
-                                </li>
+                                </li>}
                               </ul>
                             </div>
                             <div className="job_descp accountnone">
@@ -218,7 +218,7 @@ const BlogPost = () => {
                                   <div
                                     className={
                                       postData.likers.filter(
-                                        (i) => i === userData._id
+                                        (i) => i === userData?._id
                                       ).length > 0
                                         ? "isLiked"
                                         : ""
@@ -246,17 +246,17 @@ const BlogPost = () => {
                               </div>
                             </div>
 
-                            <div className="comment-section-post">
+                            {userData &&<div className="comment-section-post">
                               <div className="post-comment-blog">
                                 <div className="cm_img-blog">
-                                  {userData.image ? (
+                                  {userData?.image ? (
                                     <img
-                                      src={baseURL + "/file/" + userData.image}
+                                      src={baseURL + "/file/" + userData?.image}
                                       alt=""
                                     />
                                   ) : (
                                     <div className="cm_dummy-blog">
-                                      {userData.name.charAt(0)}
+                                      {userData?.name.charAt(0)}
                                     </div>
                                   )}
                                 </div>
@@ -277,7 +277,7 @@ const BlogPost = () => {
                                   </form>
                                 </div>
                               </div>
-                            </div>
+                            </div>}
                             {postData.comments
                               .slice()
                               .sort((a, b) => b.createdAt - a.createdAt)
