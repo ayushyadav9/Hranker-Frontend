@@ -17,6 +17,8 @@ import BlogPost from "./pages/Post/BlogPost";
 import Leaderboard from "./pages/Leaderboard/Leaderboard";
 import QuesPost from "./pages/Post/QuesPost";
 import Chat from "./pages/Chat/Chat";
+import Story from "./pages/Story/Story";
+import StoryContent from "./pages/Story/StoryContent";
 import Congratulations from "./utils/Congratulation";
 
 import { toggleConfetti } from "./redux/reducers/postReducers";
@@ -111,6 +113,13 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/points" element={<Points/>} />
           </Route>
+          <Route element={<ProtectedRoute />}>
+            <Route path="/stories" element={<Story />} />
+          </Route>
+          <Route element={<ProtectedRoute />}>
+            <Route path="/stories/:id" element={<StoryContent />} />
+          </Route>
+          
 
         </Routes>
     </div>

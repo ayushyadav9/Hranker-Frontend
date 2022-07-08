@@ -1878,6 +1878,7 @@ main {
   padding: 20px;
   background: white;
   border-radius: 7px;
+  padding-bottom:5px;
 }
 
 .circle{
@@ -1909,6 +1910,10 @@ main {
 }
 .user-profy > img {
   float: none;
+  border-radius:50%;
+  height:50px;
+  width:50px;
+  object-fit:cover;
 }
 .user-profy h3 {
   color: #000000;
@@ -1917,11 +1922,12 @@ main {
   text-transform: capitalize;
 }
 .user-profy span {
-  color: #b2b2b2;
-  font-size: 14px;
-  font-weight: 500;
+  color: black;
+  font-size: 10px;
+  font-weight: 400;
   display: block;
-  margin-bottom: 15px;
+  margin-bottom: 0;
+  margin-top:-5px;
 }
 .user-profy ul {
   float: left;
@@ -1966,10 +1972,27 @@ main {
   background-color: #e44d3a;
   color: #fff;
 }
+.user-profy-unseen img{
+ background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+
+ padding: 1px;
+ border-radius: 100px;
+ margin: 4px 0px;
+ display: inline-block;
+}
+
+.user-profy-create-story img{
+  width:47px;
+  height:47px;
+  border-radius: 50%;
+  cursor: pointer;
+  
+}
 .slick-slide img {
-  /* border: 3px solid white; */
-  background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
-  padding: 1px;
+  
+  /* background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); */
+
+  padding: 2px;
   border-radius: 100px;
   margin: 4px 0px;
   display: inline-block;
