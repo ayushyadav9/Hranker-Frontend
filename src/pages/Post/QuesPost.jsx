@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { baseURL } from "../../api";
 import Footer from "../../components/Home/Footer";
 import RighSide from "../../components/Post/RighSide";
-import { addComment, addToSave, handelVote, toggleLike } from "../../redux/ApiCalls";
+import {
+  addComment,
+  addToSave,
+  handelVote,
+  toggleLike,
+} from "../../redux/ApiCalls";
 import Loader from "../../utils/Loader";
 import { getDateAndTime } from "../../utils/timeCalculator";
 
@@ -26,7 +31,7 @@ const QuesPost = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("userJWT")}`,
         },
-        body: JSON.stringify({id: userData?._id, slug: slug }),
+        body: JSON.stringify({ id: userData?._id, slug: slug }),
       })
         .then((res) => res.json())
         .then(
@@ -115,25 +120,25 @@ const QuesPost = () => {
       },
       comment: commentValue,
       createdAt: new Date().getTime(),
-      replies: []}
-    );
+      replies: [],
+    });
     setpostData(t);
     setCommentValue("");
     let data = {
       token: userToken,
       postId: postData._id,
       commentValue: commentValue,
-      postType: 2
-    }
-    dispatch(addComment(data))
+      postType: 2,
+    };
+    dispatch(addComment(data));
   };
 
   const handleVote = (id) => {
-    let t= {...postData}
-    t.answeredBy.push(userData._id)
+    let t = { ...postData };
+    t.answeredBy.push(userData._id);
     t.options.map((n) => {
       if (n.id === id) {
-        n.votes.push(userData._id)
+        n.votes.push(userData._id);
       }
       return n;
     });
@@ -142,7 +147,7 @@ const QuesPost = () => {
       postId: postData._id,
       optionId: id,
       token: userToken,
-    }
+    };
     dispatch(handelVote(data));
   };
 
@@ -160,7 +165,10 @@ const QuesPost = () => {
                         <div className="posts-section">
                           <div className="post-bar">
                             <div className="post_topbar">
-                              <div className="usy-dt">
+                              <div
+                                className="usy-dt"
+                                style={{ marginBottom: "20px" }}
+                              >
                                 {postData.user.image ? (
                                   <img
                                     className="postUserDP"
@@ -170,62 +178,63 @@ const QuesPost = () => {
                                     alt=""
                                   />
                                 ) : (
-                                  <img src="/images/user40.png" alt="" />
+                                  <div className="user-dummy">
+                                    {postData.user.name.charAt(0)}
+                                  </div>
                                 )}
                                 <div className="usy-name">
-                                  <h3>{postData.user.name}</h3>
+                                  <Link
+                                    to={`/user-profile/${postData.user.username}`}
+                                    target="_blank"
+                                  >
+                                    <h3>{postData.user.name}</h3>
+                                  </Link>
                                   <span>
                                     <img src="/images/clock.svg" alt="" />
-                                    {getDateAndTime(postData.createdAt)}
+                                    {getDateAndTime(postData.createdAt)}{" "}
+                                    <span>•</span>
+                                    {postData.subjectTags.map((sub, i) => {
+                                      return (
+                                        <span>
+                                          {sub}{" "}
+                                          {postData.subjectTags.length === i + 1
+                                            ? ""
+                                            : "|"}
+                                        </span>
+                                      );
+                                    })}
                                   </span>
                                 </div>
                               </div>
                               <div className="ed-opts">
-                                <div href="/" title="" className="ed-opts-open">
-                                  <i className="la la-ellipsis-v"></i>
-                                </div>
-                                <ul className="ed-options">
+                                {userData && <ul className="bk-links">
                                   <li>
-                                    <a href="/" title="">
-                                      Edit Post
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                            <div className="epi-sec">
-                              <ul className="descp">
-                                <li>
-                                  <img src="/images/icon8.png" alt="" />
-                                  <span>SSC Student</span>
-                                </li>
-                                <li>
-                                  <img src="/images/location.svg" alt="" />
-                                  <span>India</span>
-                                </li>
-                              </ul>
-                              {userData && <ul className="bk-links">
-                                <li>
-                                  <div onClick={handelSavePost} title="">
-                                    <div className="save">
-                                      {saveLoader ? (
-                                        <Loader isSmall={true} />
+                                    <div onClick={handelSavePost} title="">
+                                      {userData.saved.quesPosts.filter(
+                                        (i) => i === postData._id
+                                      ).length > 0 ? (
+                                        <div className="save">
+                                          {saveLoader ? (
+                                            <Loader isSmall={true} />
+                                          ) : (
+                                            <i className="la la-check"></i>
+                                          )}
+                                        </div>
                                       ) : (
-                                        <i
-                                          className={`${
-                                            userData?.saved.quesPosts.filter(
-                                              (i) => i === postData._id
-                                            ).length > 0
-                                              ? "la la-check"
-                                              : "la la-bookmark"
-                                          }`}
-                                        ></i>
+                                        <div className="save2">
+                                          {saveLoader ? (
+                                            <Loader isSmall={true} />
+                                          ) : (
+                                            <i className="la la-bookmark"></i>
+                                          )}
+                                        </div>
                                       )}
                                     </div>
-                                  </div>
-                                </li>
-                              </ul>}
+                                  </li>
+                                </ul>}
+                              </div>
                             </div>
+
                             <div className="job_descp accountnone">
                               <h3>{postData.title}</h3>
                               <ul className="job-dt">
@@ -238,10 +247,15 @@ const QuesPost = () => {
                                     </li>
                                   );
                                 })}
-                                
+
                                 {postData.image && (
-                                  <div style={{justifyContent: "center",display: "flex"}}>
-                                  <img src={postData.image} alt=""></img>
+                                  <div
+                                    style={{
+                                      justifyContent: "center",
+                                      display: "flex",
+                                    }}
+                                  >
+                                    <img src={postData.image} alt=""></img>
                                   </div>
                                 )}
                               </ul>
@@ -252,18 +266,43 @@ const QuesPost = () => {
                                 {postData.options.length > 0 && isAnswered
                                   ? postData.options.map((opt, i) => {
                                       return (
-                                        <div class={`answer ${opt.id===optionAnswered.id?"selected":""}`}>
-                                        <span class="option-value">{String.fromCharCode(opt.id + 96) + ") "}{opt.value}</span>
-                                        <span class="percentage-bar" style={{width:calcPercentage(opt.id)+"%"}}></span>
-                                        <span class="percentage-value">{calcPercentage(opt.id)+"%"}</span>
-                                      </div>
+                                        <div
+                                          class={`answer ${
+                                            opt.id === optionAnswered.id
+                                              ? "selected"
+                                              : ""
+                                          }`}
+                                        >
+                                          <span class="option-value">
+                                            {String.fromCharCode(opt.id + 96) +
+                                              ") "}
+                                            {opt.value}
+                                          </span>
+                                          <span
+                                            class="percentage-bar"
+                                            style={{
+                                              width:
+                                                calcPercentage(opt.id) + "%",
+                                            }}
+                                          ></span>
+                                          <span class="percentage-value">
+                                            {calcPercentage(opt.id) + "%"}
+                                          </span>
+                                        </div>
                                       );
                                     })
                                   : postData.options.map((opt, i) => {
                                       return (
-                                        <div class={`answer`} onClick={()=>handleVote(opt.id)}>
-                                          <span class="option-value">{String.fromCharCode(opt.id + 96) + ") "}{opt.value}</span>
-                                      </div>
+                                        <div
+                                          class={`answer`}
+                                          onClick={() => handleVote(opt.id)}
+                                        >
+                                          <span class="option-value">
+                                            {String.fromCharCode(opt.id + 96) +
+                                              ") "}
+                                            {opt.value}
+                                          </span>
+                                        </div>
                                       );
                                     })}
                               </div>
@@ -311,33 +350,45 @@ const QuesPost = () => {
                               )}
                             </div>
 
-                            {userData && <div className="comment-section-post">
-                              <div className="post-comment-blog">
-                                <div className="cm_img-blog">
-                                  {userData.image ? (
-                                    <img src={baseURL + "/file/" + userData.image} alt=""/>
-                                  ) : (
-                                    <div className="cm_dummy-blog">
-                                      {userData.name.charAt(0)}
-                                    </div>
-                                  )}
-                                </div>
+                            {userData && (
+                              <div className="comment-section-post">
+                                <div className="post-comment-blog">
+                                  <div className="cm_img-blog">
+                                    {userData.image ? (
+                                      <img
+                                        src={
+                                          baseURL + "/file/" + userData.image
+                                        }
+                                        alt=""
+                                      />
+                                    ) : (
+                                      <div className="cm_dummy-blog">
+                                        {userData.name.charAt(0)}
+                                      </div>
+                                    )}
+                                  </div>
 
-                                <div className="comment_box-blog">
-                                  <form>
-                                    <textarea
-                                      type="text"
-                                      placeholder="Post a comment"
-                                      value={commentValue}
-                                      onChange={(e) =>
-                                        setCommentValue(e.target.value)
-                                      }
-                                    />
-                                    <button onClick={handelAddComment} type="submit">Send</button>
-                                  </form>
+                                  <div className="comment_box-blog">
+                                    <form>
+                                      <textarea
+                                        type="text"
+                                        placeholder="Post a comment"
+                                        value={commentValue}
+                                        onChange={(e) =>
+                                          setCommentValue(e.target.value)
+                                        }
+                                      />
+                                      <button
+                                        onClick={handelAddComment}
+                                        type="submit"
+                                      >
+                                        Send
+                                      </button>
+                                    </form>
+                                  </div>
                                 </div>
                               </div>
-                            </div>}
+                            )}
                             {postData.comments.map((com, i) => {
                               return (
                                 <div key={i} className="comment-sec-blog">

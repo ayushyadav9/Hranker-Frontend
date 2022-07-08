@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { baseURL } from "../../api";
 import Footer from "../../components/Home/Footer";
 import RighSide from "../../components/Post/RighSide";
@@ -108,7 +108,10 @@ const BlogPost = () => {
                         <div className="posts-section">
                           <div className="post-bar">
                             <div className="post_topbar">
-                              <div className="usy-dt">
+                            <div
+                                className="usy-dt"
+                                style={{ marginBottom: "20px" }}
+                              >
                                 {postData.user.image ? (
                                   <img
                                     className="postUserDP"
@@ -118,81 +121,61 @@ const BlogPost = () => {
                                     alt=""
                                   />
                                 ) : (
-                                  <img src="/images/user40.png" alt="" />
+                                  <div className="user-dummy">
+                                    {postData.user.name.charAt(0)}
+                                  </div>
                                 )}
                                 <div className="usy-name">
-                                  <h3>{postData.user.name}</h3>
+                                  <Link
+                                    to={`/user-profile/${postData.user.username}`}
+                                    target="_blank"
+                                  >
+                                    <h3>{postData.user.name}</h3>
+                                  </Link>
                                   <span>
                                     <img src="/images/clock.svg" alt="" />
-                                    {getDateAndTime(postData.createdAt)}
+                                    {getDateAndTime(postData.createdAt)}{" "}
+                                    <span>•</span>
+                                    {postData.subjectTags.map((sub, i) => {
+                                      return (
+                                        <span>
+                                          {sub}{" "}
+                                          {postData.subjectTags.length === i + 1
+                                            ? ""
+                                            : "|"}
+                                        </span>
+                                      );
+                                    })}
                                   </span>
                                 </div>
                               </div>
-                              <div className="ed-opts">
-                                <div href="/" title="" className="ed-opts-open">
-                                  <i className="la la-ellipsis-v"></i>
-                                </div>
-                                <ul className="ed-options">
+                            <div className="ed-opts">
+                                {userData && <ul className="bk-links">
                                   <li>
-                                    <a href="/" title="">
-                                      Edit Post
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a href="/" title="">
-                                      Unsaved
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a href="/" title="">
-                                      Unbid
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a href="/" title="">
-                                      Close
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a href="/" title="">
-                                      Hide
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                            <div className="epi-sec">
-                              <ul className="descp">
-                                <li>
-                                  <img src="/images/icon8.png" alt="" />
-                                  <span>SSC Student</span>
-                                </li>
-                                <li>
-                                  <img src="/images/location.svg" alt="" />
-                                  <span>India</span>
-                                </li>
-                              </ul>
-                              <ul className="bk-links">
-                                {userData && <li>
-                                  <div onClick={handelSavePost} title="">
-                                    <div className="save">
-                                      {saveLoader ? (
-                                        <Loader isSmall={true} />
+                                    <div onClick={handelSavePost} title="">
+                                      {userData.saved.blogPosts.filter(
+                                        (i) => i === postData._id
+                                      ).length > 0 ? (
+                                        <div className="save">
+                                          {saveLoader ? (
+                                            <Loader isSmall={true} />
+                                          ) : (
+                                            <i className="la la-check"></i>
+                                          )}
+                                        </div>
                                       ) : (
-                                        <i
-                                          className={`${
-                                            userData?.saved.blogPosts.filter(
-                                              (i) => i === postData._id
-                                            ).length > 0
-                                              ? "la la-check"
-                                              : "la la-bookmark"
-                                          }`}
-                                        ></i>
+                                        <div className="save2">
+                                          {saveLoader ? (
+                                            <Loader isSmall={true} />
+                                          ) : (
+                                            <i className="la la-bookmark"></i>
+                                          )}
+                                        </div>
                                       )}
                                     </div>
-                                  </div>
-                                </li>}
-                              </ul>
+                                  </li>
+                                </ul>}
+                              </div>
                             </div>
                             <div className="job_descp accountnone">
                               <h3>{postData.title}</h3>
