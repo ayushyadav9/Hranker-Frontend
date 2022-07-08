@@ -19,9 +19,9 @@ const Feed = ({ userData, activeTab }) => {
       id="feed-dd"
     >
       <div className="posts-section">
-        {postData ? (
+        {postData && postData.length > 0 ? (
           postData.map((post, i) => {
-            return <UserPost key={i} post={post} userData={userData} />;
+            return <UserPost key={i} post={post} postUserData={userData} />;
           })
         ) : (
           <div className="noPost">No post yet</div>

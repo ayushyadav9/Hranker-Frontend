@@ -6,8 +6,8 @@ import {deletePost} from "../../redux/ApiCalls"
 import { getDateAndTime } from "../../utils/timeCalculator";
 import { baseURL } from "../../api";
 
-const UserPost = ({ post }) => {
-  let { userData,userToken } = useSelector((state) => state.user);
+const UserPost = ({ post,postUserData }) => {
+  let { userData, userToken } = useSelector((state) => state.user);
   const [showCommentSection, setShowCommentSection] = useState(false);
   const [isOpen, setisOpen] = useState(false)
   const dispatch = useDispatch();
@@ -24,25 +24,25 @@ const UserPost = ({ post }) => {
   }
   return (
     <>
-      {userData && post ? (
+      {postUserData && userData && post ? (
         <div className="post-bar">
           <div className="post_topbar">
           <div className="usy-dt" style={{ marginBottom: "20px" }}>
-              {userData.image ? (
+              {postUserData.image ? (
                 <img
                   className="postUserDP"
-                  src={baseURL + "/file/" + userData.image}
+                  src={baseURL + "/file/" + postUserData.image}
                   alt=""
                 />
               ) : (
-                <div className="user-dummy">{userData.name.charAt(0)}</div>
+                <div className="user-dummy">{postUserData.name.charAt(0)}</div>
               )}
               <div className="usy-name">
                 <Link
-                  to={`/user-profile/${userData.username}`}
+                  to={`/user-profile/${postUserData.username}`}
                   target="_blank"
                 >
-                  <h3>{userData.name}</h3>
+                  <h3>{postUserData.name}</h3>
                 </Link>
                 <span>
                   <img src="images/clock.svg" alt="" />
@@ -57,7 +57,7 @@ const UserPost = ({ post }) => {
                 </span>
               </div>
             </div>
-            <div className="ed-opts">
+            {userData._id === post.user && <div className="ed-opts">
               <div onClick={()=>setisOpen(prev=>!prev)} className="ed-opts-open">
                 <i className="la la-ellipsis-v"></i>
               </div>
@@ -68,7 +68,7 @@ const UserPost = ({ post }) => {
                   </div>
                 </li>
               </ul>
-            </div>
+            </div>}
           </div>
           <div className="job_descp">
             <h3>{post.title}</h3>
@@ -113,7 +113,7 @@ const UserPost = ({ post }) => {
               <li>
                 <div
                   className={
-                    post.likers.filter((i) => i._id === userData._id).length > 0
+                    post.likers.filter((i) => i._id === postUserData._id).length > 0
                       ? "isLiked"
                       : ""
                   }
