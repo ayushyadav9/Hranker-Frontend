@@ -4,7 +4,7 @@ import Avatar from '@mui/material/Avatar';
 import CropIcon from '@mui/icons-material/Crop';
 import Button from '@mui/material/Button';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
-import { Divider } from "@material-ui/core";
+// import { Divider } from "@material-ui/core";
 import { Dialog,DialogTitle,DialogContent,DialogActions } from "@mui/material";
 import CropEasy from "./imageCropModal";
 import { baseURL } from "../../../api";
@@ -86,11 +86,11 @@ function CreateStory({ modalState,setModalState,user_id,dataRecaller,setDataReca
             })
         })
         .then((res)=>{
-            console.log(res);
+            // console.log(res);
             return res.json();
         })
         .then((data)=>{
-            console.log(data);
+            // console.log(data);
 
         })
         
@@ -100,9 +100,10 @@ function CreateStory({ modalState,setModalState,user_id,dataRecaller,setDataReca
     }
     
     useEffect(()=>{
-        console.log("it ran");
+        // console.log("it ran");
         btnHandler();
         
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[imageUploadState,textState]);
 
 
@@ -128,7 +129,8 @@ function CreateStory({ modalState,setModalState,user_id,dataRecaller,setDataReca
                 <strong style={{fontWeight:"bold"}}>
                     Create Story 
                 </strong>
-                <button onClick={()=> setModalState(false)}>
+                <button style={{background:'none',border:'none'}}
+                onClick={()=> setModalState(false)}>
                             <Close/>
                 </button>
             </div>
@@ -158,7 +160,7 @@ function CreateStory({ modalState,setModalState,user_id,dataRecaller,setDataReca
                 <React.Fragment>
                     <div className="afterImageUpload">
 
-                        <Avatar src={photoURL} sx={{ width: 80, height: 80 }}/>
+                        <Avatar src={photoURL} sx={{ width: 50, height: 50 }}/>
                         <Button onClick={()=>setOpenCrop(true)}><CropIcon/></Button>
                     </div>
                 </React.Fragment>

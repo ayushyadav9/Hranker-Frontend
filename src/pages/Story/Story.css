@@ -32,25 +32,49 @@
 }
 
 .App p{
-  display: block;
+  /* display: block; */
   /* margin-top: 1em; */
-  margin-bottom: 1em;
+  /* margin-bottom: 1em;
   margin-left: 0;
   margin-right: 0;
+  display: block; */
+    /* margin-top: 1em; */
+    margin-bottom: 11px;
+    font-weight: 400;
+    margin-top: 11px;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .App strong{
-  font-weight: bold;
+  font-weight:600;
 }
   
-button{
+.App button{
   all:unset;
   cursor: pointer;
+  outline: none;
+  border:none;
+  background: none;
 
 }
-  
+
+.App button:focus{
+  outline:none;
+  box-shadow: none;
+}
+::-webkit-scrollbar-thumb {
+  background: none;
+}
+
+::-webkit-scrollbar-track {
+  /* background-color: #ebebeb; */
+  background: none;
+}
+
 .no-hover{
   pointer-events: none;
+  cursor:default;
 }
 
 .no-story-view-message{
@@ -60,9 +84,8 @@ button{
     justify-content: center;
     align-items: center;
     top: 12%;
-    /* right: 0; */
-    left: 21.7vw;
-    width: 70.8VW;
+    left: 26.7vw;
+    width: 60.8VW;
     height: 80%;
     background-color: #FFFFFF;
     opacity: 1;

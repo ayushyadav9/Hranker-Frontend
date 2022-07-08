@@ -1,7 +1,7 @@
 import { Cancel } from '@mui/icons-material';
 import CropIcon from '@mui/icons-material/Crop';
-import { Close } from '@mui/icons-material';
-import { Dialog, DialogTitle, IconButton } from '@mui/material';
+// import { Close } from '@mui/icons-material';
+import { Dialog, DialogTitle } from '@mui/material';
 
 import {
   Box,
@@ -36,7 +36,6 @@ const CropEasy = ({ photoURL, setOpenCrop, setPhotoURL}) => {
         croppedAreaPixels,
         rotation
       );
-      console.log("kjdfkjaksjf",url)
       await  setPhotoURL(url);
     
     await setOpenCrop(false);

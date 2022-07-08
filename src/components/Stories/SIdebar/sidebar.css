@@ -4,7 +4,7 @@
     background-color: #fff;
     position: fixed;
     top: 12%;
-    left: 2%;
+    left: 7%;
     margin-top: 0;
     
     margin-left: 20px;
@@ -31,12 +31,27 @@
     height: 2.2rem;
     border-top: 1px solid #ddd;
     width: 100%;
-    background-color: red;
+    background-image:  linear-gradient(90deg,#52A0FD,#00e2fa);
+    /* background-color: red; */
 }
 
+.navLinkActive{
+    background-color: #ededed
+
+}
+
+
+.Sidebar .no-story-message{
+    background: #0526da6b;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 7px;
+    padding: 9px;
+    color: #fff;
+    text-align: center;
+}
 .btn{
     background-color: #00e2fa;
-    background-image:  linear-gradient(90deg,#52A0FD,#00e2fa);
     color: white;
     width: 100%;
     font-size: 1.5 rem;
@@ -45,12 +60,11 @@
     align-items: center;
 }
 
-
 .divider{
     
     margin: 0px 0px 10px 0px;
     font-weight: 600;
-    font-size: 20px;
+    font-size: 18px;
     color: #404040;
 }
 .All-Story-List{
@@ -63,5 +77,6 @@
         width: 100%;
         margin-left: 0;
         height: 88%;
+        left:0;
     }
 }

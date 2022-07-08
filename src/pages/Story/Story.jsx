@@ -59,9 +59,9 @@ function Story() {
         user_id &&
           <div className="no-story-view-message" >
             
-            <img src="/images/no-story.svg" style={{maxWidth:"400px",maxHeight:"300px"}}alt=""/>
+            <img src="/images/no-story.svg" style={{maxWidth:"45%",maxHeight:"45%",marginBottom:"18px",padding:"20px"}}alt=""/>
             <h2>
-              Click on Stories to See..., Or Create Your Own
+              Select a Story to Watch
             </h2>
             <h2>
 

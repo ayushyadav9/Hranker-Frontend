@@ -246,17 +246,14 @@ const Navbar = () => {
                   <li>
                     <div onClick={() => handelRedirect("/stories")} title="">
                       <span>
-                        <img src="/images/story-icon.png" alt="" />
+                        <img src="/images/story.png" alt="" />
                       </span>
                       <span>Stories</span>
                     </div>
                   </li>
                   <li>
                     <div
-                      // ref={messageRef}
-                      // onClick={() => {
-                      //   dispatch(toggleMessage());
-                      // }}
+                      
                       title=""
                       className="not-box-openm"
                       onClick={() => navigate("/chat")}

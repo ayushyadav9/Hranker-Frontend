@@ -2,8 +2,8 @@
     position: fixed;
     top: 12%;
     /* right: 0; */
-    left: 21.7vw;
-    width: 74.8VW;
+    left: 26.7vw;
+    width: 60.8VW;
     height: 80%;
     background-color: #fff;
     opacity: 1;
@@ -32,7 +32,7 @@
     color: white;
 }
 .shrink{
-    width: 58vw;
+    width: 52.5vw;
 }
 .view-story img{
    
@@ -64,6 +64,9 @@
     height: 100%;
     
 }
+.Navigator .forwardArrow button{
+    outline: none;
+}
 
 
 .Navigator .backwardArrow{
@@ -74,6 +77,10 @@
     align-items: center;
     height: 100%;
     
+}
+
+.Navigator .backwardArrow button{
+    outline:none;
 }
 
 .not-found-wrapper {

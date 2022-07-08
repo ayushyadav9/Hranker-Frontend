@@ -16,13 +16,19 @@
     color:inherit;
 }
 
+.InteractBar button{
+    outline:none;
+    
+}
+
+
 .make-center{
     display: flex;
     justify-content: center;
 }
 
 .like-active{
-    color:blueviolet;
+    color:#019fe2;
 }
 
 @media (max-height:800px){

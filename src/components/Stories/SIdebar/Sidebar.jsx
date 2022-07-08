@@ -4,7 +4,7 @@ import{useState} from 'react';
 import {
     NavLink
 } from 'react-router-dom';
-import { baseURL } from '../../../api';
+// import { baseURL } from '../../../api';
 
 import CreateStory from '../Modals/createStoryModal';
 import SingleStory from '../utilities/singleStory';
@@ -38,41 +38,64 @@ const Sidebar =
 
                             <p className="divider">Your Stories</p>
                                 {
+                                    stories && stories[0].length===0 && 
+                                    <>
+                                        <p className='no-story-message'> No Stories Found  </p>
+                                    </>
+                                }
+                                {
                                     
                                         
                                             stories &&
-                                            stories[0].map(story=>{
-                                                return(
-                                                    
+                                            
+                                                stories[0].map(story=>{
+                                                    return(
                                                         
-                                                        <NavLink
-                                                            to={"/stories/"+story._id}
-                                                        >
-                                                            <div
-                                                            >
-                                                                <SingleStory profilePicSrc={story.user.image} username={story.user.name} createdAt={story.createdAt}/>
-                                                                
+                                                            <div key={story._id}>
+
+                                                                <NavLink
+                                                                    to={"/stories/"+story._id}
+                                                                    
+                                                                    className={isActive => " "+ (isActive.isActive ? "navLinkActive":'')}
+                                                                >
+                                                                    <div
+                                                                    >
+                                                                        <SingleStory profilePicSrc={story.user.image} username={story.user.name} createdAt={story.createdAt}/>
+                                                                        
+                                                                    </div>
+                                                                </NavLink>
                                                             </div>
-                                                        </NavLink>
-                                                )
-                                            })
+                                                    )
+                                                })
+
                                         
                                     
                                 }
                             
                             <p className="divider">Others Stories</p>
+                            {
+                                    stories && stories[1].length===0 && 
+                                    <>
+                                        <p className='no-story-message'> No Community Stories Found  </p>
+                                    </>
+                            }
 
                             {
                                 stories &&
 
                                         stories[1].map(story=>{
                                             return(
-                                                <NavLink
-                                                    to={"/stories/"+story._id}
-                                                >
-                                                    <SingleStory profilePicSrc={story.user.image} username={story.user.name} createdAt={story.createdAt}/>
-        
-                                                </NavLink>
+                                                <div key={story._id}>
+                                                    <NavLink
+                                                        to={"/stories/"+story._id}
+                                                        className={isActive => " "+ (isActive.isActive ? "navLinkActive":'')}
+
+                                                    >
+                                                        <SingleStory profilePicSrc={story.user.image} username={story.user.name} createdAt={story.createdAt}/>
+            
+                                                    </NavLink>
+
+                                                </div>
                                             )
                                         })
                         

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; 
 
 import CommentIcon from '@mui/icons-material/Comment';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -32,17 +32,17 @@ const InteractActivities =(
     }
 
     )=>{
-
+    const navigate = useNavigate();
     let likestate=viewStoryData.likers.includes(user_id);
     const[likeActiveStatus,setLikeActiveStatus]=useState(likestate);
     const[shareModal,setShareModal]=useState(false);
     const[openViewersList,setOpenViewersList]=useState(false);
-    console.log(likeActiveStatus);
+    // console.log(likeActiveStatus);
 
 
 
     const commentHandler=async()=>{
-        await setCommentSection(true);
+        await setCommentSection((commentSection)=>!commentSection);
     }
 
 
@@ -50,7 +50,7 @@ const InteractActivities =(
 
 
     const deletestory=async()=>{
-        console.log("delete button")
+        // console.log("delete button")
         await fetch(baseURL+"/stories/deletestory",{
             method:"POST",
             headers:{
@@ -61,11 +61,12 @@ const InteractActivities =(
             })
         })
         .then((res)=>{
-            console.log(res);
+            // console.log(res);
             return res.json();
         })
         await setDataRecaller(!dataRecaller);
-        // await setViewStoryState(false);
+        navigate('/stories');
+        
     }
 
 
@@ -81,11 +82,11 @@ const InteractActivities =(
             })
             })
             .then((res)=>{
-                console.log(res);
+                // console.log(res);
                 return res.json();
             })
 
-            console.log(updatedStorydata,'9955656');
+            // console.log(updatedStorydata,'9955656');
             await setViewStoryData(updatedStorydata.updateStorydata);
 
     }
@@ -102,16 +103,16 @@ const InteractActivities =(
             })
             })
             .then((res)=>{
-                console.log(res);
+                // console.log(res);
                 return res.json();
             })
             await setViewStoryData(updatedStorydata.updatedStorydata);
     }
 
     useEffect(()=>{
-        console.log('use Effect in interact activities');
+        // console.log('use Effect in interact activities');
         setLikeActiveStatus(viewStoryData.likers.includes(user_id));
-    },[viewStoryData])
+    },[viewStoryData,user_id])
 
     return(
         <div className="InteractBar">
@@ -119,37 +120,42 @@ const InteractActivities =(
 
                 {(user_id===viewStoryData.user._id)&&
                     <button onClick={()=>deletestory()}>
-                        <Link
+                        {/* <Link
                             to="/stories"
-                        >
-                            <DeleteIcon sx={{fontSize:"200%"}}/>
-                        </Link>
+                        > */}
+                            <DeleteIcon sx={{fontSize:"150%"}}/>
+                        {/* </Link> */}
                     </button>}
             </div>
             
             <div>
                 
+                    <div className={user_id !==viewStoryData.user._id ? 'no-hover':''}>
 
-                    <button 
-                        disabled={user_id !== viewStoryData.user._id} 
-                        className={user_id !==viewStoryData.user._id ? 'no-hover':''}
-                        onClick={async()=> await setOpenViewersList(true)}
-                    >
-                    <VisibilityIcon sx={{fontSize:"200%"}}/> 
-                    </button>
-                
-                    <div className='make-center'>
-                        {viewStoryData.viewers.length}
+                        <button 
+                            disabled={user_id !== viewStoryData.user._id} 
+                            
+                            onClick={async()=> await setOpenViewersList(true)}
+                        >
+                        <VisibilityIcon sx={{fontSize:"150%"}}/> 
+                        </button>
+                        <div className='make-center'>
+                            {viewStoryData.viewers.length}
+                        </div>
                     </div>
+                
             </div>
             
             <div>
-                    <button className={likeActiveStatus? 'like-active':''} onClick={()=> (!likeActiveStatus ?likehandler:unlikehandler)()}>
+                    <div className={likeActiveStatus? 'like-active':''} >
 
-                        <ThumbUpIcon sx={{fontSize:"200%"}}/>
-                    </button>                
-                    <div className='make-center'>
-                        {viewStoryData.likers.length}
+                        <button onClick={()=> (!likeActiveStatus ?likehandler:unlikehandler)()}>
+
+                            <ThumbUpIcon sx={{fontSize:"150%"}}/>
+                        </button>                
+                        <div className='make-center'>
+                            {viewStoryData.likers.length}
+                        </div>
                     </div>
             </div>
             
@@ -158,7 +164,7 @@ const InteractActivities =(
 
                     <button onClick={()=>commentHandler()}>
 
-                        <CommentIcon sx={{fontSize:"200%"}}/>
+                        <CommentIcon sx={{fontSize:"150%"}}/>
                     </button>
                 
                     <div className='make-center'>
@@ -168,7 +174,7 @@ const InteractActivities =(
             <div>
 
                 <button onClick={async()=> await setShareModal(true)}>
-                    <ShareIcon sx={{fontSize:"200%"}}/>
+                    <ShareIcon sx={{fontSize:"150%"}}/>
 
                 </button>
             </div>

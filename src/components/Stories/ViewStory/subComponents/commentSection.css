@@ -8,7 +8,7 @@
     height: 80%;
     /* background-color: aqua; */
     background-color: #fff;
-    border-radius: 20px;
+    border-radius: 7px;
     box-shadow: 0 3px 10px rgb(0 0 0 / 20%);
     overflow-y: auto;
     z-index: 1;
@@ -80,6 +80,8 @@
 }
 .story-singleCommentContent p{
     font-family:'Roboto';
+    line-height: 17px;
+    width: 90%;
     font-weight: 300;
     margin: 0;
 }

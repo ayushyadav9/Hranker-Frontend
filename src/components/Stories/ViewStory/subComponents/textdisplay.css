@@ -1,9 +1,7 @@
 .display1{
-    
     display: flex;
     justify-content: center;
     align-items: center;
-    color: white;
     font-size: 250%;
     width:50%;
     word-break: break-all;
@@ -12,15 +10,43 @@
     bottom: 2%;
     background: rgb(0,0,0,0.5);
     overflow-y:auto;
-
 }
+
 .display1 p{
+    color: white;
     display: inline;
     font-size: 2rem;
     
 }
+
 @media (max-width:"1200px"){
     .display1 p{
+        font-size:1.2rem;
+    }
+}
+
+
+.display2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 250%;
+    width:50%;
+    word-break: break-all;
+    max-height: 80%;
+    overflow-y:auto;
+    
+}
+
+.display2 p{
+    display: inline;
+    color: white;
+    font-size: 2rem;
+}
+
+@media (max-width:"1200px"){
+
+    .display2 p{
         font-size:1.2rem;
     }
 }

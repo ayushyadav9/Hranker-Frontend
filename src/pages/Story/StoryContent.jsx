@@ -1,9 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import {
 
-    useParams,
-} from "react-router-dom";
 
 import Sidebar from '../../components/Stories/SIdebar/Sidebar';
 import ViewStory from '../../components/Stories/ViewStory/ViewStory';
@@ -18,13 +15,11 @@ function StoryContent() {
 
     const user_id = userData?._id;
     const [dataRecaller, setDataRecaller] = useState(false);
-    const { id } = useParams();
-    console.log(id);
 
     useEffect(() => {
         if(user_id){
 
-            console.log("use effect");
+            // console.log("use effect");
             fetch(baseURL + "/stories", {
                 method: "POST",
                 headers: {
