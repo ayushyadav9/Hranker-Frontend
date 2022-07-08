@@ -51,7 +51,7 @@ const Sidebar =
                                                 stories[0].map(story=>{
                                                     return(
                                                         
-                                                            // <div key={story._id}>
+                                                            
 
                                                                 <NavLink
                                                                     to={"/stories/"+story._id}
@@ -64,7 +64,7 @@ const Sidebar =
                                                                         
                                                                     </div>
                                                                 </NavLink>
-                                                            // </div>
+                                                            
                                                     )
                                                 })
 
@@ -85,7 +85,7 @@ const Sidebar =
 
                                         stories[1].map(story=>{
                                             return(
-                                                // <div key={story._id}>
+                                                
                                                     <NavLink
                                                         to={"/stories/"+story._id}
                                                         key={story._id}
@@ -96,7 +96,7 @@ const Sidebar =
             
                                                     </NavLink>
 
-                                                // </div>
+                                                
                                             )
                                         })
                         
