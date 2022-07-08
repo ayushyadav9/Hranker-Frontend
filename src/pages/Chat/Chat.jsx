@@ -73,6 +73,8 @@ const Chat = () => {
       if(!activeChat || activeChat?.convId !== data.convId){
         console.log(data)
         setnewMessage([...newMessage, data.convId])
+      }else{
+        setnewMessage([])
       }
     });
   })
@@ -141,6 +143,8 @@ const Chat = () => {
   const handelChatData = async (con) => {
     setmessages([]);
     setactiveChat(con);
+    let t = newMessage.filter((item)=> item!==con.convId)
+    setnewMessage(t)
     socket.emit("join chat", con.convId);
     setmessageLoader(true);
     fetch(`${baseURL}/chat/getMessages`, {
