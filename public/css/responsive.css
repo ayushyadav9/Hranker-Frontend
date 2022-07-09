@@ -162,6 +162,7 @@
 	.job-details {width: 80%;}
 	.cover-sec {height: 200px;}
 	.cover-sec img {height: 100%;object-fit: cover;}
+	.cover-sec .bannerLogo {width: 36%;right: 34%;top:17%;}
 	.star-descp > ul {width: 100%;margin-top: 10px;}
 	.like-com li {margin-right: 5px;}
 	.bk-links {width: 100%;margin-top: 15px;}

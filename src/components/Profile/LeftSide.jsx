@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { baseURL } from "../../api";
 
 const LeftSide = ({userData, handelUploadDP}) => {
@@ -38,13 +39,12 @@ const LeftSide = ({userData, handelUploadDP}) => {
           {userData.viewers.length>0? userData.viewers && userData.viewers.map((user,i)=>{
             return(<div className="suggestion-usd">
             <img src={user.image?baseURL+"/file/"+ user.image :"/images/luser.jpg"} alt="" />
+            <Link to={`/user-profile/${user.username}`} target="_blank">
             <div className="sgt-text">
               <h4>{user.name}</h4>
               <span>{user.username}</span>
             </div>
-            <span>
-              <i className="la la-plus"></i>
-            </span>
+            </Link>
           </div>)
           }):<div style={{textAlign:"center"}}>No one has viewed </div>}
           {/* {userData?.viewers.length>0 &&

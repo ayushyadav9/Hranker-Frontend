@@ -1,82 +1,69 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const RightSide = () => {
+  const {ranks} = useSelector((state)=>state.user)
   return (
     <div className="right-sidebar">
-      <div className="message-btn">
-        <Link to="/chat" title="">
-          Messages
-        </Link>
-      </div>
       <div className="widget widget-portfolio">
         <div className="wd-heady">
-          <h3>Portfolio</h3>
-          <img src="images/photo-icon.png" alt="" />
+          <h3>HRanker Rankings</h3>
+          {/* <img src="images/photo-icon.png" alt="" /> */}
         </div>
-        <div className="pf-gallery">
-          <ul>
-            <li>
-              <a href="/" title="">
-                <img src="images/resources/pf-gallery1.png" alt="" />
-              </a>
-            </li>
-            <li>
-              <a href="/" title="">
-                <img src="images/resources/pf-gallery2.png" alt="" />
-              </a>
-            </li>
-            <li>
-              <a href="/" title="">
-                <img src="images/resources/pf-gallery3.png" alt="" />
-              </a>
-            </li>
-            <li>
-              <a href="/" title="">
-                <img src="images/resources/pf-gallery4.png" alt="" />
-              </a>
-            </li>
-            <li>
-              <a href="/" title="">
-                <img src="images/resources/pf-gallery5.png" alt="" />
-              </a>
-            </li>
-            <li>
-              <a href="/" title="">
-                <img src="images/resources/pf-gallery6.png" alt="" />
-              </a>
-            </li>
-            <li>
-              <a href="/" title="">
-                <img src="images/resources/pf-gallery7.png" alt="" />
-              </a>
-            </li>
-            <li>
-              <a href="/" title="">
-                <img src="images/resources/pf-gallery8.png" alt="" />
-              </a>
-            </li>
-            <li>
-              <a href="/" title="">
-                <img src="images/resources/pf-gallery9.png" alt="" />
-              </a>
-            </li>
-            <li>
-              <a href="/" title="">
-                <img src="images/resources/pf-gallery10.png" alt="" />
-              </a>
-            </li>
-            <li>
-              <a href="/" title="">
-                <img src="images/resources/pf-gallery11.png" alt="" />
-              </a>
-            </li>
-            <li>
-              <a href="/" title="">
-                <img src="images/resources/pf-gallery12.png" alt="" />
-              </a>
-            </li>
-          </ul>
+        <div class="acc-setting">
+          <div class="profile-bx-details">
+            <div class="stats-list">
+            <div class="stats-item">
+                <div class="profile-bx-info">
+                  <div class="pro-bx">
+                    <img src="/images/eng.png" alt="" />
+                    <div class="bx-info">
+                      <h3>{ranks?.active}</h3>
+                      <h5>Engagement Rank</h5>
+                    </div>
+                  </div>
+                  <p>Calculated based on your activity on platform</p>
+                </div>
+              </div>
+              <div class="stats-item">
+                <div class="profile-bx-info">
+                  <div class="pro-bx">
+                    <img src="/images/goal.png" alt="" />
+                    <div class="bx-info">
+                      <h3>{ranks?.top}</h3>
+                      <h5>Top Rank</h5>
+                    </div>
+                  </div>
+                  <p>Calculated based on your all time highest points</p>
+                </div>
+              </div>
+              <div class="stats-item">
+                <div class="profile-bx-info">
+                  <div class="pro-bx">
+                    <img src="/images/blogg.png" alt="" />
+                    <div class="bx-info">
+                      <h3>{ranks?.blogs}</h3>
+                      <h5>Total Blogs Posted</h5>
+                    </div>
+                  </div>
+                  {/* <p>Lorem ipsum dolor sit amet, consectetur adipiscing.</p> */}
+                </div>
+              </div>
+              <div class="stats-item">
+                <div class="profile-bx-info">
+                  <div class="pro-bx">
+                    <img src="/images/ques.png" alt="" />
+                    <div class="bx-info">
+                      <h3>{ranks?.ques}</h3>
+                      <h5>Total Questions Posted</h5>
+                    </div>
+                  </div>
+                  {/* <p>Lorem ipsum dolor sit amet, consectetur adipiscing.</p> */}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pro-work-status"></div>
         </div>
       </div>
     </div>

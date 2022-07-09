@@ -15,6 +15,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useSelector,useDispatch } from "react-redux";
 import Saved from "../../components/Profile/Tabs/Saved";
 import {getUser} from "../../redux/ApiCalls"
+import RightSide from "../../components/Profile/RightSide";
 
 const Profile = ({ setisPopupOpen }) => {
   let { userData, loadings, userToken } = useSelector((state) => state.user);
@@ -93,18 +94,16 @@ const Profile = ({ setisPopupOpen }) => {
       {userData && (
         <div>
           <section className="cover-sec">
+            <div className="banner">
             <img
+              className="bannerImg"
               src="/images/banner.jpg"
               alt=""
             />
-            <div className="add-pic-box">
-              <div className="container">
-                <div className="row no-gutters">
-                </div>
-              </div>
+            <div className="bannerLogo"><img style={{width:"67%"}} src="/images/hrankerLogo.png" alt=""></img></div>
             </div>
           </section>
-          <main>
+          <main style={{minHeight: "406px"}}>
             <div className="main-section">
               <div className="container">
                 <div className="main-section-data">
@@ -112,16 +111,11 @@ const Profile = ({ setisPopupOpen }) => {
                     <div className="col-lg-3">
                       <LeftSide userData={userData} handelUploadDP={handelUploadDP}/>
                     </div>
-                    <div className="col-lg-6">
+                    <div className="col-lg-6" >
                       <div className="main-ws-sec">
                         <div className="user-tab-sec rewivew">
                           <h3>{userData.name}</h3>
                           <h2>({userData.username})</h2>
-                          <div className="star-descp">
-                            <span>
-                              {userData.about ? userData.about : "No bio yet"}
-                            </span>
-                          </div>
                           <div className="tab-feed st2 settingjb">
                             <ul>
                               <li
@@ -168,7 +162,7 @@ const Profile = ({ setisPopupOpen }) => {
                       </div>
                     </div>
                     <div className="col-lg-3">
-                      {/* <RightSide /> */}
+                      <RightSide />
                     </div>
                   </div>
                 </div>
