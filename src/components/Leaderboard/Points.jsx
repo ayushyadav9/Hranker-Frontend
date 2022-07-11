@@ -41,7 +41,7 @@ const Points = () => {
         </div>
         <div className="col-md-4 col-sm-12">
           <div className="bidrit">
-            <h3 className="topTable3">Heighest Points</h3>
+            <h3 className="topTable3">All time Points</h3>
           </div>
         </div>
       </div>

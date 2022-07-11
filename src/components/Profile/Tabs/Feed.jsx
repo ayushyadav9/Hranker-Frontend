@@ -22,13 +22,16 @@ const Feed = ({ userData, activeTab }) => {
     >
       <div className="posts-section">
         {postData && postData.length > 0 ? (
-          postData.map((post, i) => {
-            return post.type === 1 ? (
-              <UserPost key={i} post={post} postUserData={userData} />
-            ) : (
-              <QuesPost key={i} post={post} postUserData={userData} />
-            );
-          })
+          postData
+            .slice()
+            .sort((a, b) => b.createdAt - a.createdAt)
+            .map((post, i) => {
+              return post.type === 1 ? (
+                <UserPost key={i} post={post} postUserData={userData} />
+              ) : (
+                <QuesPost key={i} post={post} postUserData={userData} />
+              );
+            })
         ) : (
           <div className="noPost">No post yet</div>
         )}
