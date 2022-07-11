@@ -47,12 +47,7 @@ const LeftSide = ({userData, handelUploadDP}) => {
             </Link>
           </div>)
           }):<div style={{textAlign:"center"}}>No one has viewed </div>}
-          {/* {userData?.viewers.length>0 &&
-          <div className="view-more">
-            <a href="/" title="">
-              View More
-            </a>
-          </div>} */}
+          
         </div>
       </div>
     </div>

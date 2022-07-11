@@ -3,6 +3,7 @@ import { baseURL } from "../../api";
 import { useDispatch, useSelector } from "react-redux";
 import { followUser, unfollowUser } from "../../redux/ApiCalls";
 import { useEffect } from "react";
+import {  useNavigate } from "react-router-dom";
 
 
 const LeftSide = ({ searchedUserData }) => {
@@ -10,6 +11,32 @@ const LeftSide = ({ searchedUserData }) => {
 
   let dispatch = useDispatch()
   const [isFollowed, setisFollowed] = useState(false)
+  const navigate= useNavigate()
+  const [isMesLoading, setisMesLoading] = useState(false)
+
+  const handelStartConvo = () =>{
+    setisMesLoading(true)
+    fetch(`${baseURL}/chat/addConversation`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userToken}`,
+      },
+      body: JSON.stringify({ senderId: userData?._id, receiverId: searchedUserData?._id})
+    })
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          setisMesLoading(false)
+          if (result.success) {
+            navigate("/chat")
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }
 
   useEffect(() => {
     if(userData){
@@ -56,8 +83,8 @@ const LeftSide = ({ searchedUserData }) => {
               </div>
             </li>
             <li>
-              <div title="" className="hre">
-                Message
+              <div onClick={handelStartConvo} title="" className="hre">
+                {isMesLoading?"Loading...": "Message"}
               </div>
             </li>
           </ul>

@@ -5,9 +5,10 @@ import { getSavedPosts } from "../../../redux/ApiCalls";
 import { baseURL } from "../../../api";
 import { getDateAndTime } from "../../../utils/timeCalculator";
 import { Link } from "react-router-dom";
+import Loader from "../../../utils/Loader";
 
 const Saved = ({ activeTab }) => {
-  let { savedPosts, userData } = useSelector((state) => state.user);
+  let { savedPosts, userData,loadings } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [postData, setpostData] = useState(null);
   const [activeState, setactiveState] = useState(0);
@@ -60,7 +61,8 @@ const Saved = ({ activeTab }) => {
             activeState === 0 || activeState === 1 ? "active" : ""
           }`}
         >
-          {postData &&
+          {loadings.savedPostsLoading && <Loader isSmall={true}/>}
+          {postData?.length>0 ?
             postData.map((blog, i) => {
               return (
                 <div key={i} className="post-bar no-margin">
@@ -169,7 +171,7 @@ const Saved = ({ activeTab }) => {
                   </div>
                 </div>
               );
-            })}
+            }):loadings.savedPostsLoading===false && <div style={{textAlign: "center"}}>No Saved Posts</div>}
         </div>
         <div
           className={`tab-pane fade show ${activeState === 1 ? "active" : ""}`}
@@ -177,13 +179,7 @@ const Saved = ({ activeTab }) => {
           role="tabpanel"
           aria-labelledby="mange-tab"
         >
-          {/* {userData &&
-            userData.saved.quesPosts.map((blog,i)=>{
-              return <UserPost key={i} post={blog} userData={userData} />;
-            })
-          } */}
         </div>
-
         <div
           className="tab-pane fade show"
           id="mange"
@@ -318,7 +314,6 @@ const Saved = ({ activeTab }) => {
             </div>
           </div>
         </div>
-
         <div
           className="tab-pane fade"
           id="saved"

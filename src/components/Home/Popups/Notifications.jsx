@@ -57,25 +57,27 @@ const Notifications = () => {
         </div>
       </div> */}
       <div className="nott-list">
-        {notifications && notifications.slice()
-          .sort((a, b) => b.createdAt - a.createdAt)
-          .slice(0, Math.min(6, notifications.length))
-          .map((n, i) => {
-            return (
-              // <Link key={i} to={`notification`}>
-                <div key={i} onClick={handelRedirect} className={`notfication-details ${n.isRead && "isRead"}`}>
+        {notifications?.length > 0 ? (
+          notifications
+            .slice()
+            .sort((a, b) => b.createdAt - a.createdAt)
+            .slice(0, Math.min(6, notifications.length))
+            .map((n, i) => {
+              return (
+                // <Link key={i} to={`notification`}>
+                <div
+                  key={i}
+                  onClick={handelRedirect}
+                  className={`notfication-details ${n.isRead && "isRead"}`}
+                >
                   <div className="noty-user-img">
-                    <img
-                      src={n.image ? n.image : "images/user40.png"}
-                      alt=""
-                    />
+                    <img src={n.image ? n.image : "images/user40.png"} alt="" />
                   </div>
                   <div className="notification-info">
                     <h3>
-                      <div title="">
-                        {n.content.split(" ")[0]}
-                      </div>{" "}
-                      {n.content.slice()
+                      <div title="">{n.content.split(" ")[0]}</div>{" "}
+                      {n.content
+                        .slice()
                         .split(" ")
                         .splice(1, n.content.split(" ").length)
                         .join(" ")}
@@ -83,15 +85,24 @@ const Notifications = () => {
                     <span>{getDateAndTime(n.createdAt)}</span>
                   </div>
                 </div>
-              // </Link>
-            );
-          })}
+                // </Link>
+              );
+            })
+        ) : (
+          <div
+            style={{ color: "black", margin: "15px 0px" }}
+          >
+            No new notifications
+          </div>
+        )}
 
-        <div onClick={handelRedirect} className="view-all-nots">
-          <Link to="/notification" title="">
-            View All Notification
-          </Link>
-        </div>
+        {notifications?.length > 0 && (
+          <div onClick={handelRedirect} className="view-all-nots">
+            <Link to="/notification" title="">
+              View All Notification
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

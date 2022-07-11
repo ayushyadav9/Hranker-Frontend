@@ -48,7 +48,7 @@ const RightSidebar = () => {
             <h3>Top Posts</h3>
           </div>
           <div className="jobs-list">
-            {topPosts &&
+            {topPosts?.length>0 ?
               topPosts.slice(0, Math.min(6, topPosts.length)).map((post, i) => {
                 return (
                   <div className="job-info">
@@ -94,7 +94,7 @@ const RightSidebar = () => {
                     </div>
                   </div>
                 );
-              })}
+              }):<div style={{textAlign: "center",fontWeight: "400",fontSize: "15px"}}>Intereact with the platform to get top posts</div>}
             {/* <div className="view-more">
               <Link to="/" title="">
                 View More

@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 import { useSelector,useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import Loader from "../../utils/Loader";
@@ -6,9 +6,11 @@ import {deletePost} from "../../redux/ApiCalls"
 import { getDateAndTime } from "../../utils/timeCalculator";
 import { baseURL } from "../../api";
 
-const UserPost = ({ post,postUserData }) => {
+const QuesPost = ({ post,postUserData }) => {
   let { userData, userToken } = useSelector((state) => state.user);
   const [showCommentSection, setShowCommentSection] = useState(false);
+  const [optionAnswered, setoptionAnswered] = useState(null);
+  const [correctOption, setcorrectOption] = useState(null)
   const [isOpen, setisOpen] = useState(false)
   const dispatch = useDispatch();
   const handelDeletePost = ()=>{
@@ -22,6 +24,34 @@ const UserPost = ({ post,postUserData }) => {
       dispatch(deletePost(data))
     }
   }
+  const calcPercentage = (id) => {
+    if (post.answeredBy.length > 0) {
+      let votecnts = post.options[id - 1].votes.length;
+      let pcnt = (votecnts / post.answeredBy.length) * 100.0;
+      return parseFloat(pcnt.toFixed(2));
+    } else {
+      return 0;
+    }
+  };
+
+  useEffect(() => {
+    if (post.options.length > 0) {
+    //   let t = post.answeredBy.filter((id) => id === userData._id);
+    //   console.log(t)
+      
+      let copt = post.options.filter((it) => it.isCorrect);
+      setcorrectOption(copt)
+      for (let i = 0; i < post.options.length; i++) {
+        let tmp = post.options[i].votes.filter((it) => it === userData._id);
+        if (tmp.length > 0) {
+          setoptionAnswered(post.options[i]);
+          break;
+        }
+      }
+    }
+   // eslint-disable-next-line
+  }, [post.answeredBy]);
+
   return (
     <>
       {postUserData && userData && post ? (
@@ -98,16 +128,39 @@ const UserPost = ({ post,postUserData }) => {
                 post.description
               )}
             </p>
-            <ul className="skill-tags">
-              {post.subjectTags?.map((item,i)=>{
-                return (<li key={i}>
-                  <div href="/" title="">
-                    {item}
-                  </div>
-                </li>)
-              })}
-            </ul>
           </div>
+          <div className="options-list">
+            <div className="answers">
+              {post.options.length > 0  
+                && post.options.map((opt, i) => {
+                    return (
+                      <div
+                        class={`answer ${
+                          opt.id === optionAnswered?.id ? "selected" : ""
+                        }`}
+                      >
+                        <span class="option-value">
+                          {String.fromCharCode(opt.id + 96) + ") "}
+                          {opt.value}
+                        </span>
+                        <span
+                          class="percentage-bar"
+                          style={{ width: calcPercentage(opt.id) + "%" }}
+                        ></span>
+                        <span class="percentage-value">
+                          {calcPercentage(opt.id) + "%"}
+                        </span>
+                      </div>
+                    );
+                  })
+                }
+            </div>
+          </div>
+          { post.dontKnow === false && correctOption && (
+            <div className="correct-ans">
+              Correct Answer: <span style={{fontWeight:700}}>{correctOption.map((com, i) => String.fromCharCode(com.id + 96) + ") " + com.value)}</span>
+            </div>
+          )}
           <div className="job-status-bar">
             <ul className="like-com">
               <li>
@@ -132,6 +185,12 @@ const UserPost = ({ post,postUserData }) => {
             <div href="/">
               <i className="fas fa-eye"></i>Views {post.viewers && post.viewers.length}
             </div>
+            {post.options.length > 0 && (
+              <div>
+                <i class="far fa-calendar-check"></i>Votes{" "}
+                {post.answeredBy ? post.answeredBy.length : 0}
+              </div>
+            )}
           </div>
 
           <div className="comment-section">
@@ -219,4 +278,4 @@ const UserPost = ({ post,postUserData }) => {
   );
 };
 
-export default UserPost;
+export default QuesPost;

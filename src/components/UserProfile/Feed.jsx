@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react';
-import UserPost from '../Profile/UserPost';
+import QuesPost from '../UserProfile/QuesPost';
+import UserPost from '../UserProfile/UserPost';
 
 const Feed = ({ userData, activeTab }) => {
   const [postData, setpostData] = useState(null)
@@ -21,7 +22,11 @@ const Feed = ({ userData, activeTab }) => {
       <div className="posts-section">
         {postData && postData.length > 0 ? (
           postData.map((post, i) => {
-            return <UserPost key={i} post={post} postUserData={userData} />;
+            return post.type === 1 ? (
+              <UserPost key={i} post={post} postUserData={userData} />
+            ) : (
+              <QuesPost key={i} post={post} postUserData={userData} />
+            );
           })
         ) : (
           <div className="noPost">No post yet</div>

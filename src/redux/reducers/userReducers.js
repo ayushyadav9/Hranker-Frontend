@@ -263,7 +263,7 @@ const userReducer = createSlice({
         state.loadings.deletePostLoading = false;
         state.error = true;
       })
-      //Delete Posts
+      //Get Ranks
       .addCase(getRanks.fulfilled, (state, action) => {
         state.loadings.getRanksLoading = false;
         if (action.payload.success === true) {

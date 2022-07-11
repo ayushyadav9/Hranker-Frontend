@@ -389,7 +389,7 @@ const Chat = () => {
                                       <img
                                         src={
                                           con.image
-                                            ? baseURL + "/file/" + con.image
+                                            ? baseURL + "/file/" + con?.image
                                             : "/images/luser.jpg"
                                         }
                                         alt=""
