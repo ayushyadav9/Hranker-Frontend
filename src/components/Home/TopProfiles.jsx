@@ -2,10 +2,10 @@ import React from "react";
 import { useEffect,useState } from "react";
 import { useSelector } from "react-redux";
 import {baseURL} from '../../api' 
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 import Slider from "react-slick";
 import { Link } from "react-router-dom";
-import Badge from '@mui/material/Badge';
 
 import CreateStory from "../Stories/Modals/createStoryModal";
 
@@ -133,29 +133,20 @@ const TopProfiles = () => {
           
           <div className="profiles-slider">
           <Slider {...settings}>
-              <Badge
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
-                }}
-                overlap="circular"
-                color="secondary"
-                badgeContent={'+'}
-                
-              >
+
     
-                    <div className="user-profy user-profy-create-story" onClick={async()=>await setModalState(true)} >
-                      {
-                        !user_image &&
-                        <img  src="/images/luser.jpg" alt="" />
-                      }
-                      {
-                        user_image &&
-                        <img  src={baseURL+"/file/"+user_image} alt="" />
-                      }
-                      
-                    </div>            
-              </Badge>
+            <div className="user-profy user-profy-create-story" onClick={async()=>await setModalState(true)} >
+              {
+                !user_image &&
+                <img  src="/images/luser.jpg" alt="" />
+              }
+              {
+                user_image &&
+                <img  src={baseURL+"/file/"+user_image} alt="" />
+              }
+              <span style={{position:'absolute',top:'38px',left:'40px'}}><AddCircleIcon color="primary" fontSize="small"/></span>
+            </div>            
+              
             
             
             {userLatestStory.map((story,i)=>{

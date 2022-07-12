@@ -4,7 +4,6 @@ import Avatar from '@mui/material/Avatar';
 import CropIcon from '@mui/icons-material/Crop';
 import Button from '@mui/material/Button';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
-// import { Divider } from "@material-ui/core";
 import { Dialog,DialogTitle,DialogContent,DialogActions } from "@mui/material";
 import CropEasy from "./imageCropModal";
 import { baseURL } from "../../../api";
@@ -34,7 +33,6 @@ function CreateStory({ modalState,setModalState,user_id,dataRecaller,setDataReca
     }
     
     const textAreaHandler=async (e)=>{
-        console.log(e.target.value);
         if(e.target.value===""){
             await setTextState(false);
         }
@@ -45,13 +43,11 @@ function CreateStory({ modalState,setModalState,user_id,dataRecaller,setDataReca
     }
     
     async function imageUploadHandler(e){
-        console.log(e.target.files[0]);
         const file=e.target.files[0];
         let encoded="";
         var reader = new FileReader();  
         reader.onloadend = async function() {  
             encoded = reader.result;  
-            // console.log(encoded);
             await setPhotoURL(encoded);
         }  
         reader.readAsDataURL(file);
@@ -64,10 +60,8 @@ function CreateStory({ modalState,setModalState,user_id,dataRecaller,setDataReca
     }
 
     const dataPostHandler =async (e)=>{
-        // console.log(e.target.imageInput);
         const text=document.getElementById("textHere").value;
         let type=2;
-        console.log(photoURL);
         if(imageUploadState){
             type=1;
         }
@@ -86,11 +80,9 @@ function CreateStory({ modalState,setModalState,user_id,dataRecaller,setDataReca
             })
         })
         .then((res)=>{
-            // console.log(res);
             return res.json();
         })
         .then((data)=>{
-            // console.log(data);
 
         })
         
@@ -100,7 +92,6 @@ function CreateStory({ modalState,setModalState,user_id,dataRecaller,setDataReca
     }
     
     useEffect(()=>{
-        // console.log("it ran");
         btnHandler();
         
     // eslint-disable-next-line react-hooks/exhaustive-deps
