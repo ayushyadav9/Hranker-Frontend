@@ -162,7 +162,7 @@ const Profile = ({ setisPopupOpen }) => {
                       </div>
                     </div>
                     <div className="col-lg-3">
-                      {/* <RightSide /> */}
+                      <RightSide />
                     </div>
                   </div>
                 </div>
