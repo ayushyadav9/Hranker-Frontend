@@ -3,7 +3,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import SingleStory from "../utilities/singleStory";
 
 
-const ViewersListShow= ({Viewers,openViewersList,setOpenViewersList})=>{
+const ViewersListShow= ({Viewers,openViewersList,setOpenViewersList,isPaused,setIsPaused})=>{
     const length=Viewers.length
     return(
         <Dialog
@@ -21,7 +21,7 @@ const ViewersListShow= ({Viewers,openViewersList,setOpenViewersList})=>{
                         <storng>
                             viewed by {length}
                         </storng>
-                        <Button style={{padding:"0",minWidth:"0"}} onClick={async()=> await setOpenViewersList(false)}>
+                        <Button style={{padding:"0",minWidth:"0"}} onClick={async()=> {await setOpenViewersList(false);await setIsPaused(false)}}>
 
                                 <CloseIcon/>
                         </Button>

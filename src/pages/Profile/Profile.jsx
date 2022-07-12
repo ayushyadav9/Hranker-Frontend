@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { baseURL } from "../../api";
 import LeftSide from "../../components/Profile/LeftSide";
-import RightSide from "../../components/Profile/RightSide";
+// import RightSide from "../../components/Profile/RightSide";
 import Bids from "../../components/Profile/Tabs/Bids";
 import Feed from "../../components/Profile/Tabs/Feed";
 import Info from "../../components/Profile/Tabs/Info";
@@ -97,7 +97,7 @@ const Profile = ({ setisPopupOpen }) => {
               src="/images/banner.jpg"
               alt=""
             />
-            <div className="add-pic-box">
+            {/* <div className="add-pic-box">
               <div className="container">
                 <div className="row no-gutters">
                   <div className="col-lg-12 col-sm-12">
@@ -110,7 +110,7 @@ const Profile = ({ setisPopupOpen }) => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </section>
           <main>
             <div className="main-section">
@@ -212,7 +212,7 @@ const Profile = ({ setisPopupOpen }) => {
                       </div>
                     </div>
                     <div className="col-lg-3">
-                      <RightSide />
+                      {/* <RightSide /> */}
                     </div>
                   </div>
                 </div>

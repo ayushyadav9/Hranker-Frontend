@@ -20,7 +20,7 @@ import {
     RedditIcon
 } from "react-share";
 
-const ShareModal=({shareModal,setShareModal})=>{
+const ShareModal=({shareModal,setShareModal,isPaused,setIsPaused})=>{
 
     const myStyle={
         paddingRight:"5px"
@@ -42,7 +42,7 @@ const ShareModal=({shareModal,setShareModal})=>{
                         <strong>
                             Share Your Story
                         </strong>
-                        <Button style={{padding:"0",minWidth:"0"}} onClick={async()=> await setShareModal(false)}>
+                        <Button style={{padding:"0",minWidth:"0"}} onClick={async()=> {await setShareModal(false);await setIsPaused(false)}}>
 
                             <CloseIcon/>
                         </Button>

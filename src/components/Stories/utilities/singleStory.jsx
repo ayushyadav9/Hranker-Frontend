@@ -6,7 +6,6 @@ const timeshower =require('./timeshower');
 
 
 const SingleStory =({profilePicSrc,username,createdAt})=>{
-    // console.log(story);
     
     return (
         <div className="single-story">

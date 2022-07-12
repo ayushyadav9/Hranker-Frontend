@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import Sidebar from '../../components/Stories/SIdebar/Sidebar';
 import ViewStory from '../../components/Stories/ViewStory/ViewStory';
 import { baseURL } from "../../api";
+import Loader from "../../utils/Loader";
 
 import './Story.css';
 
@@ -14,12 +15,12 @@ function StoryContent() {
     const { userData } = useSelector((state) => state.user);
 
     const user_id = userData?._id;
+    const[loaderState,setLoaderState]=useState(true);
     const [dataRecaller, setDataRecaller] = useState(false);
 
     useEffect(() => {
         if(user_id){
 
-            // console.log("use effect");
             fetch(baseURL + "/stories", {
                 method: "POST",
                 headers: {
@@ -36,6 +37,7 @@ function StoryContent() {
                 .then(async(data) => {
     
                     await setStories(data.data);
+                    await setLoaderState(false)
     
                 })
         }
@@ -46,12 +48,20 @@ function StoryContent() {
 
 
         <div className="App">
-            <Sidebar
-                stories={stories}
-                user_id={user_id}
-                dataRecaller={dataRecaller}
-                setDataRecaller={setDataRecaller}
-            />
+            {loaderState && <Loader isSmall={true}/>}
+
+            
+            {
+                !loaderState &&
+                <Sidebar
+                    stories={stories}
+                    user_id={user_id}
+                    dataRecaller={dataRecaller}
+                    setDataRecaller={setDataRecaller}
+                />
+            }    
+
+            
             {
                 stories && 
                 <ViewStory

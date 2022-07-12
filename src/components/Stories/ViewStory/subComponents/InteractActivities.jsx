@@ -28,7 +28,9 @@ const InteractActivities =(
         dataRecaller,
         setDataRecaller,
         commentsection,
-        setCommentSection
+        setCommentSection,
+        isPaused,
+        setIsPaused
     }
 
     )=>{
@@ -37,12 +39,13 @@ const InteractActivities =(
     const[likeActiveStatus,setLikeActiveStatus]=useState(likestate);
     const[shareModal,setShareModal]=useState(false);
     const[openViewersList,setOpenViewersList]=useState(false);
-    // console.log(likeActiveStatus);
 
 
 
     const commentHandler=async()=>{
-        await setCommentSection((commentSection)=>!commentSection);
+        await setIsPaused(!isPaused);
+        await setCommentSection((commentsection)=>!commentsection);
+        console.log('isPausedState',isPaused)
     }
 
 
@@ -50,7 +53,6 @@ const InteractActivities =(
 
 
     const deletestory=async()=>{
-        // console.log("delete button")
         await fetch(baseURL+"/stories/deletestory",{
             method:"POST",
             headers:{
@@ -61,7 +63,6 @@ const InteractActivities =(
             })
         })
         .then((res)=>{
-            // console.log(res);
             return res.json();
         })
         await setDataRecaller(!dataRecaller);
@@ -82,11 +83,9 @@ const InteractActivities =(
             })
             })
             .then((res)=>{
-                // console.log(res);
                 return res.json();
             })
 
-            // console.log(updatedStorydata,'9955656');
             await setViewStoryData(updatedStorydata.updateStorydata);
 
     }
@@ -103,14 +102,12 @@ const InteractActivities =(
             })
             })
             .then((res)=>{
-                // console.log(res);
                 return res.json();
             })
             await setViewStoryData(updatedStorydata.updatedStorydata);
     }
 
     useEffect(()=>{
-        // console.log('use Effect in interact activities');
         setLikeActiveStatus(viewStoryData.likers.includes(user_id));
     },[viewStoryData,user_id])
 
@@ -135,7 +132,7 @@ const InteractActivities =(
                         <button 
                             disabled={user_id !== viewStoryData.user._id} 
                             
-                            onClick={async()=> await setOpenViewersList(true)}
+                            onClick={async()=> {await setOpenViewersList(true);await setIsPaused(true)}}
                         >
                         <VisibilityIcon sx={{fontSize:"150%"}}/> 
                         </button>
@@ -173,14 +170,14 @@ const InteractActivities =(
             </div>
             <div>
 
-                <button onClick={async()=> await setShareModal(true)}>
+                <button onClick={async()=> {await setShareModal(true);await setIsPaused((isPaused)=>!isPaused);}}>
                     <ShareIcon sx={{fontSize:"150%"}}/>
 
                 </button>
             </div>
-            {commentsection && <CommentSection  viewStoryData={viewStoryData} setViewStoryData={setViewStoryData} setCommentSection={setCommentSection}/>}
-            {shareModal && <ShareModal shareModal={shareModal} setShareModal={setShareModal}/>}
-            {openViewersList && <ViewersListShow Viewers={viewStoryData.viewers} openViewersList={openViewersList} setOpenViewersList={setOpenViewersList}/>}
+            {commentsection && <CommentSection  viewStoryData={viewStoryData} setViewStoryData={setViewStoryData} setCommentSection={setCommentSection} isPaused={isPaused} setIsPaused={setIsPaused}/>}
+            {shareModal && <ShareModal shareModal={shareModal} setShareModal={setShareModal} isPaused={isPaused} setIsPaused={setIsPaused}/>}
+            {openViewersList && <ViewersListShow Viewers={viewStoryData.viewers} openViewersList={openViewersList} setOpenViewersList={setOpenViewersList} isPaused={isPaused} setIsPaused={setIsPaused}/>}
         </div>
     )
 }

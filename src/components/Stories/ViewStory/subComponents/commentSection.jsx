@@ -14,14 +14,13 @@ import { deepPurple } from '@mui/material/colors';
 const timeshower =require('../../utilities/timeshower');
 // import SingleComment from './SingleComment';
 
-const CommentSection = ({ viewStoryData, setViewStoryData, setCommentSection }) => {
+const CommentSection = ({ viewStoryData, setViewStoryData, setCommentSection,isPaused,setIsPaused }) => {
 
     const { userData } = useSelector((state) => state.user);
 
 
     const [comment, setComment] = useState("");
     useEffect(() => {
-        // console.log("use effect in comment")
         document.getElementById('comment').value = "";
         setComment("");
 
@@ -30,7 +29,6 @@ const CommentSection = ({ viewStoryData, setViewStoryData, setCommentSection }) 
 
     const textAreaHandler = async (e) => {
 
-        // console.log(e.target.value);
         await setComment(e.target.value);
     }
 
@@ -47,15 +45,12 @@ const CommentSection = ({ viewStoryData, setViewStoryData, setCommentSection }) 
             })
         })
             .then((res) => {
-                console.log(res);
                 return res.json();
             })
             .then((data) => {
-                // console.log(data);
                 return data;
 
             })
-        // console.log(updatedStoryData.updatedStoryData);
         updatedStoryData = updatedStoryData.updatedStoryData;
         await setViewStoryData(updatedStoryData);
     }
@@ -67,7 +62,7 @@ const CommentSection = ({ viewStoryData, setViewStoryData, setCommentSection }) 
                     <div className="repliesHeader">
 
                         <h2>Replies</h2>
-                        <button onClick={() => setCommentSection(false)}>
+                        <button onClick={async() => {await setCommentSection(false);await setIsPaused(false)}}>
                             <CloseIcon fontSize='medium' />
                         </button>
                     </div>

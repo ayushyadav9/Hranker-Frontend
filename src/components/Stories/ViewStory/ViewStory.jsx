@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import ClearIcon from "@mui/icons-material/Clear";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
 import { Button } from "@mui/material";
+import Loader from "../../../utils/Loader";
 
 import InteractActivities from "./subComponents/InteractActivities";
-// import Textdisplay1 from "./subComponents/textdisplay1";
-// import Textdisplay2 from "./subComponents/textdisplay2";
 import { Textdisplay1,Textdisplay2 } from "./subComponents/textdisplay";
 import { baseURL } from "../../../api";
 
@@ -18,18 +20,19 @@ import "../utilities/singleStory.css";
 
 const timeshower = require("../utilities/timeshower");
 
+
+
 const ViewStory = ({ user_id, dataRecaller, setDataRecaller }) => {
   let { id } = useParams();
-  // console.log(id,"id in viewstory");
-
   const [commentsection, setCommentSection] = useState(false);
   const [viewStoryData, setViewStoryData] = useState(null);
   const [storyIdArray, setstoryIdArray] = useState(null);
-  // console.log("viewstory window opened");
-
+  const [loaderState,setLoaderState]=useState(true);
+  
   useEffect(() => {
-    // console.log("useeffect in viewStory");
+
     const getsingleStoryViewData = async (id) => {
+        await setLoaderState(true);
         await fetch(baseURL + "/stories/getstorydata", {
         method: "POST",
         headers: {
@@ -46,6 +49,7 @@ const ViewStory = ({ user_id, dataRecaller, setDataRecaller }) => {
         .then(async (data) => {
           await setViewStoryData(data.data);
           await setstoryIdArray(data.storyIdArray);
+          await setLoaderState(false);
           return data.data;
         });
 
@@ -57,8 +61,9 @@ const ViewStory = ({ user_id, dataRecaller, setDataRecaller }) => {
 
   return (
     <div className={"view-story " + (commentsection ? "shrink" : "")}>
-      {!viewStoryData && <NotFoundPage />}
-      {viewStoryData && (
+      {!viewStoryData && !loaderState && <NotFoundPage />}
+      {loaderState && <Loader isSmall={true}/>}
+      {viewStoryData && !loaderState && (
         <ViewExistingStory
           viewStoryData={viewStoryData}
           setViewStoryData={setViewStoryData}
@@ -75,6 +80,13 @@ const ViewStory = ({ user_id, dataRecaller, setDataRecaller }) => {
 };
 export default ViewStory;
 
+
+
+
+
+
+
+
 const ViewExistingStory = ({
   viewStoryData,
   setViewStoryData,
@@ -86,6 +98,10 @@ const ViewExistingStory = ({
   setCommentSection,
 }) => {
   const curr_index = storyIdArray.indexOf(viewStoryData._id);
+  const [width,setWidth]=useState(0);
+  let navigate= useNavigate();
+  const[isPaused,setIsPaused]=useState(false);
+  
   let prev_id = null;
   let next_id = null;
   if (curr_index > 0) {
@@ -94,13 +110,40 @@ const ViewExistingStory = ({
   if (curr_index + 1 < storyIdArray.length) {
     next_id = storyIdArray[curr_index + 1];
   }
+
+
+  
+  useEffect(()=>{
+    let checkwidth=width;
+    const updater=()=>{
+      if(checkwidth>=100){
+        if(!next_id){
+          navigate('/stories/');
+        }
+        else{
+          navigate('/stories/'+next_id)
+        }
+
+        return () => clearInterval(interval);
+      }
+      else{
+        if(!isPaused){
+          checkwidth+=0.05;
+          setWidth(width=>width+0.05);
+        }
+      }
+    }
+    let interval=setInterval(updater,10)
+    return ()=>clearInterval(interval);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[isPaused])
+
   const [imgsrc, setImgsrc] = useState("");
+  const [loaderState,setLoaderState]=useState(viewStoryData.type===1);
 
   useEffect(() => {
-    // console.log("use effect in existing")
     setImgsrc("");
     if (viewStoryData.type === 1) {
-      // console.log("it ran in viewStory type1")
       let img_id = viewStoryData.image;
       fetch(baseURL + "/stories/getimage", {
         method: "POST",
@@ -116,17 +159,25 @@ const ViewExistingStory = ({
         })
         .then(async (data) => {
           await setImgsrc(data.imageencoded);
+          await setLoaderState(false);
         });
     }
   }, [viewStoryData._id,viewStoryData.image,viewStoryData.type]);
 
-  // console.log("in viewExisting story",imgsrc)
+
 
   return (
     <>
-      <div className="view-story-image-div">
-        {viewStoryData.type === 1 && <img src={imgsrc} alt="" style={{}} />}
-        {viewStoryData.type === 1 && <Textdisplay1 text={viewStoryData.text} />}
+      <div className="progress-bar">
+        <div className="progress-maker" style={{"width":`${width}%`}}>
+
+        </div>
+      </div>
+      <div className="view-story-image-div" onClick={async()=>setIsPaused(!isPaused)}>
+        
+        {loaderState && <Loader isSmall={true}/>}
+        {viewStoryData.type === 1 && !loaderState && <img src={imgsrc} alt="" style={{}} />}
+        {viewStoryData.type === 1 && !loaderState && <Textdisplay1 text={viewStoryData.text} />}
         {viewStoryData.type === 2 && <Textdisplay2 text={viewStoryData.text} />}
       </div>
 
@@ -138,7 +189,9 @@ const ViewExistingStory = ({
         setDataRecaller={setDataRecaller}
         commentsection={commentsection}
         setCommentSection={setCommentSection}
-      />
+        isPaused={isPaused}
+        setIsPaused={setIsPaused}
+        />
 
       <div className="view-story-top-content">
         <div className="single-story no-hover">
@@ -176,6 +229,9 @@ const ViewExistingStory = ({
         </div>
 
         <div className="cross-btn">
+          <button onClick={async()=>await setIsPaused(!isPaused)}>
+                {isPaused ?(<PlayArrowIcon/>):(<PauseIcon/>)}
+          </button>
           <button>
             <Link to="/stories">
               <ClearIcon />
@@ -221,16 +277,21 @@ const ViewExistingStory = ({
   );
 };
 
+
+
 const NotFoundPage = () => {
   return (
     <>
       <div className="not-found-wrapper">
         <h1>Page Not Found</h1>
         <p class="message">Page you are looking is either Deleted or Expired</p>
-        <Link to="/">
+        <Link to="/stories">
           <Button type="Contained">See Other Stories</Button>
         </Link>
       </div>
     </>
   );
 };
+
+
+

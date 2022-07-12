@@ -12,7 +12,6 @@ import './sidebar.css';
 
 
 
-
 const Sidebar = 
     (
         {   stories,
