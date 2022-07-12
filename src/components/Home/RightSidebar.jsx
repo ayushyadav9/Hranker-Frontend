@@ -42,24 +42,13 @@ const RightSidebar = () => {
           <img src="images/logonav.png" alt="" />
           <h3>When community becomes unity</h3>
           <span>Be a part of High Ranker Community</span>
-          <div className="sign_link">
-            <h3>
-              <a href="/sign-up" title="">
-                Sign up
-              </a>
-            </h3>
-            <Link to="/" title="">
-              Learn More
-            </Link>
-          </div>
         </div>
         <div className="widget widget-jobs">
           <div className="sd-title">
             <h3>Top Posts</h3>
-            <i className="la la-ellipsis-v"></i>
           </div>
           <div className="jobs-list">
-            {topPosts &&
+            {topPosts?.length>0 ?
               topPosts.slice(0, Math.min(6, topPosts.length)).map((post, i) => {
                 return (
                   <div className="job-info">
@@ -105,7 +94,7 @@ const RightSidebar = () => {
                     </div>
                   </div>
                 );
-              })}
+              }):<div style={{textAlign: "center",fontWeight: "400",fontSize: "15px"}}>Intereact with the platform to get top posts</div>}
             {/* <div className="view-more">
               <Link to="/" title="">
                 View More

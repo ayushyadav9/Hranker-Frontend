@@ -133,73 +133,7 @@ const Notification = () => {
                           })}
                     </div>
                   </div>
-                  <div className="col-lg-4">
-                    <div className="widget widget-user">
-                      <h3 className="title-wd">Top User of the Week</h3>
-                      <ul>
-                        <li>
-                          <div className="usr-msg-details">
-                            <div className="usr-ms-img">
-                              <img src="images/resources/m-img1.png" alt="" />
-                            </div>
-                            <div className="usr-mg-info">
-                              <h3>Jessica William</h3>
-                              <p>Graphic Designer </p>
-                            </div>
-                          </div>
-                          <span>
-                            <img src="images/price1.png" alt="/" />
-                            1185
-                          </span>
-                        </li>
-                        <li>
-                          <div className="usr-msg-details">
-                            <div className="usr-ms-img">
-                              <img src="images/resources/m-img2.png" alt="" />
-                            </div>
-                            <div className="usr-mg-info">
-                              <h3>John Doe</h3>
-                              <p>PHP Developer</p>
-                            </div>
-                          </div>
-                          <span>
-                            <img src="images/price2.png" alt="" />
-                            1165
-                          </span>
-                        </li>
-                        <li>
-                          <div className="usr-msg-details">
-                            <div className="usr-ms-img">
-                              <img src="images/resources/m-img3.png" alt="" />
-                            </div>
-                            <div className="usr-mg-info">
-                              <h3>Poonam</h3>
-                              <p>Wordpress Developer </p>
-                            </div>
-                          </div>
-                          <span>
-                            <img src="images/price3.png" alt="" />
-                            1120
-                          </span>
-                        </li>
-                        <li>
-                          <div className="usr-msg-details">
-                            <div className="usr-ms-img">
-                              <img src="images/resources/m-img4.png" alt="" />
-                            </div>
-                            <div className="usr-mg-info">
-                              <h3>Bill Gates</h3>
-                              <p>C & C++ Developer </p>
-                            </div>
-                          </div>
-                          <span>
-                            <img src="images/price4.png" alt="" />
-                            1009
-                          </span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
+                  
                 </div>
               </div>
             </div>

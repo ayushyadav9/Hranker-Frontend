@@ -156,6 +156,18 @@ export const getLeaderboard = createAsyncThunk("users/getLeaderboard", async (to
   return res;
 });
 
+export const getRanks = createAsyncThunk("users/getRanks", async (token) => {
+  let result = await fetch(`${baseURL}/getRanks`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  let res = await result.json();
+  return res;
+});
+
 export const handelVote = createAsyncThunk("post/voteAnswer", async (data) => {
   let result = await fetch(`${baseURL}/post/voteAnswer`, {
     method: "POST",

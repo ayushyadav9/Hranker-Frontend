@@ -1,32 +1,26 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { baseURL } from "../../api";
 import { getDateAndTime } from "../../utils/timeCalculator";
 import Loader from "../../utils/Loader";
 import { useDispatch, useSelector } from "react-redux";
-import {addComment, addToSave, getNotifications, toggleLike,} from "../../redux/ApiCalls";
+import {
+  addComment,
+  addToSave,
+  getNotifications,
+  toggleLike,
+} from "../../redux/ApiCalls";
 import { Link } from "react-router-dom";
-
-
 
 const Post = ({ post, userData }) => {
   const dispatch = useDispatch();
   const { userToken } = useSelector((state) => state.user);
-  const optionRef = useRef()
   const [commentValue, setCommentValue] = useState("");
   const [likeLoading, setlikeLoading] = useState(false);
   const [showCommentSection, setShowCommentSection] = useState(false);
-  const [isOptionsOpen, setIsOptionsOpen] = useState(false);
   const [isComLoader, setisComLoader] = useState(false);
   const [saveLoader, setsaveLoader] = useState(false);
 
-  useEffect(() => {
-    document.body.addEventListener('click',(e)=>{
-      if(!optionRef.current.contains(e.target)){
-        setIsOptionsOpen(false)
-      }
-    })
-  }, [])
-  
+
   const handelAddComment = async (e) => {
     e.preventDefault();
     setisComLoader(true);
@@ -34,9 +28,9 @@ const Post = ({ post, userData }) => {
       token: userToken,
       postId: post._id,
       commentValue: commentValue,
-      postType: 1
-    }
-    await dispatch(addComment(data))
+      postType: 1,
+    };
+    await dispatch(addComment(data));
     setisComLoader(false);
     setCommentValue("");
   };
@@ -46,7 +40,7 @@ const Post = ({ post, userData }) => {
     let data = {
       token: localStorage.getItem("userJWT"),
       postId: post._id,
-      postType: 1
+      postType: 1,
     };
     setlikeLoading(true);
     await dispatch(toggleLike(data));
@@ -58,7 +52,7 @@ const Post = ({ post, userData }) => {
     let data = {
       token: localStorage.getItem("userJWT"),
       postId: post._id,
-      postType: 1
+      postType: 1,
     };
     setsaveLoader(true);
     await dispatch(addToSave(data));
@@ -70,84 +64,69 @@ const Post = ({ post, userData }) => {
       <div className="posty">
         <div className="post-bar no-margin">
           <div className="post_topbar">
-            <div className="usy-dt">
+            <div className="usy-dt" style={{ marginBottom: "20px" }}>
               {post.user.image ? (
-                <img className="postUserDP" src={baseURL + "/file/" + post.user.image} alt=""/>
+                <img
+                  className="postUserDP"
+                  src={baseURL + "/file/" + post.user.image}
+                  alt=""
+                />
               ) : (
                 <div className="user-dummy">{post.user.name.charAt(0)}</div>
               )}
-              {/*  */}
               <div className="usy-name">
-                <Link to={`/user-profile/${post.user.username}`} target="_blank">
+                <Link
+                  to={`/user-profile/${post.user.username}`}
+                  target="_blank"
+                >
                   <h3>{post.user.name}</h3>
                 </Link>
                 <span>
                   <img src="images/clock.svg" alt="" />
                   {getDateAndTime(post.createdAt)} <span>•</span>
-                  {post.subjectTags.map((sub,i)=>{
-                    return <span>{sub} {post.subjectTags.length===i+1?"":"|"}</span>
+                  {post.subjectTags.map((sub, i) => {
+                    return (
+                      <span>
+                        {sub} {post.subjectTags.length === i + 1 ? "" : "|"}
+                      </span>
+                    );
                   })}
                 </span>
               </div>
             </div>
             <div className="ed-opts">
-              <div
-                ref={optionRef}
-                onClick={() => setIsOptionsOpen((pre) => !pre)}
-                title=""
-                className="ed-opts-open"
-              >
-                <i className="la la-ellipsis-v"></i>
-              </div>
-              <ul className={`ed-options ${isOptionsOpen ? "active" : ""}`}>
+              <ul className="bk-links">
                 <li>
-                  <div title="">Edit Post</div>
+                  <Link to={`/post/${post.slug}`} target="_blank">
+                    <div className="open-newtab">
+                      <img src="/images/open.svg" alt=""></img>
+                    </div>
+                  </Link>
                 </li>
                 <li>
-                  <div title="">Unsaved</div>
-                </li>
-                <li>
-                  <div title="">Unbid</div>
-                </li>
-                <li>
-                  <div title="">Close</div>
-                </li>
-                <li>
-                  <div title="">Hide</div>
+                  <div onClick={handelSavePost} title="">
+                    {userData.saved.blogPosts.filter((i) => i === post._id).length > 0?
+                      <div className="save">
+                        {saveLoader ? (
+                          <Loader isSmall={true} />
+                        ) : (
+                          <i className="la la-check"></i>
+                        )}
+                      </div>:
+                      <div className="save2">
+                        {saveLoader ? (
+                          <Loader isSmall={true} />
+                        ) : (
+                          <i className="la la-bookmark"></i>
+                        )}
+                      </div>
+                    }
+                  </div>
                 </li>
               </ul>
             </div>
           </div>
-          <div className="epi-sec">
-            
-            <ul className="bk-links">
-              <li>
-                <Link to={`/post/${post.slug}`} target="_blank">
-                  <div className="open-newtab">
-                    <img src="/images/open.svg" alt=""></img>
-                  </div>
-                </Link>
-              </li>
-              <li>
-                <div onClick={handelSavePost} title="">
-                  <div className="save">
-                    {saveLoader ? (
-                      <Loader isSmall={true} />
-                    ) : (
-                      <i
-                        className={`${
-                          userData.saved.blogPosts.filter((i) => i === post._id)
-                            .length > 0
-                            ? "la la-check"
-                            : "la la-bookmark"
-                        }`}
-                      ></i>
-                    )}
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
+          <div className="epi-sec"></div>
           <div className="job_descp">
             <ul className="job-dt">
               {post.examTags.map((tag, i) => {
@@ -160,32 +139,26 @@ const Post = ({ post, userData }) => {
             </ul>
             <h3>{post.title}</h3>
             {post.image && (
-              <div style={{ justifyContent: "center",display: "flex"}}>
-              <img src={post.image} alt=""></img>
+              <div style={{ justifyContent: "center", display: "flex" }}>
+                <img src={post.image} alt=""></img>
               </div>
             )}
-              {/* {post.image && <img src={post.image} alt=""></img>} */}
+            {/* {post.image && <img src={post.image} alt=""></img>} */}
             <p>
-            {post.description.split(" ").length > 26 ? (
+              {post.description.split(" ").length > 26 ? (
                 <>
                   {post.description.split(" ").slice(0, 26).join(" ") + " ...."}
-                  <span> <Link to={`/post/${post.slug}`} target="_blank">Read more</Link></span>
+                  <span>
+                    {" "}
+                    <Link to={`/post/${post.slug}`} target="_blank">
+                      Read more
+                    </Link>
+                  </span>
                 </>
               ) : (
                 post.description
-            )}
+              )}
             </p>
-
-            {/* <ul className="skill-tags">
-            {post.subjectTags.map((sub,i)=>{
-                return(
-                  <li>
-                  <div title="">
-                    {sub}
-                  </div>
-                </li>
-                )})}
-              </ul> */}
           </div>
 
           <div className="job-status-bar">

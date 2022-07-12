@@ -357,11 +357,11 @@ const Chat = () => {
                           <img src="/images/ser.svg" alt=""></img>
                         </div>
                       </li>
-                      <li>
+                      {/* <li>
                         <div title="">
                           <i class="fa fa-ellipsis-v"></i>
                         </div>
-                      </li>
+                      </li> */}
                     </ul>
                   </div>
                   <div class="messages-list">
@@ -389,7 +389,7 @@ const Chat = () => {
                                       <img
                                         src={
                                           con.image
-                                            ? baseURL + "/file/" + con.image
+                                            ? baseURL + "/file/" + con?.image
                                             : "/images/luser.jpg"
                                         }
                                         alt=""
@@ -456,9 +456,9 @@ const Chat = () => {
                           )}
                         </div>
                       </div>
-                      <a href="/" title="">
+                      {/* <a href="/" title="">
                         <i class="fa fa-ellipsis-v"></i>
-                      </a>
+                      </a> */}
                     </div>
                     <div class="messages-line">
                       {messageLoader ? (

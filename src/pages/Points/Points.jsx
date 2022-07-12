@@ -16,7 +16,7 @@ const Points = () => {
 
   return (
     <>
-      <div style={{ minHeight: "78vh" }}>
+      <div style={{ minHeight: "85vh" }}>
         <div className="points-heading">Your Point Activity</div>
         <div className="total-points">{points} Points</div>
         <hr className="hr dotted" />

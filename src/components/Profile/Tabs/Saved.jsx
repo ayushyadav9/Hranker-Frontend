@@ -4,11 +4,13 @@ import { useDispatch } from "react-redux";
 import { getSavedPosts } from "../../../redux/ApiCalls";
 import { baseURL } from "../../../api";
 import { getDateAndTime } from "../../../utils/timeCalculator";
+import { Link } from "react-router-dom";
+import Loader from "../../../utils/Loader";
 
 const Saved = ({ activeTab }) => {
-  let { savedPosts, userData } = useSelector((state) => state.user);
+  let { savedPosts, userData,loadings } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const [postData, setpostData] = useState(null)
+  const [postData, setpostData] = useState(null);
   const [activeState, setactiveState] = useState(0);
 
   useEffect(() => {
@@ -17,24 +19,22 @@ const Saved = ({ activeTab }) => {
       dispatch(getSavedPosts(token));
     }
     // eslint-disable-next-line
-  }, [])
+  }, []);
 
   useEffect(() => {
-    if(savedPosts){
-      if(activeState===0){
-        setpostData(savedPosts.blogPosts)
-      }else if(activeState===1){
-        console.log(savedPosts.quesPosts)
-        setpostData(savedPosts.quesPosts)
+    if (savedPosts) {
+      if (activeState === 0) {
+        setpostData(savedPosts.blogPosts);
+      } else if (activeState === 1) {
+        console.log(savedPosts.quesPosts);
+        setpostData(savedPosts.quesPosts);
       }
     }
-  }, [savedPosts, activeState])
-
-  
+  }, [savedPosts, activeState]);
 
   return (
     <div
-      className={`product-feed-tab ${activeTab === 2 ? "current":""}`}
+      className={`product-feed-tab ${activeTab === 2 ? "current" : ""}`}
       id="saved-jobs"
     >
       <ul className="nav nav-tabs" id="myTab" role="tablist">
@@ -56,83 +56,61 @@ const Saved = ({ activeTab }) => {
         </li>
       </ul>
       <div className="tab-content" id="myTabContent">
-        <div className={`tab-pane fade show ${activeState === 0|| activeState === 1? "active" : ""}`}>
-          {postData &&
+        <div
+          className={`tab-pane fade show ${
+            activeState === 0 || activeState === 1 ? "active" : ""
+          }`}
+        >
+          {loadings.savedPostsLoading && <Loader isSmall={true}/>}
+          {postData?.length>0 ?
             postData.map((blog, i) => {
               return (
                 <div key={i} className="post-bar no-margin">
                   <div className="post_topbar">
-                    <div className="usy-dt">
+                    <div className="usy-dt" style={{ marginBottom: "20px" }}>
                       {blog.user.image ? (
-                        <img className="postUserDP"src={baseURL + "/file/" + blog.user.image} alt=""/>
+                        <img
+                          className="postUserDP"
+                          src={baseURL + "/file/" + blog.user.image}
+                          alt=""
+                        />
                       ) : (
                         <div className="user-dummy">
                           {blog.user.name.charAt(0)}
                         </div>
                       )}
                       <div className="usy-name">
-                        <h3>{blog.user.name}</h3>
+                        <Link
+                          to={`/user-profile/${blog.user.username}`}
+                          target="_blank"
+                        >
+                          <h3>{blog.user.name}</h3>
+                        </Link>
                         <span>
                           <img src="images/clock.svg" alt="" />
-                          {getDateAndTime(blog.createdAt)}
+                          {getDateAndTime(blog.createdAt)} <span>•</span>
+                          {blog.subjectTags.map((sub, i) => {
+                            return (
+                              <span>
+                                {sub}{" "}
+                                {blog.subjectTags.length === i + 1 ? "" : "|"}
+                              </span>
+                            );
+                          })}
                         </span>
                       </div>
                     </div>
                     <div className="ed-opts">
-                      <div
-                        // onClick={() => setIsOptionsOpen((pre) => !pre)}
-                        title=""
-                        className="ed-opts-open"
-                      >
-                        <i className="la la-ellipsis-v"></i>
-                      </div>
-                      <ul className={`ed-options`}>
+                      <ul className="bk-links">
                         <li>
-                          <a href="/" title="">
-                            Edit Post
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/" title="">
-                            Unsaved
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/" title="">
-                            Unbid
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/" title="">
-                            Close
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/" title="">
-                            Hide
-                          </a>
+                          <Link to={`/${blog.type===1?"post":"quesPost"}/${blog.slug}`} target="_blank">
+                            <div className="open-newtab">
+                              <img src="/images/open.svg" alt=""></img>
+                            </div>
+                          </Link>
                         </li>
                       </ul>
                     </div>
-                  </div>
-                  <div className="epi-sec">
-                    <ul className="descp">
-                      <li>
-                        <img src="images/icon8.png" alt="" />
-                        <span>SSC Student</span>
-                      </li>
-                      <li>
-                        <img src="images/icon9.png" alt="" />
-                        <span>India</span>
-                      </li>
-                    </ul>
-                    <ul className="bk-links">
-                      <li>
-                        <a href="/" title="">
-                          <i className="la la-check"></i>
-                        </a>
-                      </li>
-                    </ul>
                   </div>
                   <div className="job_descp">
                     <h3>{blog.title}</h3>
@@ -140,21 +118,19 @@ const Saved = ({ activeTab }) => {
                       {blog.examTags.map((tag, i) => {
                         return (
                           <li key={i}>
-                            <div href="/" title="">
-                              {tag}
-                            </div>
+                            <div title="">{tag}</div>
                           </li>
                         );
                       })}
                       {blog.image && <img src={blog.image} alt=""></img>}
                     </ul>
                     <p>
-                      {blog.description.length > 25 ? (
+                      {blog.description.split(" ").length > 25 ? (
                         <>
                           {blog.description.split(" ").slice(0, 25).join(" ") +
                             "..."}
                           <a href="/" title="">
-                            view more
+                            View more
                           </a>
                         </>
                       ) : (
@@ -175,7 +151,7 @@ const Saved = ({ activeTab }) => {
                           // onClick={handelToggleLike}
                         >
                           {/* {isLoader?<Loader isSmall={true} />:<> */}
-                          <i className="fas fa-heart"></i> Like{" "}
+                          <i className="fas fa-heart"></i>{" "}
                           {blog.likers ? blog.likers.length : 0}
                         </div>
                       </li>
@@ -184,8 +160,8 @@ const Saved = ({ activeTab }) => {
                           className="com active"
                           // onClick={() => setShowCommentSection((prev) => !prev)}
                         >
-                          <i className="fas fa-comment-alt "></i>
-                          Comment {blog.comments.length}
+                          <i className="fas fa-comment-alt "></i>{" "}
+                          {blog.comments.length}
                         </div>
                       </li>
                     </ul>
@@ -195,7 +171,7 @@ const Saved = ({ activeTab }) => {
                   </div>
                 </div>
               );
-            })}
+            }):loadings.savedPostsLoading===false && <div style={{textAlign: "center"}}>No Saved Posts</div>}
         </div>
         <div
           className={`tab-pane fade show ${activeState === 1 ? "active" : ""}`}
@@ -203,13 +179,7 @@ const Saved = ({ activeTab }) => {
           role="tabpanel"
           aria-labelledby="mange-tab"
         >
-          {/* {userData &&
-            userData.saved.quesPosts.map((blog,i)=>{
-              return <UserPost key={i} post={blog} userData={userData} />;
-            })
-          } */}
         </div>
-
         <div
           className="tab-pane fade show"
           id="mange"
@@ -344,7 +314,6 @@ const Saved = ({ activeTab }) => {
             </div>
           </div>
         </div>
-
         <div
           className="tab-pane fade"
           id="saved"

@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginUser, getUser, googleLoginUser, registerUser, getSavedPosts, markNotiAsRead, getNotifications, addToSave, followUser, unfollowUser, deletePost } from "../ApiCalls";
+import { loginUser, getUser, googleLoginUser, registerUser, getSavedPosts, markNotiAsRead, getNotifications, addToSave, followUser, unfollowUser, deletePost, getRanks } from "../ApiCalls";
 
 const initialState = {
   isLoggedIn: false,
   userToken: null,
   isReLogin: false,
+  ranks: null,
   loadings: {
     loginLoading: false,
     getUserLoading: false,
@@ -12,7 +13,8 @@ const initialState = {
     notiReadLoading: false,
     getNotiLoading: false,
     followLoading: false,
-    deletePostLoading: false
+    deletePostLoading: false,
+    getRanksLoading: false,
   },
   userData: null,
   points: null,
@@ -238,6 +240,7 @@ const userReducer = createSlice({
         state.loadings.followLoading = false;
         state.error = true;
       })
+      //Delete Posts
       .addCase(deletePost.fulfilled, (state, action) => {
         state.loadings.deletePostLoading = false;
         if (action.payload.success === true) {
@@ -258,6 +261,22 @@ const userReducer = createSlice({
       })
       .addCase(deletePost.rejected, (state, action) => {
         state.loadings.deletePostLoading = false;
+        state.error = true;
+      })
+      //Get Ranks
+      .addCase(getRanks.fulfilled, (state, action) => {
+        state.loadings.getRanksLoading = false;
+        if (action.payload.success === true) {
+          state.ranks = action.payload.rank
+        } else {
+          state.error = action.payload.message;
+        }
+      })
+      .addCase(getRanks.pending, (state, action) => {
+        state.loadings.getRanksLoading = true;
+      })
+      .addCase(getRanks.rejected, (state, action) => {
+        state.loadings.getRanksLoading = false;
         state.error = true;
       })
   },

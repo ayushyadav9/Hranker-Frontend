@@ -120,12 +120,12 @@ const RighSide = ({ postData }) => {
           </div>
           <div className="sd-title paymethd">
             <h4>{postData.user.name}</h4>
-            <p>Verified</p>
+            {/* <p>Verified</p> */}
           </div>
-          <div className="sd-title">
+          {/* <div className="sd-title">
             <h4>India</h4>
             <p>SKS Nagar, Ludhiana 1 AM</p>
-          </div>
+          </div> */}
           <div className="sd-title">
             <h4>{postData.user.posts.blogPosts.length} Blog Posted</h4>
             <h4>{postData.user.posts.quesPosts.length} Questions Posted</h4>

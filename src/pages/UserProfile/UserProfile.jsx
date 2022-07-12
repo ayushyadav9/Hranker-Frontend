@@ -12,6 +12,7 @@ const UserProfile = () => {
   const [activeTab, setactiveTab] = useState(0);
   const navigate = useNavigate();
   const [searchedUserData, setsearchedUserData] = useState(null);
+  const [rank, setrank] = useState(null)
   const [isLoading, setisLoading] = useState(false);
   const {userData} = useSelector((state)=>state.user)
   const { username } = useParams();
@@ -36,6 +37,7 @@ const UserProfile = () => {
                 navigate("/profile")
               }
               setsearchedUserData(result.user);
+              setrank(result.rank)
             } else {
             }
           },
@@ -56,12 +58,18 @@ const UserProfile = () => {
       {searchedUserData ? (
         <div>
           <section className="cover-sec">
+          <section className="cover-sec">
+            <div className="banner">
             <img
-              src="https://atiinc.org/wp-content/themes/ati-2016/images/homepage-banner-bg.jpg"
+              className="bannerImg"
+              src="/images/banner.jpg"
               alt=""
             />
+            <div className="bannerLogo"><img style={{width:"67%"}} src="/images/hrankerLogo.png" alt=""></img></div>
+            </div>
           </section>
-          <main>
+          </section>
+          <main style={{minHeight: "406px"}}>
             <div className="main-section">
               <div className="container">
                 <div className="main-section-data">
@@ -110,7 +118,7 @@ const UserProfile = () => {
                       </div>
                     </div>
                     <div className="col-lg-3">
-                      <RightSide />
+                      <RightSide ranks={rank} />
                     </div>
                   </div>
                 </div>

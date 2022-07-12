@@ -1,27 +1,14 @@
 import React,{useState} from "react";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Loader from "../../utils/Loader";
-import {deletePost} from "../../redux/ApiCalls"
 import { getDateAndTime } from "../../utils/timeCalculator";
 import { baseURL } from "../../api";
 
 const UserPost = ({ post,postUserData }) => {
-  let { userData, userToken } = useSelector((state) => state.user);
+  let { userData } = useSelector((state) => state.user);
   const [showCommentSection, setShowCommentSection] = useState(false);
-  const [isOpen, setisOpen] = useState(false)
-  const dispatch = useDispatch();
-  const handelDeletePost = ()=>{
-    let isExecuted = window.confirm("Post will be deleted forever!!");
-    if(isExecuted){
-      let data = {
-        postId: post._id,
-        type: post.type,
-        token: userToken
-      }
-      dispatch(deletePost(data))
-    }
-  }
+ 
   return (
     <>
       {postUserData && userData && post ? (
@@ -57,18 +44,18 @@ const UserPost = ({ post,postUserData }) => {
                 </span>
               </div>
             </div>
-            {userData._id === post.user && <div className="ed-opts">
-              <div onClick={()=>setisOpen(prev=>!prev)} className="ed-opts-open">
-                <i className="la la-ellipsis-v"></i>
-              </div>
-              <ul className={`ed-options ${isOpen?"active":""}`}>
+                            
+            <div className="ed-opts">
+              <ul className="bk-links">
                 <li>
-                  <div onClick = {handelDeletePost}>
-                    Delete Post
-                  </div>
+                  <Link to={`/post/${post.slug}`} target="_blank">
+                    <div className="open-newtab">
+                      <img src="/images/open.svg" alt=""></img>
+                    </div>
+                  </Link>
                 </li>
               </ul>
-            </div>}
+            </div>
           </div>
           <div className="job_descp">
             <h3>{post.title}</h3>
@@ -113,7 +100,7 @@ const UserPost = ({ post,postUserData }) => {
               <li>
                 <div
                   className={
-                    post.likers.filter((i) => i._id === postUserData._id).length > 0
+                    post.likers.filter((i) => i._id === userData?._id).length > 0
                       ? "isLiked"
                       : ""
                   }

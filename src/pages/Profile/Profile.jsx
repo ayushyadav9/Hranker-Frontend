@@ -15,6 +15,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useSelector,useDispatch } from "react-redux";
 import Saved from "../../components/Profile/Tabs/Saved";
 import {getUser} from "../../redux/ApiCalls"
+import RightSide from "../../components/Profile/RightSide";
 
 const Profile = ({ setisPopupOpen }) => {
   let { userData, loadings, userToken } = useSelector((state) => state.user);
@@ -93,43 +94,28 @@ const Profile = ({ setisPopupOpen }) => {
       {userData && (
         <div>
           <section className="cover-sec">
+            <div className="banner">
             <img
+              className="bannerImg"
               src="/images/banner.jpg"
               alt=""
             />
-            {/* <div className="add-pic-box">
-              <div className="container">
-                <div className="row no-gutters">
-                  <div className="col-lg-12 col-sm-12">
-                    <input
-                      type="file"
-                      onChange={(e) => handelUploadDP(e)}
-                      id="file"
-                    />
-                    <label htmlFor="file">Change Image</label>
-                  </div>
-                </div>
-              </div>
-            </div> */}
+            <div className="bannerLogo"><img style={{width:"67%"}} src="/images/hrankerLogo.png" alt=""></img></div>
+            </div>
           </section>
-          <main>
+          <main style={{minHeight: "406px"}}>
             <div className="main-section">
               <div className="container">
                 <div className="main-section-data">
                   <div className="row">
                     <div className="col-lg-3">
-                      <LeftSide userData={userData} />
+                      <LeftSide userData={userData} handelUploadDP={handelUploadDP}/>
                     </div>
-                    <div className="col-lg-6">
+                    <div className="col-lg-6" >
                       <div className="main-ws-sec">
                         <div className="user-tab-sec rewivew">
                           <h3>{userData.name}</h3>
                           <h2>({userData.username})</h2>
-                          <div className="star-descp">
-                            <span>
-                              {userData.about ? userData.about : "No bio yet"}
-                            </span>
-                          </div>
                           <div className="tab-feed st2 settingjb">
                             <ul>
                               <li
@@ -159,42 +145,6 @@ const Profile = ({ setisPopupOpen }) => {
                                   <span>Saved</span>
                                 </div>
                               </li>
-                              {/* <li
-                                data-tab="my-bids"
-                                className={activeTab === 3 ? "active":""}
-                              >
-                                <div title="" onClick={() => setactiveTab(3)}>
-                                  <img src="images/ic5.png" alt="" />
-                                  <span>Bids</span>
-                                </div>
-                              </li>
-                              <li
-                                data-tab="portfolio-dd"
-                                className={activeTab === 4 ? "active":""}
-                              >
-                                <div title="" onClick={() => setactiveTab(4)}>
-                                  <img src="images/ic3.png" alt="" />
-                                  <span>Portfolio</span>
-                                </div>
-                              </li>
-                              <li
-                                data-tab="rewivewdata"
-                                className={activeTab === 5 ? "active":""}
-                              >
-                                <div title="" onClick={() => setactiveTab(5)}>
-                                  <img src="images/review.png" alt="" />
-                                  <span>Reviews</span>
-                                </div>
-                              </li>
-                              <li
-                                data-tab="payment-dd"
-                                className={activeTab === 6 ? "active":""}
-                              >
-                                <div title="" onClick={() => setactiveTab(6)}>
-                                  <img src="images/ic6.png" alt="" />
-                                  <span>Payment</span>
-                                </div>
-                              </li> */}
                             </ul>
                           </div>
                         </div>
