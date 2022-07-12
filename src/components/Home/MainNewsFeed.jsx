@@ -54,8 +54,8 @@ const MainNewsFeed = () => {
   }, [selectedExams,selectedSubjects,postsData])
   
   useEffect(() => {
-    if(postsData && searchPostText){
-      if(searchPostText.length>0){
+    if(postsData ){
+      if(searchPostText?.length>0){
         const tempData = postsData.filter((value) => {
           return value.title.toLowerCase().includes(searchPostText.toLowerCase());
         });

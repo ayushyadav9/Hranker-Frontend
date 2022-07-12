@@ -83,6 +83,8 @@ const Navbar = () => {
     });
     if(newSubs.length===0 &&  newExams.length===0){
       dispatch(setSearchText(text))
+    }else{
+      dispatch(setSearchText(null))
     }
     if (text === "") {
       setfilteredSubjects(subjects)
