@@ -6,7 +6,8 @@ const initialState = {
   messagePopup: false,
   searchPopup: false,
   selectedExams:[],
-  selectedSubjects:[]
+  selectedSubjects:[],
+  searchPostText: null
 };
 
 const navReducer = createSlice({
@@ -54,6 +55,9 @@ const navReducer = createSlice({
         state.selectedSubjects.push(action.payload)
       }
     },
+    setSearchText(state, action){
+        state.searchPostText = action.payload
+    },
     removeFromExam(state, action) {
       const index = state.selectedExams.indexOf(action.payload);
       state.selectedExams.splice(index, 1);
@@ -65,5 +69,5 @@ const navReducer = createSlice({
   },
 });
 
-export const { toggleNoti, toggleUser, toggleMessage, toggleSearch, closeAll, addToExam, addToSubject, removeFromExam, removeFromSubject } = navReducer.actions;
+export const { toggleNoti, toggleUser, toggleMessage, toggleSearch, closeAll, addToExam, addToSubject, removeFromExam, removeFromSubject,setSearchText } = navReducer.actions;
 export default navReducer.reducer;

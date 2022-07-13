@@ -9,6 +9,7 @@ import {
   addToExam,
   addToSubject,
   closeAll,
+  setSearchText,
   // toggleMessage,
   toggleNoti,
   toggleSearch,
@@ -80,7 +81,11 @@ const Navbar = () => {
     const newExams = defaultTags.filter((value) => {
       return value.name.toLowerCase().includes(text.toLowerCase());
     });
-
+    if(newSubs.length===0 &&  newExams.length===0){
+      dispatch(setSearchText(text))
+    }else{
+      dispatch(setSearchText(null))
+    }
     if (text === "") {
       setfilteredSubjects(subjects)
       setfilteredExam(defaultTags)

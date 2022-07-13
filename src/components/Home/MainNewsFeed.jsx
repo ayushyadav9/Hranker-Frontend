@@ -19,7 +19,7 @@ const MainNewsFeed = () => {
   const dispatch = useDispatch();
 
   let { postsData, loadings } = useSelector((state) => state.post);
-  let { selectedExams, selectedSubjects } = useSelector((state) => state.nav);
+  let { selectedExams, selectedSubjects, searchPostText } = useSelector((state) => state.nav);
   let { userData } = useSelector((state) => state.user);
   const [temPostData, settemPostData] = useState(null);
   const [querriedData, setquerriedData] = useState(null)
@@ -53,7 +53,19 @@ const MainNewsFeed = () => {
     }
   }, [selectedExams,selectedSubjects,postsData])
   
-
+  useEffect(() => {
+    if(postsData ){
+      if(searchPostText?.length>0){
+        const tempData = postsData.filter((value) => {
+          return value.title.toLowerCase().includes(searchPostText.toLowerCase());
+        });
+        console.log(tempData)
+        setquerriedData(tempData)
+      }else{
+        setquerriedData(postsData)
+      }
+    }
+  }, [searchPostText,postsData])
 
   useEffect(() => {
     if (querriedData) {
