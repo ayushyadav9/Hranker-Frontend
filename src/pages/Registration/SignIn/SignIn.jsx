@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import Footer from "../../../components/Registration/Footer";
 import Left from "../../../components/Registration/Left";
 import { GoogleLogin } from "react-google-login";
+import FacebookLogin from 'react-facebook-login';
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../../utils/Loader";
 import { useDispatch,useSelector } from "react-redux";
 import { googleLoginUser, loginUser } from "../../../redux/ApiCalls";
+import {gapi} from "gapi-script"
+import { clientId } from "../../../api";
 
 const SignIn = ({seturl}) => {
   const dispatch = useDispatch()
@@ -23,6 +26,16 @@ const SignIn = ({seturl}) => {
     }
     // eslint-disable-next-line
   }, [isLoggedIn])
+
+  useEffect(() => {
+    function start() {
+      gapi.client.init({
+        client_id: clientId,
+        scope:""
+      })
+    }
+    gapi.load('client:auth2',start)
+  }, [])
 
   useEffect(() => {
     if(notify.login){
@@ -42,12 +55,19 @@ const SignIn = ({seturl}) => {
 
   const successResponseGoogle = (res) => {
     dispatch(googleLoginUser(res.tokenId))
+    // console.log(res)
   };
 
   const failedResponseGoogle = (res) => {
     console.log(res);
   };
+  const successResponseFb = (res) => {
+    console.log(res)
+  };
 
+  const failedResponsefb = (res) => {
+    console.log(res);
+  };
   return (
     <>
     {loadings.loginLoading && <Loader isSmall={false}/>}
@@ -148,7 +168,7 @@ const SignIn = ({seturl}) => {
                           <ul>
                             <li>
                               <GoogleLogin
-                                clientId="924996333248-b18i1m98ji19j0tfl0emmiv9el52eh2u.apps.googleusercontent.com"
+                                clientId={clientId}
                                 buttonText="Login"
                                 render={(renderProps) => (
                                   <button
@@ -161,13 +181,19 @@ const SignIn = ({seturl}) => {
                                 )}
                                 onSuccess={successResponseGoogle}
                                 onFailure={failedResponseGoogle}
-                                cookiePolicy={"single_host_origin"}
+                                // cookiePolicy={"single_host_origin"}
                               />
                             </li>
                             <li>
-                              <button title="" className="fb">
-                                <i className="fa fa-facebook"></i>Facebook
-                              </button>
+                            <FacebookLogin
+                              appId="586840939622859"
+                              autoLoad={true}
+                              cssClass="fb"
+                              icon="fa fa-facebook"
+                              textButton="Facebook"
+                              fields="name,email,picture"
+                              onClick={successResponseFb}
+                              callback={failedResponsefb} />
                             </li>
                           </ul>
                         </div>
