@@ -9,7 +9,7 @@ import { useDispatch,useSelector } from "react-redux";
 import { registerUser,googleLoginUser } from "../../../redux/ApiCalls";
 import {gapi} from "gapi-script"
 import { clientId } from "../../../api";
-import FacebookLogin from 'react-facebook-login';
+// import FacebookLogin from 'react-facebook-login';
 
 const SignUp = ({ seturl}) => {
   const dispatch = useDispatch()
@@ -71,13 +71,13 @@ const SignUp = ({ seturl}) => {
     toast.error("Some error occured");
   };
 
-  const successResponseFb = (res) => {
-    console.log(res)
-  };
+  // const successResponseFb = (res) => {
+  //   console.log(res)
+  // };
 
-  const failedResponsefb = (res) => {
-    console.log(res);
-  };
+  // const failedResponsefb = (res) => {
+  //   console.log(res);
+  // };
 
   return (
     <>
@@ -264,7 +264,7 @@ const SignUp = ({ seturl}) => {
                                         <button
                                           onClick={renderProps.onClick}
                                           disabled={renderProps.disabled}
-                                          style={{ backgroundColor: "#e93849" }}
+                                          style={{ backgroundColor: "#e93849",marginTop:"0px" }}
                                           className="go"
                                         >
                                           <i className="fa fa-google"></i>Google
@@ -275,7 +275,7 @@ const SignUp = ({ seturl}) => {
                                       // cookiePolicy={"single_host_origin"}
                                     />
                                   </li>
-                                  <li>
+                                  {/* <li>
                                   <FacebookLogin
                                     appId="586840939622859"
                                     autoLoad={true}
@@ -286,7 +286,7 @@ const SignUp = ({ seturl}) => {
                                     fields="name,email,picture"
                                     onClick={successResponseFb}
                                     callback={failedResponsefb} />
-                                  </li>
+                                  </li> */}
                                 </ul>
                               </div>
                             </div>

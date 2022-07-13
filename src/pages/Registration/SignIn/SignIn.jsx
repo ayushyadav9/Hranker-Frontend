@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Footer from "../../../components/Registration/Footer";
 import Left from "../../../components/Registration/Left";
 import { GoogleLogin } from "react-google-login";
-import FacebookLogin from 'react-facebook-login';
+// import FacebookLogin from 'react-facebook-login';
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../../utils/Loader";
@@ -61,13 +61,13 @@ const SignIn = ({seturl}) => {
   const failedResponseGoogle = (res) => {
     console.log(res);
   };
-  const successResponseFb = (res) => {
-    console.log(res)
-  };
+  // const successResponseFb = (res) => {
+  //   console.log(res)
+  // };
 
-  const failedResponsefb = (res) => {
-    console.log(res);
-  };
+  // const failedResponsefb = (res) => {
+  //   console.log(res);
+  // };
   return (
     <>
     {loadings.loginLoading && <Loader isSmall={false}/>}
@@ -184,7 +184,7 @@ const SignIn = ({seturl}) => {
                                 // cookiePolicy={"single_host_origin"}
                               />
                             </li>
-                            <li>
+                            {/* <li>
                             <FacebookLogin
                               appId="586840939622859"
                               autoLoad={true}
@@ -194,7 +194,7 @@ const SignIn = ({seturl}) => {
                               fields="name,email,picture"
                               onClick={successResponseFb}
                               callback={failedResponsefb} />
-                            </li>
+                            </li> */}
                           </ul>
                         </div>
                       </div>
