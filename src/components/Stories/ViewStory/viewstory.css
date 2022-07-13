@@ -20,7 +20,9 @@
     background: rgb(0,0,0,1);
     z-index: -1;
 }
-
+.view-story-image-div:hover{
+    cursor: pointer;
+}
 .view-story-top-content{
     position: absolute;
     top: 1.1rem;
@@ -76,12 +78,14 @@
     top: 0;
     right: 10%;
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     height: 100%;
     
 }
 .Navigator .forwardArrow button{
     outline: none;
+    position: absolute;
+    top:40%;
 }
 
 
@@ -90,13 +94,15 @@
     top: 0;
     left: 10%;
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     height: 100%;
     
 }
 
 .Navigator .backwardArrow button{
     outline:none;
+    position: absolute;
+    top:40%;
 }
 
 .not-found-wrapper {
@@ -149,6 +155,6 @@
     }
 
     .Navigator .forwardArrow{
-        right: 7%;
+        right: 15%;
     }
 }

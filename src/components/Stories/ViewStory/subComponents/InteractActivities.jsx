@@ -43,9 +43,8 @@ const InteractActivities =(
 
 
     const commentHandler=async()=>{
-        await setIsPaused(!isPaused);
+        await setIsPaused(!commentsection);
         await setCommentSection((commentsection)=>!commentsection);
-        console.log('isPausedState',isPaused)
     }
 
 
@@ -117,11 +116,7 @@ const InteractActivities =(
 
                 {(user_id===viewStoryData.user._id)&&
                     <button onClick={()=>deletestory()}>
-                        {/* <Link
-                            to="/stories"
-                        > */}
                             <DeleteIcon sx={{fontSize:"150%"}}/>
-                        {/* </Link> */}
                     </button>}
             </div>
             
@@ -170,7 +165,7 @@ const InteractActivities =(
             </div>
             <div>
 
-                <button onClick={async()=> {await setShareModal(true);await setIsPaused((isPaused)=>!isPaused);}}>
+                <button onClick={async()=> {await setShareModal(true);await setIsPaused((isPaused)=>true);}}>
                     <ShareIcon sx={{fontSize:"150%"}}/>
 
                 </button>
