@@ -93,10 +93,10 @@ const Chat = () => {
     if (userData) {
       socket.emit("addUser", userData._id);
       socket.on("getUsers", (users) => {
-        console.log(users);
         let t = users.map((item) => {
           return item.userId;
         });
+        console.log(t);
         setonlineUsers(t);
       });
     }

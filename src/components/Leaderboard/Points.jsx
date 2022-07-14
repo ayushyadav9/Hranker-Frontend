@@ -36,12 +36,12 @@ const Points = () => {
         </div>
         <div className="col-md-4 col-sm-12">
           <div className="repcent">
-            <h3 className="center topTable2">Current Points</h3>
+            <h3 className="center topTable2">Lifetime Points</h3>
           </div>
         </div>
         <div className="col-md-4 col-sm-12">
           <div className="bidrit">
-            <h3 className="topTable3">All time Points</h3>
+            <h3 className="topTable3">Current Points</h3>
           </div>
         </div>
       </div>
@@ -76,13 +76,13 @@ const Points = () => {
                 <div className="col-md-4 col-sm-12" style={{margin:"auto"}}>
                   <div className="repcent-points">
                     <p>
-                      {user.points} {" "}
+                      {user.heighestPoints} {" "}
                     </p>
                   </div>
                 </div>
                 <div className="col-md-4 col-sm-12" style={{margin:"auto"}}>
                   <div className="bidrit">
-                    <h3 className="leader-points">{user.heighestPoints}</h3>
+                    <h3 className="leader-points">{user.points}</h3>
                     {/* <p>In 10 Days</p> */}
                   </div>
                 </div>
