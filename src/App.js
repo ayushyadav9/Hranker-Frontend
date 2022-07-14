@@ -18,6 +18,7 @@ import Leaderboard from "./pages/Leaderboard/Leaderboard";
 import QuesPost from "./pages/Post/QuesPost";
 import Chat from "./pages/Chat/Chat";
 import Story from "./pages/Story/Story";
+import AboutUs from "./pages/AboutUs/AboutUs";
 import StoryContent from "./pages/Story/StoryContent";
 import Congratulations from "./utils/Congratulation";
 
@@ -117,10 +118,12 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/stories" element={<Story />} />
           </Route>
-          <Route element={<ProtectedRoute />}>
+          <Route >
             <Route path="/stories/:id" element={<StoryContent />} />
           </Route>
-          
+          <Route>
+            <Route path="/about" element={<AboutUs/>} />
+          </Route>  
 
         </Routes>
     </div>
