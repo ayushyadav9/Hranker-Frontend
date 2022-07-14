@@ -8,7 +8,7 @@ import { getLeaderboard } from "../../redux/ApiCalls";
 
 const Leaderboard = () => {
   const { userData,userToken } = useSelector((state) => state.user);
-  const { topUsers, activeUsers, loading } = useSelector(
+  const { topUsers, activeUsers } = useSelector(
     (state) => state.leaderBoard
   );
   const dispatch = useDispatch()
@@ -24,7 +24,6 @@ const Leaderboard = () => {
 
   return (
     <>
-      {loading && <Loader />}
       {userData && topUsers && activeUsers? (
         <>
           <div style={{ minHeight: "91.1vh" }}>

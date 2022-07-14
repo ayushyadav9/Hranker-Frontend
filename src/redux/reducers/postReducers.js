@@ -8,12 +8,13 @@ const initialState = {
     toggleLikeLoading: false,
     voteLoading: false,
     addCommentLoading: false,
-
   },
   popups:{
     blogPopup:false,
-    quesPopup:false
+    quesPopup:false,
+    sharePopup: false
   },
+  shareLink:null,
   confetti: false,
   postsData: null,
   error: null,
@@ -31,6 +32,14 @@ const postReducer = createSlice({
     },
     toggleQuesPopup(state){
       state.popups.quesPopup = !state.popups.quesPopup
+    },
+    toggleSharePopup(state,action){
+      if(state.popups.sharePopup){
+        state.shareLink = null
+      }else{
+        state.shareLink = action.payload
+      }
+      state.popups.sharePopup = !state.popups.sharePopup
     },
     toggleConfetti(state){
       state.confetti = !state.confetti
@@ -148,5 +157,5 @@ const postReducer = createSlice({
   },
 });
 
-export const { setToken, toggleBlogPopup, toggleQuesPopup, clearFeed, toggleConfetti } = postReducer.actions;
+export const { setToken, toggleBlogPopup, toggleQuesPopup, toggleSharePopup, clearFeed, toggleConfetti } = postReducer.actions;
 export default postReducer.reducer;

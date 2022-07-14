@@ -70,7 +70,8 @@ const UserPost = ({ post,postUserData }) => {
                 );
               })}
             </ul>
-            {post.image && <img src={post.image} alt=""></img>}
+            <div style={{justifyContent: "center",display: "flex",flexDirection:"column",width:"100%"}}>
+               {post.image && <img src={post.image} alt=""></img>}
             <p>
               {post.description && post.description.split(" ").length > 25 ? (
                 <>
@@ -85,6 +86,7 @@ const UserPost = ({ post,postUserData }) => {
                 post.description
               )}
             </p>
+            </div>
             <ul className="skill-tags">
               {post.subjectTags?.map((item,i)=>{
                 return (<li key={i}>
