@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; 
+import { useSelector } from 'react-redux';
+
 
 import CommentIcon from '@mui/icons-material/Comment';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -36,6 +38,7 @@ const InteractActivities =(
     )=>{
     const navigate = useNavigate();
     let likestate=viewStoryData.likers.includes(user_id);
+    const { userData } = useSelector((state) => state.user);
     const[likeActiveStatus,setLikeActiveStatus]=useState(likestate);
     const[shareModal,setShareModal]=useState(false);
     const[openViewersList,setOpenViewersList]=useState(false);
@@ -141,7 +144,7 @@ const InteractActivities =(
             <div>
                     <div className={likeActiveStatus? 'like-active':''} >
 
-                        <button onClick={()=> (!likeActiveStatus ?likehandler:unlikehandler)()}>
+                        <button disabled={!userData} onClick={()=> (!likeActiveStatus ?likehandler:unlikehandler)()}>
 
                             <ThumbUpIcon sx={{fontSize:"150%"}}/>
                         </button>                
@@ -165,7 +168,7 @@ const InteractActivities =(
             </div>
             <div>
 
-                <button onClick={async()=> {await setShareModal(true);await setIsPaused((isPaused)=>true);}}>
+                <button  onClick={async()=> {await setShareModal(true);await setIsPaused((isPaused)=>true);}}>
                     <ShareIcon sx={{fontSize:"150%"}}/>
 
                 </button>

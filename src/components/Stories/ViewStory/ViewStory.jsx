@@ -28,6 +28,8 @@ const ViewStory = ({ user_id, dataRecaller, setDataRecaller }) => {
   const [viewStoryData, setViewStoryData] = useState(null);
   const [storyIdArray, setstoryIdArray] = useState(null);
   const [loaderState,setLoaderState]=useState(true);
+  console.log(user_id);
+  console.log(id);
   
   useEffect(() => {
 
