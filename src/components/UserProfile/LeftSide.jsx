@@ -75,7 +75,7 @@ const LeftSide = ({ searchedUserData }) => {
           />
         </div>
         <div className="user_pro_status">
-          <div>{searchedUserData.points} Points</div>
+          <div>{searchedUserData.heighestPoints} Points</div>
           <ul className="flw-hr">
             <li>
               <div onClick = {handelFollow}  title="" className="flww">

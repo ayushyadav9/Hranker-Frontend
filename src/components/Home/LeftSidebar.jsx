@@ -84,7 +84,7 @@ const LeftSidebar = () => {
                     <span>
                       {userRank(i + 1)}
                       {/* <img src="/images/first.png" alt="/" /> */}
-                      {item.points}
+                      {item.heighestPoints}
                     </span>
                   </div>
                 );

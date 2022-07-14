@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { baseURL } from "../../api";
+import { baseURL, socketURL } from "../../api";
 import { getConversations } from "../../redux/ApiCalls";
 import { chatTime } from "../../utils/timeCalculator";
 import { io } from "socket.io-client";
@@ -44,7 +44,7 @@ const Chat = () => {
   }, [userToken]);
 
   useEffect(() => {
-    socket = io(baseURL);
+    socket = io(socketURL);
     if(userData){
       socket.emit("setup", userData._id);
     }
