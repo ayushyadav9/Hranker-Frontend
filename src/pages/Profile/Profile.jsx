@@ -97,10 +97,10 @@ const Profile = ({ setisPopupOpen }) => {
             <div className="banner">
             <img
               className="bannerImg"
-              src="/images/banner.jpg"
+              src="/images/banner.png"
               alt=""
             />
-            <div className="bannerLogo"><img style={{width:"67%"}} src="/images/hrankerLogo.png" alt=""></img></div>
+            {/* <div className="bannerLogo"><img style={{width:"67%"}} src="/images/hrankerLogo.png" alt=""></img></div> */}
             </div>
           </section>
           <main style={{minHeight: "406px"}}>

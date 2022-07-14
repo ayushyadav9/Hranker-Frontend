@@ -72,7 +72,7 @@ function App() {
   }, [])
 
   return (
-    <div className={popups.blogPopup || popups.quesPopup|| isPopupOpen?"wrapper overlay":"wrapper"}>
+    <div className={popups.blogPopup || popups.quesPopup|| popups.sharePopup|| isPopupOpen?"wrapper overlay":"wrapper"}>
         {url && <Navbar/>}
         {confetti && <Congratulations/>}
         <Routes>

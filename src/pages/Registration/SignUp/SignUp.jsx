@@ -7,6 +7,9 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../../../utils/Loader";
 import { useDispatch,useSelector } from "react-redux";
 import { registerUser,googleLoginUser } from "../../../redux/ApiCalls";
+import {gapi} from "gapi-script"
+import { clientId } from "../../../api";
+// import FacebookLogin from 'react-facebook-login';
 
 const SignUp = ({ seturl}) => {
   const dispatch = useDispatch()
@@ -14,6 +17,16 @@ const SignUp = ({ seturl}) => {
   let navigate = useNavigate();
   const [formData, setFormData] = useState({name: "", phone: "", username:"", email: "",password: "", rePassword: ""});
 
+  useEffect(() => {
+    function start() {
+      gapi.client.init({
+        client_id: clientId,
+        scope:""
+      })
+    }
+    gapi.load('client:auth2',start)
+  }, [])
+  
   useEffect(() => {
     if(isLoggedIn===true && userToken){
       seturl(true)
@@ -50,12 +63,21 @@ const SignUp = ({ seturl}) => {
   };
 
   const successResponseGoogle = (res) => {
+    // console.log(res)
     dispatch(googleLoginUser(res.tokenId))
   };
   
   const failedResponseGoogle = (res) => {
     toast.error("Some error occured");
   };
+
+  // const successResponseFb = (res) => {
+  //   console.log(res)
+  // };
+
+  // const failedResponsefb = (res) => {
+  //   console.log(res);
+  // };
 
   return (
     <>
@@ -236,13 +258,13 @@ const SignUp = ({ seturl}) => {
                                 <ul>
                                   <li>
                                     <GoogleLogin
-                                      clientId="924996333248-b18i1m98ji19j0tfl0emmiv9el52eh2u.apps.googleusercontent.com"
+                                      clientId={clientId}
                                       buttonText="Login"
                                       render={(renderProps) => (
                                         <button
                                           onClick={renderProps.onClick}
                                           disabled={renderProps.disabled}
-                                          style={{ backgroundColor: "#e93849" }}
+                                          style={{ backgroundColor: "#e93849",marginTop:"0px" }}
                                           className="go"
                                         >
                                           <i className="fa fa-google"></i>Google
@@ -250,17 +272,21 @@ const SignUp = ({ seturl}) => {
                                       )}
                                       onSuccess={successResponseGoogle}
                                       onFailure={failedResponseGoogle}
-                                      cookiePolicy={"single_host_origin"}
+                                      // cookiePolicy={"single_host_origin"}
                                     />
                                   </li>
-                                  <li>
-                                    <button
-                                      style={{ backgroundColor: "#3b5998" }}
-                                      className="fb"
-                                    >
-                                      <i className="fa fa-facebook"></i>Facebook
-                                    </button>
-                                  </li>
+                                  {/* <li>
+                                  <FacebookLogin
+                                    appId="586840939622859"
+                                    autoLoad={true}
+                                    cssClass="fb"
+                                    icon="fa fa-facebook"
+                                    scope="public_profile,email"
+                                    textButton="Facebook"
+                                    fields="name,email,picture"
+                                    onClick={successResponseFb}
+                                    callback={failedResponsefb} />
+                                  </li> */}
                                 </ul>
                               </div>
                             </div>

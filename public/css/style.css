@@ -3093,7 +3093,7 @@ select {
   padding: 12px 27px;
   border: 0;
   font-weight: 500;
-  margin-top: 30px;
+  margin-top: 15px;
   cursor: pointer;
 }
 
@@ -7546,7 +7546,7 @@ messages-list::-webkit-scrollbar {
   justify-content: center;
 }
 .repcent .active >p{
-  font-size: 11px;
+  font-size: 10px;
   margin-top: 11px;
   line-height: 0px;
   font-weight: 400;

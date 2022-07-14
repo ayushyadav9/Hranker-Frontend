@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { getDateAndTime } from "../../../utils/timeCalculator";
 import { useSelector,useDispatch } from "react-redux";
 import { toggleNoti } from "../../../redux/reducers/navReducer";
-import { getNotifications } from "../../../redux/ApiCalls";
+import { getNotifications, markNotiAsRead } from "../../../redux/ApiCalls";
 
 const Notifications = () => {
   let { notiPopup } = useSelector((state) => state.nav);
@@ -41,9 +41,18 @@ const Notifications = () => {
   //       }
   //     );
   // };
-  const handelRedirect = ()=>{
+  const handelRedirect = (noti)=>{
     dispatch(toggleNoti());
-    navigate("/notification")
+    let data = {
+      token: localStorage.getItem("userJWT"),
+      id:noti._id
+    }
+    dispatch(markNotiAsRead(data))
+    if(noti.post.type===1){
+      navigate(`post/${noti.post.slug}`)
+    }else{
+      navigate(`quesPost/${noti.post.slug}`)
+    }
   }
   return (
     <div
@@ -64,10 +73,9 @@ const Notifications = () => {
             .slice(0, Math.min(6, notifications.length))
             .map((n, i) => {
               return (
-                // <Link key={i} to={`notification`}>
                 <div
                   key={i}
-                  onClick={handelRedirect}
+                  onClick={()=>handelRedirect(n)}
                   className={`notfication-details ${n.isRead && "isRead"}`}
                 >
                   <div className="noty-user-img">
@@ -85,7 +93,6 @@ const Notifications = () => {
                     <span>{getDateAndTime(n.createdAt)}</span>
                   </div>
                 </div>
-                // </Link>
               );
             })
         ) : (
