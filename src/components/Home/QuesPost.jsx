@@ -11,6 +11,7 @@ import {
   toggleLike,
 } from "../../redux/ApiCalls";
 import { Link } from "react-router-dom";
+import { toggleSharePopup } from "../../redux/reducers/postReducers";
 
 const QuesPost = ({ post, userData }) => {
   const dispatch = useDispatch();
@@ -106,6 +107,10 @@ const QuesPost = ({ post, userData }) => {
     setsaveLoader(false);
   };
 
+  const handelShare = (link) =>{
+    dispatch(toggleSharePopup(link))
+  }
+
   return (
     <>
       <div
@@ -152,6 +157,11 @@ const QuesPost = ({ post, userData }) => {
                       <img src="/images/open.svg" alt=""></img>
                     </div>
                   </Link>
+                </li>
+                <li>
+                    <div onClick = {()=>handelShare(`quesPost/${post.slug}`)} className="open-newtab">
+                      <img src="/images/share.png" alt=""></img>
+                    </div>
                 </li>
                 <li>
                   <div onClick={handelSavePost} title="">

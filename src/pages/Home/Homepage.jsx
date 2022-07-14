@@ -7,6 +7,7 @@ import QuesPost from "../../components/Home/Popups/QuesPost";
 import RightSidebar from "../../components/Home/RightSidebar";
 import Loader from "../../utils/Loader";
 import { useSelector } from "react-redux";
+import Share from "../../components/Home/Popups/Share";
 // import Congratulation from "../../utils/Congratulation";
 
 const Homepage = () => {
@@ -34,6 +35,7 @@ const Homepage = () => {
         </main>
         <BlogPost/>
         <QuesPost/>
+        <Share/>
       </div>
       ):<Loader isSmall={false}/>}
     </>
