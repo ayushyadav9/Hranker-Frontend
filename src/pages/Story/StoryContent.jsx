@@ -12,6 +12,8 @@ import './Story.css';
 function StoryContent() {
 
     const [stories, setStories] = useState(null);
+    // let  { isLoggedIn } = useSelector((state)=>state.user);
+
     const { userData } = useSelector((state) => state.user);
 
     const user_id = userData?._id;
@@ -19,7 +21,7 @@ function StoryContent() {
     const [dataRecaller, setDataRecaller] = useState(false);
 
     useEffect(() => {
-        if(user_id){
+        // if(user_id){
 
             fetch(baseURL + "/stories", {
                 method: "POST",
@@ -40,7 +42,7 @@ function StoryContent() {
                     await setLoaderState(false)
     
                 })
-        }
+        // }
     }, [dataRecaller,user_id]);
 
     return (
@@ -48,11 +50,11 @@ function StoryContent() {
 
 
         <div className="App">
-            {loaderState && <Loader isSmall={true}/>}
+            {loaderState && user_id && <Loader isSmall={true}/>}
 
             
             {
-                !loaderState &&
+                !loaderState && 
                 <Sidebar
                     stories={stories}
                     user_id={user_id}

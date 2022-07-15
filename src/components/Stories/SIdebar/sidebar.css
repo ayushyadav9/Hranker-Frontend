@@ -60,6 +60,12 @@
     align-items: center;
 }
 
+
+.no-hover{
+    pointer-events: none;
+    cursor:default;
+  }
+  
 .divider{
     
     margin: 0px 0px 10px 0px;

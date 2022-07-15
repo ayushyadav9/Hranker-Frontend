@@ -1,0 +1,74 @@
+.about-us h2{
+    display: block;
+    font-size: 1.5em;
+    margin-top: 0.83em;
+    margin-bottom: 0.83em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+}
+
+.about-us h1{
+    display: block; 
+    font-size: 2em; 
+    margin-top: 0.67em; 
+    margin-bottom: 0.67em; 
+    margin-left: 0; 
+    margin-right: 0; 
+    font-weight: bold;
+}
+.about-us p{
+    display: block;
+    margin-top: 1em; 
+    margin-bottom: 1em; 
+    margin-left: 0; 
+    margin-right: 0;
+}
+
+
+.about-us-header{
+    background-image: url('https://source.unsplash.com/random');
+    background-size:contain;
+    height: auto;
+    min-height: 400px;
+    width:100%;
+
+}
+.about-us-container{
+    width: 80%;
+    color:#fff;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.about-page{
+    padding: 80px 0;
+    background: #f2f6f8;
+    width: 100%;
+    
+}
+
+.about-page-content{
+    width: 80%;
+    display: flex;
+    height: 470px;
+    justify-content: space-between;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.about-page-info{
+    width: 50%;
+    word-break:normal;
+    /* margin-top: auto;
+    margin-bottom: auto; */
+}
+
+.about-page-info-image{
+    width:45%;
+}
+.about-page-info-image img{
+    height: 100%;
+    /* width: 100%; */
+    object-fit: contain;
+}

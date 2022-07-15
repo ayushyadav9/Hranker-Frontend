@@ -1,5 +1,6 @@
 import { Divider } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import { useSelector } from 'react-redux';
 import{useState} from 'react';
 import {
     NavLink
@@ -20,6 +21,7 @@ const Sidebar =
             setDataRecaller
         }
     )=>{
+    const { userData } = useSelector((state) => state.user);
     
     const[createStoryModalState,setCreateStoryModalState]=useState(false);
 
@@ -35,9 +37,9 @@ const Sidebar =
                     <div className="All-Story-List">
 
 
-                            <p className="divider">Your Stories</p>
+                            {userData && <p className="divider">Your Stories</p>}
                                 {
-                                    stories && stories[0].length===0 && 
+                                    stories && stories[0].length===0 && userData &&
                                     <>
                                         <p className='no-story-message'> No Stories Found  </p>
                                     </>
@@ -71,7 +73,7 @@ const Sidebar =
                                     
                                 }
                             
-                            <p className="divider">Others Stories</p>
+                            {userData && <p className="divider">Others Stories</p>}
                             {
                                     stories && stories[1].length===0 && 
                                     <>
@@ -103,8 +105,8 @@ const Sidebar =
                     </div>
                 </div>
 
-                <div className="Sidebar-Footer-Story-Add">
-                    <button  className='btn' onClick={()=>setCreateStoryModalState(true)}>
+                {userData && <div className="Sidebar-Footer-Story-Add">
+                    <button  className='btn'  onClick={()=>setCreateStoryModalState(true)}>
                         
                         <span style={{}}><AddIcon/></span>
                         &nbsp;
@@ -112,7 +114,7 @@ const Sidebar =
                             Create Story
                         </span>
                     </button>
-                </div>
+                </div>}
             </div>
 
             {   createStoryModalState && 

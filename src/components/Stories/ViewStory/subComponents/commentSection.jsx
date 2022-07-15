@@ -21,10 +21,13 @@ const CommentSection = ({ viewStoryData, setViewStoryData, setCommentSection,isP
 
     const [comment, setComment] = useState("");
     useEffect(() => {
-        document.getElementById('comment').value = "";
-        setComment("");
+        if(userData){
 
-    }, [viewStoryData])
+            document.getElementById('comment').value = "";
+            setComment("");
+        }
+
+    }, [viewStoryData,userData])
 
 
     const textAreaHandler = async (e) => {
@@ -40,7 +43,7 @@ const CommentSection = ({ viewStoryData, setViewStoryData, setCommentSection,isP
             },
             body: JSON.stringify({
                 story_id: viewStoryData._id,
-                user_id: userData._id,
+                user_id: userData?._id,
                 comment: comment
             })
         })
@@ -68,25 +71,27 @@ const CommentSection = ({ viewStoryData, setViewStoryData, setCommentSection,isP
                     </div>
                     <Divider />
                 </div>
-                <h3>Add Your Reply</h3>
+                {userData && <h3>Add Your Reply</h3>}
                 <div>
 
-                    <div className="addComment">
-                        <Avatar
-                            alt={userData.name}
-                            src="/static/images/avatar/2.jpg"
-                            sx={{ bgcolor: deepOrange[500] }}
-                        />
+                    {userData && 
+                        <div className="addComment">
+                            <Avatar
+                                alt={userData.name}
+                                src="/static/images/avatar/2.jpg"
+                                sx={{ bgcolor: deepOrange[500] }}
+                            />
 
-                        <textarea id="comment" placeholder='Add Your Reply' onChange={(e) => textAreaHandler(e)}></textarea>
-                        <Button disabled={!comment} style={{ padding: "0", minWidth: "0" }} onClick={() => postCommentHandler()}>
-                            <SendIcon />
+                            <textarea id="comment" placeholder='Add Your Reply' onChange={(e) => textAreaHandler(e)}></textarea>
+                            <Button disabled={!comment} style={{ padding: "0", minWidth: "0" }} onClick={() => postCommentHandler()}>
+                                <SendIcon />
 
-                        </Button>
-                    </div>
+                            </Button>
+                        </div>
+                    }
                 </div>
                 <br />
-                <Divider />
+                {userData && <Divider />}
 
                 {
                     viewStoryData.comments.slice(0).reverse().map((commentData,index) => {
