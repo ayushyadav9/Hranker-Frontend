@@ -24,6 +24,7 @@ const QuesPost = () => {
   const [options, setoptions] = useState([]);
   const [dontKnow, setdontKnow] = useState(false);
   const [active, setactive] = useState(0);
+  const [otherTag, setotherTag] = useState("")
   const [isLoader, setisLoader] = useState(false);
 
   useEffect(() => {
@@ -120,6 +121,20 @@ const QuesPost = () => {
     e.preventDefault();
     dispatch(toggleQuesPopup());
   };
+  
+  const handelOtherTag=(e)=>{
+    e.preventDefault()
+    console.log(otherTag)
+    if(otherTag.length>0){
+      let t ={
+        id: examTags.length,
+        name: otherTag,
+        isActive: 1,
+      };
+      setexamTags([...examTags,t]);
+      setotherTag("")
+    }
+  }
 
   return (
     <div
@@ -147,6 +162,9 @@ const QuesPost = () => {
               handelClose={handelClose}
               setactive={setactive}
               handelPost={handelPost}
+              handelOtherTag={handelOtherTag}
+              otherTag={otherTag}
+              setotherTag={setotherTag}
             />
           )}
           {active === 1 && (

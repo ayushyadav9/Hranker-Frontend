@@ -17,6 +17,7 @@ const BlogPost = () => {
   const dispatch = useDispatch();
   const tagRef = useRef();
   const [tags, setTags] = useState(defaultTags);
+  const [otherTag, setotherTag] = useState("")
   const [subjectTags, setsubjectTags] = useState([]);
   const [filteredTags, setFilteredTags] = useState([]);
   const [subSearchText, setsubSearchText] = useState("");
@@ -115,6 +116,19 @@ const BlogPost = () => {
     setsubjectTags(t);
   };
 
+  const handelOtherTag=(e)=>{
+    e.preventDefault()
+    if(otherTag.length>0){
+      let t ={
+        id: tags.length,
+        name: otherTag,
+        isActive: 1,
+      };
+      setTags([...tags,t]);
+      setotherTag("")
+    }
+  }
+
   return (
     <div
       className={`post-popup pst-pj ${
@@ -147,6 +161,16 @@ const BlogPost = () => {
                     </div>
                   );
                 })}
+                <div className="tags">
+                  <form onSubmit={handelOtherTag}>
+                    <input 
+                      className="tag-input"
+                      value={otherTag}
+                      onChange = {(e)=>setotherTag(e.target.value)}
+                      placeholder="Other"/>
+                      <button type="submit" style={{display:"none"}} onClick={handelOtherTag}></button>
+                  </form>
+                </div>
               </div>
 
               <div ref={tagRef} className="col-lg-12">

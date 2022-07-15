@@ -24,6 +24,7 @@ const Navbar = () => {
   const userRef = useRef();
   const userRef2 = useRef();
   const searchRef = useRef();
+  const sidenavRef = useRef();
   let { userData, isLoggedIn } = useSelector((state) => state.user);
   let { userPopup,searchPopup, selectedExams,selectedSubjects } = useSelector((state) => state.nav);
   const [SideNav, setSideNav] = useState(false);
@@ -35,10 +36,21 @@ const Navbar = () => {
   const [filteredSubjects, setfilteredSubjects] = useState(subjects);
   // const [searchPopup, setsearchPopup] = useState(false)
 
+
   useEffect(() => {
     document.body.addEventListener("click", (e) => {
       if (
-        // !messageRef.current.contains(e.target) &&
+        !sidenavRef.current.contains(e.target)
+      ) {
+        setSideNav(false)
+      }
+    });
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    document.body.addEventListener("click", (e) => {
+      if (
         !notiRef.current.contains(e.target) &&
         !userRef.current.contains(e.target) &&
         !userRef2.current.contains(e.target) &&
@@ -46,9 +58,6 @@ const Navbar = () => {
       ) {
         dispatch(closeAll());
       }
-      // if(!notiRef.current.contains(e.target) &&  ){
-      //   dispatch(closeAll());
-      // }
     });
     // eslint-disable-next-line
   }, []);
@@ -221,7 +230,7 @@ const Navbar = () => {
                   </ul>
                 </div>
               </div>
-              <nav className={SideNav ? "active" : ""}>
+              <nav ref={sidenavRef} className={SideNav ? "active" : ""}>
                 <ul>
                   <li>
                     <div onClick={() => handelRedirect("/")} title="">
@@ -288,7 +297,7 @@ const Navbar = () => {
                   </li>
                 </ul>
               </nav>
-              <div className="menu-btn">
+              <div ref={sidenavRef} className="menu-btn">
                 <div title="" onClick={() => setSideNav((pre) => !pre)}>
                   <i className="fa fa-bars"></i>
                 </div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import { baseURL } from "../../api";
 import Footer from "../../components/Home/Footer";
 import RighSide from "../../components/Post/RighSide";
@@ -111,26 +112,30 @@ const QuesPost = () => {
 
   const handelAddComment = (e) => {
     e.preventDefault();
-    let t = { ...postData };
-    t.comments.push({
-      user: {
-        _id: userData._id,
-        name: userData.name,
-        image: userData.image,
-      },
-      comment: commentValue,
-      createdAt: new Date().getTime(),
-      replies: [],
-    });
-    setpostData(t);
-    setCommentValue("");
-    let data = {
-      token: userToken,
-      postId: postData._id,
-      commentValue: commentValue,
-      postType: 2,
-    };
-    dispatch(addComment(data));
+    if (commentValue.length > 0) {
+      let t = { ...postData };
+      t.comments.push({
+        user: {
+          _id: userData._id,
+          name: userData.name,
+          image: userData.image,
+        },
+        comment: commentValue,
+        createdAt: new Date().getTime(),
+        replies: [],
+      });
+      setpostData(t);
+      setCommentValue("");
+      let data = {
+        token: userToken,
+        postId: postData._id,
+        commentValue: commentValue,
+        postType: 2,
+      };
+      dispatch(addComment(data));
+    }else{
+      toast.info("Please write some comment")
+    }
   };
 
   const handleVote = (id) => {
@@ -207,31 +212,33 @@ const QuesPost = () => {
                                 </div>
                               </div>
                               <div className="ed-opts">
-                                {userData && <ul className="bk-links">
-                                  <li>
-                                    <div onClick={handelSavePost} title="">
-                                      {userData.saved.quesPosts.filter(
-                                        (i) => i === postData._id
-                                      ).length > 0 ? (
-                                        <div className="save">
-                                          {saveLoader ? (
-                                            <Loader isSmall={true} />
-                                          ) : (
-                                            <i className="la la-check"></i>
-                                          )}
-                                        </div>
-                                      ) : (
-                                        <div className="save2">
-                                          {saveLoader ? (
-                                            <Loader isSmall={true} />
-                                          ) : (
-                                            <i className="la la-bookmark"></i>
-                                          )}
-                                        </div>
-                                      )}
-                                    </div>
-                                  </li>
-                                </ul>}
+                                {userData && (
+                                  <ul className="bk-links">
+                                    <li>
+                                      <div onClick={handelSavePost} title="">
+                                        {userData.saved.quesPosts.filter(
+                                          (i) => i === postData._id
+                                        ).length > 0 ? (
+                                          <div className="save">
+                                            {saveLoader ? (
+                                              <Loader isSmall={true} />
+                                            ) : (
+                                              <i className="la la-check"></i>
+                                            )}
+                                          </div>
+                                        ) : (
+                                          <div className="save2">
+                                            {saveLoader ? (
+                                              <Loader isSmall={true} />
+                                            ) : (
+                                              <i className="la la-bookmark"></i>
+                                            )}
+                                          </div>
+                                        )}
+                                      </div>
+                                    </li>
+                                  </ul>
+                                )}
                               </div>
                             </div>
 

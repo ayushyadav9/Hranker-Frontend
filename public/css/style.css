@@ -2617,6 +2617,15 @@ main {
 .post-project-fields .active {
   background-color: aqua;
 }
+.post-project-fields .tags input{
+  height: 17px;
+  padding: 0px;
+  width: 128px;
+  background: transparent;
+  margin: 0px;
+  border: none;
+  border-bottom: 1px solid;
+}
 
 .post-project-fields form {
   float: left;
@@ -2630,6 +2639,7 @@ main {
   padding: 15px;
   height: 130px;
 }
+
 .post-project-fields form input,
 .post-project-fields form textarea,
 .post-project-fields form select {
@@ -7550,6 +7560,7 @@ messages-list::-webkit-scrollbar {
   line-height: 0px;
   font-weight: 400;
 }
+
 .bidrit {
   margin-right: 21px;
   float: right;

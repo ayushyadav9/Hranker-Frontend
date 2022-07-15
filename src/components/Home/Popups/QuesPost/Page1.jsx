@@ -21,6 +21,9 @@ const Page1 = ({
   setactive,
   handelPost,
   isLoader,
+  handelOtherTag,
+  otherTag,
+  setotherTag
 }) => {
   const [examTagText, setExamTagText] = useState("");
   const [filteredTags, setFilteredTags] = useState([]);
@@ -99,6 +102,16 @@ const Page1 = ({
               </div>
             );
           })}
+          <div className="tags">
+            <form onSubmit={handelOtherTag}>
+              <input 
+                className="tag-input"
+                value={otherTag}
+                onChange = {(e)=>setotherTag(e.target.value)}
+                placeholder="Other"/>
+                <button type="submit" style={{display:"none"}} onClick={handelOtherTag}></button>
+            </form>
+          </div>
         </div>
 
         <div ref={tagRef} className="col-lg-12">

@@ -103,7 +103,6 @@
 
 
 @media (max-width: 768px) {
-	.login_register {display: none;}
 	.forum-bar ul {float: right;}
 	.comment_box input {width: 84%;}
 	.comment_box {width: 88%;}
@@ -217,6 +216,7 @@
 	.user_profile{border-radius: 12px;}
 	.user-pro-img img{width: 150px;height: 150px;}
 	.add-pic-box [type="file"] + label {display: none;}
+	.user-account-settingss{position: absolute;left: -130px;}
 	.devepbtn a{
 		display: inline-block;
 		margin-bottom: 5px;
