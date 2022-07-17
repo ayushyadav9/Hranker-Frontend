@@ -4,10 +4,11 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { baseURL, socketURL } from "../../api";
-import { getConversations } from "../../redux/ApiCalls";
+import { blockUser, getConversations } from "../../redux/ApiCalls";
 import { chatTime } from "../../utils/timeCalculator";
 import { io } from "socket.io-client";
 import Loader from "../../utils/Loader";
+import { toast } from "react-toastify";
 import { isLastMessage, isSameSender } from "../../utils/ChatLogic";
 var socket;
 
@@ -81,7 +82,7 @@ const Chat = () => {
   
 
   useEffect(() => {
-    // console.log(arrivalMessage);
+    console.log(activeChat);
     // let t = [activeChat?._id, userData?._id];
     // console.log(t);
     arrivalMessage &&
@@ -259,6 +260,11 @@ const Chat = () => {
         (result) => {
           setfilterLoading(false);
           if (result.success) {
+            console.log(result)
+            if(result.already){
+              toast.info("User might be blocked by you")
+              return;
+            }
             setmessages([])
             setconvoData([...convoData, result.data]);
             setactiveChat(result.data)
@@ -269,7 +275,6 @@ const Chat = () => {
         }
       );
   }
-
 
   const handelTyping = (e)=>{
     setmessageText(e.target.value)
@@ -290,6 +295,18 @@ const Chat = () => {
       socket.emit("typing", activeChat.convId);
     }
     
+  }
+
+  const handelBlockUser = async(id)=>{
+    let isExecuted = window.confirm("User will be blocked!!");
+    if(isExecuted){
+      let data = {
+        token: userToken,
+        convoId: id
+      }
+      await dispatch(blockUser(data));
+      setactiveChat(null)
+    }
   }
 
   useEffect(() => {
@@ -456,9 +473,9 @@ const Chat = () => {
                           )}
                         </div>
                       </div>
-                      {/* <a href="/" title="">
-                        <i class="fa fa-ellipsis-v"></i>
-                      </a> */}
+                      <div onClick={() => handelBlockUser(activeChat.convId)} className="options">
+                        { loadings.blockLoading? <Loader isSmall={true}/>:"Block"}
+                      </div>
                     </div>
                     <div class="messages-line">
                       {messageLoader ? (

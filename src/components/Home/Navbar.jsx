@@ -138,7 +138,7 @@ const Navbar = () => {
                     type="text"
                     value={searchPostText}
                     onChange={handelSearchFilter}
-                    placeholder="Search for Exams or Subjects..."
+                    placeholder="Search for Posts or Exams or Subjects..."
                     onClick={handelSearchPopup}
                   />
                   {/* <button type="submit">

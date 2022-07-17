@@ -42,7 +42,7 @@ function App() {
   useEffect(() => {
     if(isReLogin===true){
       localStorage.removeItem("userJWT")
-      navigate("/sign-in")
+      navigate("/sign-up")
     }
     // eslint-disable-next-line
   }, [isReLogin])

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginUser, getUser, googleLoginUser, registerUser, getSavedPosts, markNotiAsRead, getNotifications, addToSave, followUser, unfollowUser, deletePost, getRanks } from "../ApiCalls";
+import { loginUser, getUser, googleLoginUser, registerUser, getSavedPosts, markNotiAsRead, getNotifications, addToSave, followUser, unfollowUser, deletePost, getRanks, getBlockedChats, unblockUser } from "../ApiCalls";
 
 const initialState = {
   isLoggedIn: false,
@@ -15,9 +15,12 @@ const initialState = {
     followLoading: false,
     deletePostLoading: false,
     getRanksLoading: false,
+    getBlockedLoading: false,
+    unblockLoading: false
   },
   userData: null,
   points: null,
+  blockedChats: null,
   notifications:null,
   savedPosts: null,
   notify:{
@@ -277,6 +280,40 @@ const userReducer = createSlice({
       })
       .addCase(getRanks.rejected, (state, action) => {
         state.loadings.getRanksLoading = false;
+        state.error = true;
+      })
+      //Get Blocked Chats
+      .addCase(getBlockedChats.fulfilled, (state, action) => {
+        state.loadings.getBlockedLoading = false;
+        if (action.payload.success === true) {
+          state.blockedChats = action.payload.data
+        } else {
+          state.error = action.payload.message;
+        }
+      })
+      .addCase(getBlockedChats.pending, (state, action) => {
+        state.loadings.getBlockedLoading = true;
+      })
+      .addCase(getBlockedChats.rejected, (state, action) => {
+        state.loadings.getBlockedLoading = false;
+        state.error = true;
+      })
+      //unblock User
+      .addCase(unblockUser.fulfilled, (state, action) => {
+        state.loadings.unblockLoading = false;
+        console.log(action.payload)
+        if (action.payload.success === true) {
+          let t = state.blockedChats.filter((item)=>item._id!==action.payload.convoId);
+          state.blockedChats = t;
+        } else {
+          state.error = action.payload.message;
+        }
+      })
+      .addCase(unblockUser.pending, (state, action) => {
+        state.loadings.unblockLoading = true;
+      })
+      .addCase(unblockUser.rejected, (state, action) => {
+        state.loadings.unblockLoading = false;
         state.error = true;
       })
   },

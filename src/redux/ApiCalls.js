@@ -246,6 +246,44 @@ export const getConversations = createAsyncThunk("chat/getConversations", async 
   return res;
 });
 
+export const blockUser = createAsyncThunk("chat/blockUser", async (data) => {
+  let result = await fetch(`${baseURL}/chat/blockUser`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${data.token}`,
+    },
+    body: JSON.stringify({convoId: data.convoId}),
+  });
+  let res = await result.json();
+  return res;
+});
+
+export const unblockUser = createAsyncThunk("chat/unblockUser", async (data) => {
+  let result = await fetch(`${baseURL}/chat/unblockUser`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${data.token}`,
+    },
+    body: JSON.stringify({convoId: data.convoId}),
+  });
+  let res = await result.json();
+  return res;
+});
+
+export const getBlockedChats = createAsyncThunk("chat/getBlockedChats", async (token) => {
+  let result = await fetch(`${baseURL}/chat/getBlockedChats`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  let res = await result.json();
+  return res;
+});
+
 export const deletePost = createAsyncThunk("post/delete-post", async (data) => {
   let result = await fetch(`${baseURL}/post/deletePost`, {
     method: "POST",

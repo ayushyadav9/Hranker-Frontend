@@ -145,6 +145,15 @@ const Profile = ({ setisPopupOpen }) => {
                                   <span>Saved</span>
                                 </div>
                               </li>
+                              <li
+                                data-tab="saved-jobs"
+                                className={activeTab === 3 ? "active":""}
+                              >
+                                <div title="" onClick={() => setactiveTab(3)}>
+                                  <img style={{width:"27px"}} src="images/block.svg" alt="" />
+                                  <span>Blocked</span>
+                                </div>
+                              </li>
                             </ul>
                           </div>
                         </div>

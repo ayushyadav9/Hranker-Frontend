@@ -5937,11 +5937,15 @@ messages-list::-webkit-scrollbar {
   float: left;
   width: auto;
 }
-.message-bar-head > a {
+.message-bar-head .options {
   float: right;
-  color: #b2b2b2;
-  font-size: 20px;
-  padding-top: 15px;
+  cursor: pointer;
+  font-size: 11px;
+  line-height: 7px;
+  margin-top: 10px;
+  border: 1px solid;
+  border-radius: 4px;
+  padding: 6px 9px;
 }
 .main-message-box {
   float: left;
@@ -6753,7 +6757,13 @@ messages-list::-webkit-scrollbar {
 }
 
 .wordpressdevlp {
+  display: flex;
   background-color: #fff;
+}
+.wordpressdevlp img{
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
 }
 .bgclr {
   background-color: #fff;
@@ -6767,7 +6777,6 @@ messages-list::-webkit-scrollbar {
 .cadidatesbtn button {
   background-color: #e44d3a;
   border: none;
-  margin-top: -3px;
 }
 .cadidatesbtn button:hover {
   background-color: #e44d3a;
@@ -7835,7 +7844,13 @@ ul#myTab {
 .wordpressdevlp h2 {
   font-size: 18px;
   font-weight: 600;
-  margin-bottom: 15px;
+  margin: auto 12px;
+}
+.wordpressdevlp p {
+  font-size: 12px;
+  line-height: 15px;
+  font-weight: 300;
+  margin-left: 12px;
 }
 #saved-jobs .nav-tabs .nav-item.show .nav-link,
 #saved-jobs .nav-tabs .nav-link.active {
